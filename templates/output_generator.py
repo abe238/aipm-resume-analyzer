@@ -804,3 +804,291 @@ This report aggregates insights from multiple AI models to provide:
     # Write to file
     with open(output_path, 'w') as f:
         f.write(md_content)
+
+
+def generate_aggregated_html(analyses, output_path):
+    """Generate aggregated HTML report from multiple provider analyses"""
+
+    # Get candidate name from first analysis
+    candidate = list(analyses.values())[0].get('candidate_name', 'Candidate')
+    now = datetime.now()
+    date_formatted = now.strftime('%B %d, %Y at %H:%M:%S')
+
+    # Calculate consensus scores (reuse logic from markdown)
+    pillar_keys = ['pillar_1', 'pillar_2', 'pillar_3', 'pillar_4', 'pillar_5', 'pillar_6']
+    pillar_names = ['Technical Skills', 'Product Thinking', 'AI/ML Knowledge',
+                    'Communication', 'Strategic Thinking', 'Execution']
+
+    consensus_scores = {}
+    for i, pillar_key in enumerate(pillar_keys):
+        scores = [a.get('pillars', {}).get(pillar_key, {}).get('score', 0) for a in analyses.values()]
+        consensus_scores[pillar_names[i]] = {
+            'avg': round(sum(scores) / len(scores), 1) if scores else 0,
+            'min': min(scores) if scores else 0,
+            'max': max(scores) if scores else 0,
+            'scores': {provider: score for provider, score in zip(analyses.keys(), scores)}
+        }
+
+    # Calculate total scores
+    total_scores = {provider: a.get('total_score', 0) for provider, a in analyses.items()}
+    avg_total = round(sum(total_scores.values()) / len(total_scores), 1)
+
+    # Get all strengths and concerns
+    all_strengths = []
+    all_concerns = []
+    for provider, analysis in analyses.items():
+        provider_display = analysis.get('_metadata', {}).get('model_display_name', provider.upper())
+        for strength in analysis.get('top_strengths', []):
+            all_strengths.append(f"<strong>[{provider_display}]</strong> {strength}")
+        for concern in analysis.get('top_concerns', []):
+            all_concerns.append(f"<strong>[{provider_display}]</strong> {concern}")
+
+    # Build provider summary
+    provider_summary = ""
+    for provider, analysis in analyses.items():
+        model_name = analysis.get('_metadata', {}).get('model_display_name', provider.upper())
+        score = analysis.get('total_score', 0)
+        decision = analysis.get('decision', 'Unknown')
+        provider_summary += f"<li><strong>{model_name}</strong>: {score}/60 - {decision}</li>\n"
+
+    # Build consensus table
+    consensus_table_headers = ' | '.join([a.get('_metadata', {}).get('model_display_name', p)[:15] for p, a in analyses.items()])
+    consensus_table_rows = ""
+    for pillar_name in pillar_names:
+        scores_data = consensus_scores[pillar_name]
+        provider_scores = ' | '.join([str(scores_data['scores'].get(p, 0)) for p in analyses.keys()])
+        consensus_table_rows += f"""
+        <tr>
+            <td><strong>{pillar_name}</strong></td>
+            <td>{scores_data['avg']}/10</td>
+            <td>{scores_data['min']}</td>
+            <td>{scores_data['max']}</td>
+            <td>{provider_scores.replace(' | ', '</td><td>')}</td>
+        </tr>
+"""
+
+    # Build strengths list
+    strengths_html = "".join([f"<li>{s}</li>\n" for s in all_strengths])
+
+    # Build concerns list
+    concerns_html = "".join([f"<li>{c}</li>\n" for c in all_concerns])
+
+    # Build individual provider sections
+    provider_details = ""
+    for provider, analysis in analyses.items():
+        model_name = analysis.get('_metadata', {}).get('model_display_name', provider.upper())
+        score = analysis.get('total_score', 0)
+        decision = analysis.get('decision', 'Unknown')
+        recommendation = analysis.get('recommendation', '').replace('\n', '<br>')
+
+        pillar_breakdown = ""
+        for i, pillar_key in enumerate(pillar_keys):
+            pillar_data = analysis.get('pillars', {}).get(pillar_key, {})
+            pillar_score = pillar_data.get('score', 0)
+            pillar_level = pillar_data.get('level', 'Unknown')
+            pillar_breakdown += f"<li><strong>{pillar_names[i]}</strong>: {pillar_score}/10 ({pillar_level})</li>\n"
+
+        provider_details += f"""
+        <div class="provider-section">
+            <h3>{model_name}</h3>
+            <p><strong>Score:</strong> {score}/60 | <strong>Decision:</strong> {decision}</p>
+            <h4>Executive Summary:</h4>
+            <p>{recommendation}</p>
+            <h4>Pillar Breakdown:</h4>
+            <ul>
+                {pillar_breakdown}
+            </ul>
+        </div>
+"""
+
+    # Generate HTML
+    html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep AI PM Analysis: {candidate}</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f7fa;
+            padding: 40px 20px;
+        }}
+        .container {{
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 48px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }}
+        h1 {{
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            color: #0066cc;
+            border-bottom: 3px solid #0066cc;
+            padding-bottom: 16px;
+        }}
+        h2 {{
+            font-size: 1.75rem;
+            margin: 40px 0 20px;
+            color: #333;
+            border-bottom: 2px solid #e1e4e8;
+            padding-bottom: 12px;
+        }}
+        h3 {{
+            font-size: 1.4rem;
+            margin: 32px 0 16px;
+            color: #444;
+        }}
+        h4 {{
+            font-size: 1.1rem;
+            margin: 20px 0 12px;
+            color: #555;
+        }}
+        .metadata {{
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 32px;
+            border-left: 4px solid #0066cc;
+        }}
+        .metadata p {{ margin: 8px 0; }}
+        .metadata strong {{ color: #0066cc; }}
+        .overview {{
+            background: #fff9e6;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+            border-left: 4px solid #ffcc00;
+        }}
+        .overview ul {{ margin: 16px 0 16px 24px; }}
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.95rem;
+        }}
+        th, td {{
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e1e4e8;
+        }}
+        th {{
+            background: #f6f8fa;
+            font-weight: 600;
+            color: #0066cc;
+        }}
+        tr:hover {{ background: #f6f8fa; }}
+        ul {{ margin: 16px 0 16px 24px; }}
+        li {{ margin: 8px 0; }}
+        .provider-section {{
+            background: #f9f9f9;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+            border-left: 4px solid #28a745;
+        }}
+        .footer {{
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 2px solid #e1e4e8;
+            color: #666;
+            font-size: 0.9rem;
+        }}
+        .badge {{
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 0 4px;
+        }}
+        .badge-consensus {{ background: #e6f3ff; color: #0066cc; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 Deep AI PM Resume Analysis: {candidate}</h1>
+
+        <div class="metadata">
+            <p><strong>Analysis Date:</strong> {date_formatted}</p>
+            <p><strong>Providers:</strong> {', '.join([a.get('_metadata', {}).get('model_display_name', p.upper()) for p, a in analyses.items()])}</p>
+            <p><strong>Consensus Score:</strong> <span class="badge badge-consensus">{avg_total}/60</span></p>
+        </div>
+
+        <div class="overview">
+            <h2>🔬 Deep Analysis Overview</h2>
+            <p>This is an <strong>aggregated deep analysis</strong> using multiple AI providers to provide maximum feedback and diverse perspectives on the candidate's profile.</p>
+
+            <h3>Providers Analyzed:</h3>
+            <ul>
+                {provider_summary}
+            </ul>
+            <p><strong>Consensus Total Score:</strong> {avg_total}/60</p>
+        </div>
+
+        <h2>📊 Consensus Pillar Scores</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pillar</th>
+                    <th>Average</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>{consensus_table_headers.replace(' | ', '</th><th>')}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {consensus_table_rows}
+            </tbody>
+        </table>
+
+        <h2>✨ All Identified Strengths</h2>
+        <ul>
+            {strengths_html}
+        </ul>
+
+        <h2>⚠️ All Identified Concerns</h2>
+        <ul>
+            {concerns_html}
+        </ul>
+
+        <h2>📋 Detailed Analysis by Provider</h2>
+        {provider_details}
+
+        <h2>💡 How to Use This Deep Analysis</h2>
+        <p>This report aggregates insights from multiple AI models to provide:</p>
+        <ul>
+            <li><strong>Consensus view:</strong> Where all models agree, there's high confidence</li>
+            <li><strong>Diverse perspectives:</strong> Different models may emphasize different strengths/concerns</li>
+            <li><strong>Comprehensive feedback:</strong> More detailed than single-provider analysis</li>
+        </ul>
+
+        <h3>Action Items:</h3>
+        <ol>
+            <li>Review consensus scores for overall assessment</li>
+            <li>Note where models disagree - these areas may need human judgment</li>
+            <li>Read all identified strengths and concerns for complete picture</li>
+            <li>Review individual provider analyses for detailed reasoning</li>
+        </ol>
+
+        <div class="footer">
+            <h3>About This Analysis</h3>
+            <p><strong>Aggregated Deep Analysis</strong> using the Applied AI PM Evaluation Framework</p>
+            <p><strong>Framework:</strong> 6 Pillars (Technical Skills, Product Thinking, AI/ML Knowledge, Communication, Strategic Thinking, Execution)</p>
+            <p><strong>Providers Used:</strong> {', '.join([a.get('_metadata', {}).get('model_display_name', p.upper()) for p, a in analyses.items()])}</p>
+            <p><a href="https://github.com/abe238/aipm-resume-analyzer" target="_blank">Learn more about the framework</a></p>
+            <p style="margin-top: 16px;">Analysis generated on {date_formatted}</p>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+    # Write to file
+    with open(output_path, 'w') as f:
+        f.write(html_content)

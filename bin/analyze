@@ -522,22 +522,29 @@ For setup help, see README.md
             print("❌ No analyses completed successfully")
             sys.exit(1)
 
-        # Generate aggregated report
-        from templates.output_generator import generate_aggregated_report
+        # Generate aggregated reports
+        from templates.output_generator import generate_aggregated_report, generate_aggregated_html
 
         candidate_name = list(analyses.values())[0].get('candidate_name', 'Candidate').replace(' ', '_')
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         base_filename = f"{candidate_name}_DEEP_{timestamp}"
 
+        # Generate consolidated markdown report
         md_path = output_dir / f"{base_filename}.md"
         generate_aggregated_report(analyses, md_path)
-        print(f"\n📊 Aggregated Deep Analysis Report: {md_path}")
+        print(f"\n📝 Aggregated Markdown Report: {md_path}")
 
-        # Save individual JSONs
+        # Generate consolidated HTML report
+        html_path = output_dir / f"{base_filename}.html"
+        generate_aggregated_html(analyses, html_path)
+        print(f"🌐 Aggregated HTML Report: {html_path}")
+
+        # Save individual JSONs (for reference/debugging)
         for prov, analysis in analyses.items():
             json_path = output_dir / f"{base_filename}_{prov}.json"
             with open(json_path, 'w') as f:
                 json.dump(analysis, f, indent=2)
+        print(f"💾 Individual JSON files saved (3 files)")
 
         print(f"\n✨ Deep analysis complete! Analyzed with {len(analyses)} provider(s)")
         sys.exit(0)
