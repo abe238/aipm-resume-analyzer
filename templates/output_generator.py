@@ -247,9 +247,11 @@ If moving forward, probe these areas in depth:
     md_content += f"""
 ## About This Analysis
 
-This resume was analyzed using the **Applied AI PM Evaluation Framework** - an open-source, standardized evaluation system for AI Product Manager candidates.
+This resume was analyzed using the **Applied AI PM Evaluation Framework** - an open-source, rigorous evaluation system for 2025 AI Product Manager candidates.
 
-**Framework**: 6 Pillars (Technical Skills, Product Thinking, AI/ML Knowledge, Communication, Strategic Thinking, Execution)
+**Framework**: 6 Pillars with 2025 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping
+
+**Key Criteria**: Minimum thresholds (personal AI projects, building in public, resume creativity), The Three Critical Questions (paradigm shift, future-proofing, magic wand test), Must-have signals, Differentiation signals, Red/yellow flags
 
 **Model Used**: {model_name}
 
@@ -871,7 +873,8 @@ def generate_html(analysis, output_path):
         <!-- Footer -->
         <div class="footer">
             <p>This resume was analyzed using the <strong>Applied AI PM Evaluation Framework</strong></p>
-            <p>An open-source, standardized evaluation system for AI Product Manager candidates</p>
+            <p>A rigorous, open-source evaluation system for 2025 AI Product Manager candidates</p>
+            <p><strong>Framework:</strong> 6 Pillars with 2025 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping</p>
             <p><strong>Model Used:</strong> {model_name}</p>
             <p><a href="https://github.com/abe238/aipm-resume-analyzer" target="_blank">Learn more about the framework</a></p>
             <p style="margin-top: 16px; font-size: 0.85rem;">Analysis generated on {date_formatted}</p>
@@ -952,7 +955,7 @@ This is an **aggregated deep analysis** using multiple AI providers to provide m
 
 ## 📊 Consensus Pillar Scores
 
-| Pillar | Avg | Min | Max | {' | '.join([a.get('_metadata', {}).get('model_display_name', p)[:15] for p, a in analyses.items()])} |
+| Pillar | Avg | Min | Max | {' | '.join([a.get('_metadata', {}).get('model_display_name', p) for p, a in analyses.items()])} |
 |--------|-----|-----|-----|{'----|' * len(analyses)}
 """
 
@@ -1060,7 +1063,9 @@ This report aggregates insights from multiple AI models to provide:
 
 **Aggregated Deep Analysis** using the Applied AI PM Evaluation Framework
 
-**Framework**: 6 Pillars (Technical Skills, Product Thinking, AI/ML Knowledge, Communication, Strategic Thinking, Execution)
+**Framework**: 6 Pillars with 2025 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping
+
+**Key Criteria**: Minimum thresholds, The Three Critical Questions, Must-have signals, Differentiation signals, Red/yellow flags
 
 **Providers Used**: {', '.join([a.get('_metadata', {}).get('model_display_name', p.upper()) for p, a in analyses.items()])}
 
@@ -1388,7 +1393,8 @@ def generate_aggregated_html(analyses, output_path):
         <div class="footer">
             <h3>About This Analysis</h3>
             <p><strong>Aggregated Deep Analysis</strong> using the Applied AI PM Evaluation Framework</p>
-            <p><strong>Framework:</strong> 6 Pillars (Technical Skills, Product Thinking, AI/ML Knowledge, Communication, Strategic Thinking, Execution)</p>
+            <p>A rigorous, open-source evaluation system for 2025 AI Product Manager candidates</p>
+            <p><strong>Framework:</strong> 6 Pillars with 2025 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping</p>
             <p><strong>Providers Used:</strong> {', '.join([a.get('_metadata', {}).get('model_display_name', p.upper()) for p, a in analyses.items()])}</p>
             <p><a href="https://github.com/abe238/aipm-resume-analyzer" target="_blank">Learn more about the framework</a></p>
             <p style="margin-top: 16px;">Analysis generated on {date_formatted}</p>
