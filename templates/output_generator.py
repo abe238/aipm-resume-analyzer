@@ -11,7 +11,8 @@ def generate_markdown(analysis, output_path):
     """Generate markdown report"""
 
     candidate = analysis.get('candidate_name', 'Candidate')
-    date = analysis.get('analysis_date', datetime.now().isoformat())
+    now = datetime.now()
+    date_formatted = now.strftime('%B %d, %Y at %H:%M:%S')
     total_score = analysis.get('total_score', 0)
     weighted_score = analysis.get('weighted_score', 0)
     decision = analysis.get('decision', 'Unknown')
@@ -21,9 +22,14 @@ def generate_markdown(analysis, output_path):
     recommendation = analysis.get('recommendation', '')
     suitable_roles = analysis.get('suitable_roles', [])
 
+    # Extract model metadata
+    metadata = analysis.get('_metadata', {})
+    model_name = metadata.get('model_display_name', 'Unknown Model')
+
     md_content = f"""# AI PM Resume Analysis: {candidate}
 
-**Analysis Date**: {date}
+**Analysis Date**: {date_formatted}
+**Model**: {model_name}
 **Total Score**: {total_score}/60 ({weighted_score}/100 weighted)
 **Decision**: **{decision}**
 
@@ -126,11 +132,13 @@ This resume was analyzed using the **Applied AI PM Evaluation Framework** - an o
 
 **Framework**: 6 Pillars (Technical Skills, Product Thinking, AI/ML Knowledge, Communication, Strategic Thinking, Execution)
 
-**Learn more**: https://github.com/abediaz/aipm-framework
+**Model Used**: {model_name}
+
+**Learn more**: https://github.com/abe238/aipm-resume-analyzer
 
 ---
 
-*Analysis generated on {datetime.now().strftime('%Y-%m-%d at %H:%M:%S')}*
+*Analysis generated on {date_formatted}*
 """
 
     # Write to file
@@ -142,7 +150,8 @@ def generate_html(analysis, output_path):
     """Generate HTML report with beautiful CSS"""
 
     candidate = analysis.get('candidate_name', 'Candidate')
-    date = analysis.get('analysis_date', datetime.now().isoformat())
+    now = datetime.now()
+    date_formatted = now.strftime('%B %d, %Y at %H:%M:%S')
     total_score = analysis.get('total_score', 0)
     weighted_score = analysis.get('weighted_score', 0)
     decision = analysis.get('decision', 'Unknown')
@@ -151,6 +160,10 @@ def generate_html(analysis, output_path):
     concerns = analysis.get('top_concerns', [])
     recommendation = analysis.get('recommendation', '')
     suitable_roles = analysis.get('suitable_roles', [])
+
+    # Extract model metadata
+    metadata = analysis.get('_metadata', {})
+    model_name = metadata.get('model_display_name', 'Unknown Model')
 
     # Decision styling
     decision_class = {
@@ -467,7 +480,8 @@ def generate_html(analysis, output_path):
         <div class="header">
             <h1>AI PM Resume Analysis</h1>
             <div class="meta">Candidate: {candidate}</div>
-            <div class="meta">Analysis Date: {datetime.fromisoformat(date).strftime('%B %d, %Y at %H:%M')}</div>
+            <div class="meta">Analysis Date: {date_formatted}</div>
+            <div class="meta">Model: {model_name}</div>
             <div class="score-badge">
                 Total Score: {total_score}/60 ({weighted_score}/100 weighted)
             </div>
@@ -613,8 +627,9 @@ def generate_html(analysis, output_path):
         <div class="footer">
             <p>This resume was analyzed using the <strong>Applied AI PM Evaluation Framework</strong></p>
             <p>An open-source, standardized evaluation system for AI Product Manager candidates</p>
-            <p><a href="https://github.com/abediaz/aipm-framework" target="_blank">Learn more about the framework</a></p>
-            <p style="margin-top: 16px; font-size: 0.85rem;">Analysis generated on {datetime.now().strftime('%B %d, %Y at %H:%M:%S')}</p>
+            <p><strong>Model Used:</strong> {model_name}</p>
+            <p><a href="https://github.com/abe238/aipm-resume-analyzer" target="_blank">Learn more about the framework</a></p>
+            <p style="margin-top: 16px; font-size: 0.85rem;">Analysis generated on {date_formatted}</p>
         </div>
     </div>
 </body>

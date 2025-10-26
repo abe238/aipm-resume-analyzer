@@ -302,6 +302,13 @@ Return your analysis in JSON format with this structure:
         print(f"🤖 Analyzing with {self.api_provider.upper()} ({self.model})...")
         analysis = self.analyze_with_ai(resume_text)
 
+        # Add metadata about the analysis
+        analysis['_metadata'] = {
+            'provider': self.api_provider,
+            'model': self.model,
+            'model_display_name': self.AVAILABLE_MODELS[self.api_provider][self.model]['name']
+        }
+
         print(f"✅ Analysis complete!")
         return analysis
 
