@@ -934,6 +934,50 @@ def group_feedback_by_theme(feedback_items):
     return result
 
 
+def format_grouped_items_as_paragraph(items):
+    """
+    Convert list of items with provider tags at start into paragraph format with tags at end.
+
+    Input: ["**[GPT-5]** Cross-functional...", "**[GPT-5]** Training and...", "**[Claude]** Strong operational..."]
+    Output: "Cross-functional... Training and... [GPT-5] Strong operational... [Claude]"
+    """
+    import re
+
+    # Parse items to extract provider and text
+    provider_items = {}
+    for item in items:
+        # Match pattern like "**[Provider]** text" or "[Provider] text" or "<strong>[Provider]</strong> text"
+        match = re.match(r'(?:\*\*|\<strong\>)?\[([^\]]+)\](?:\*\*|\<\/strong\>)?\s*(.*)', item)
+        if match:
+            provider = match.group(1)
+            text = match.group(2).strip()
+            if provider not in provider_items:
+                provider_items[provider] = []
+            provider_items[provider].append(text)
+        else:
+            # No provider tag found, treat as ungrouped
+            if 'Other' not in provider_items:
+                provider_items['Other'] = []
+            provider_items['Other'].append(item.strip())
+
+    # Build paragraph
+    parts = []
+    for provider, texts in provider_items.items():
+        # Combine texts with periods
+        combined = '. '.join(t.rstrip('.') for t in texts)
+        # Ensure it ends with period before tag
+        if not combined.endswith('.'):
+            combined += '.'
+        # Add provider tag at end (without bold formatting)
+        if provider != 'Other':
+            parts.append(f"{combined} [{provider}]")
+        else:
+            parts.append(combined)
+
+    # Join all parts with space
+    return ' '.join(parts)
+
+
 def generate_aggregated_report(analyses, output_path):
     """Generate aggregated report from multiple provider analyses"""
 
@@ -1022,9 +1066,8 @@ This is an **aggregated deep analysis** using multiple AI providers to provide m
 
     for theme, items in grouped_strengths:
         md_content += f"### {theme}\n\n"
-        for item in items:
-            md_content += f"- {item}\n"
-        md_content += "\n"
+        paragraph = format_grouped_items_as_paragraph(items)
+        md_content += f"{paragraph}\n\n"
 
     md_content += f"""---
 
@@ -1034,8 +1077,44 @@ This is an **aggregated deep analysis** using multiple AI providers to provide m
 
     for theme, items in grouped_concerns:
         md_content += f"### {theme}\n\n"
-        for item in items:
-            md_content += f"- {item}\n"
+        paragraph = format_grouped_items_as_paragraph(items)
+        md_content += f"{paragraph}\n\n"
+
+    # Aggregate suitable roles and interview focus areas
+    all_roles = set()
+    all_interview_areas = set()
+    for provider, analysis in analyses.items():
+        roles = analysis.get('suitable_roles', [])
+        if roles:
+            all_roles.update(roles)
+        areas = analysis.get('interview_focus_areas', [])
+        if areas:
+            all_interview_areas.update(areas)
+
+    # Add Better Fit Roles section
+    if all_roles:
+        md_content += """---
+
+## Better Fit Roles
+
+Based on this candidate's profile across all provider analyses, they may be a better fit for:
+
+"""
+        for role in sorted(all_roles):
+            md_content += f"- {role}\n"
+        md_content += "\n"
+
+    # Add Interview Focus Areas section
+    if all_interview_areas:
+        md_content += """---
+
+## Interview Focus Areas
+
+If moving forward, probe these areas in depth:
+
+"""
+        for area in sorted(all_interview_areas):
+            md_content += f"- {area}\n"
         md_content += "\n"
 
     md_content += """
@@ -1203,18 +1282,47 @@ def generate_aggregated_html(analyses, output_path):
     # Build grouped strengths HTML
     strengths_html = ""
     for theme, items in grouped_strengths:
-        strengths_html += f"<h3>{theme}</h3>\n<ul class='strength-list'>\n"
-        for item in items:
-            strengths_html += f"<li>{item}</li>\n"
-        strengths_html += "</ul>\n"
+        strengths_html += f"<h3>{theme}</h3>\n"
+        paragraph = format_grouped_items_as_paragraph(items)
+        strengths_html += f"<p class='grouped-paragraph'>{paragraph}</p>\n"
 
     # Build grouped concerns HTML
     concerns_html = ""
     for theme, items in grouped_concerns:
-        concerns_html += f"<h3>{theme}</h3>\n<ul class='concern-list'>\n"
-        for item in items:
-            concerns_html += f"<li>{item}</li>\n"
-        concerns_html += "</ul>\n"
+        concerns_html += f"<h3>{theme}</h3>\n"
+        paragraph = format_grouped_items_as_paragraph(items)
+        concerns_html += f"<p class='grouped-paragraph'>{paragraph}</p>\n"
+
+    # Aggregate suitable roles and interview focus areas for HTML
+    all_roles_html = set()
+    all_interview_areas_html = set()
+    for provider, analysis in analyses.items():
+        roles = analysis.get('suitable_roles', [])
+        if roles:
+            all_roles_html.update(roles)
+        areas = analysis.get('interview_focus_areas', [])
+        if areas:
+            all_interview_areas_html.update(areas)
+
+    # Build Better Fit Roles HTML
+    roles_html = ""
+    if all_roles_html:
+        roles_html = "<h2>Better Fit Roles</h2>\n"
+        roles_html += "<p>Based on this candidate's profile across all provider analyses, they may be a better fit for:</p>\n"
+        roles_html += "<div class='roles-list'>\n"
+        for role in sorted(all_roles_html):
+            roles_html += f"<div class='role-item'>{role}</div>\n"
+        roles_html += "</div>\n"
+
+    # Build Interview Focus Areas HTML
+    interview_html = ""
+    if all_interview_areas_html:
+        interview_html = "<h2>Interview Focus Areas</h2>\n"
+        interview_html += "<p>If moving forward, probe these areas in depth:</p>\n"
+        interview_html += "<ul class='sub-list'>\n"
+        for area in sorted(all_interview_areas_html):
+            interview_html += f"<li>{area}</li>\n"
+        interview_html += "</ul>\n"
 
     # Build individual provider sections
     provider_details = ""
@@ -1434,6 +1542,10 @@ def generate_aggregated_html(analyses, output_path):
 
         <h2>⚠️ All Identified Concerns</h2>
         {concerns_html}
+
+        {roles_html}
+
+        {interview_html}
 
         <h2>📋 Detailed Analysis by Provider</h2>
         {provider_details}

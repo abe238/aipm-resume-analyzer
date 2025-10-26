@@ -823,16 +823,16 @@ Return ONLY valid JSON, nothing else."""
         except Exception as e:
             raise Exception(f"AI analysis failed: {str(e)}")
 
-    def analyze_resume(self, file_path):
+    def analyze_resume(self, file_path, enable_vision=False):
         """Main analysis function"""
         file_ext = Path(file_path).suffix.lower()
         file_type = {'.pdf': 'PDF', '.doc': 'DOC', '.docx': 'DOCX'}.get(file_ext, 'document')
         print(f"📄 Extracting text from {file_type}...")
         resume_text = self.extract_text_from_document(file_path)
 
-        # Try to get visual representation for PDF files
+        # Try to get visual representation for PDF files (only in deep analysis mode)
         resume_image = None
-        if file_ext == '.pdf':
+        if enable_vision and file_ext == '.pdf':
             print(f"🖼️  Converting PDF to image for visual design analysis...")
             resume_image = self.convert_pdf_to_images(file_path)
             if resume_image:
@@ -1028,9 +1028,9 @@ For setup help, see README.md
                 prov_key = os.getenv(f'{prov.upper()}_API_KEY')
                 print(f"🤖 Analyzing with {prov.upper()}...")
 
-                # Use default (best) model for each provider
+                # Use default (best) model for each provider (enable vision for deep analysis)
                 prov_analyzer = ResumeAnalyzer(api_provider=prov, api_key=prov_key, model=None)
-                prov_analysis = prov_analyzer.analyze_resume(args.resume)
+                prov_analysis = prov_analyzer.analyze_resume(args.resume, enable_vision=True)
                 analyses[prov] = prov_analysis
 
                 print(f"✅ {prov.upper()} complete: {prov_analysis.get('total_score', 0)}/60")
