@@ -241,6 +241,45 @@ Each provider has multiple models with different speed/cost tradeoffs:
 ./bin/analyze resume.pdf --format both      # Both (default)
 ```
 
+### Deep Analysis Mode (Maximum Feedback)
+
+For the most comprehensive analysis, use `--deep-analysis` to run ALL available providers and get aggregated insights:
+
+```bash
+# Run analysis with all providers (requires API keys for all)
+./bin/analyze resume.pdf --deep-analysis
+```
+
+**What Deep Analysis Does:**
+- ✅ Runs analysis with **all providers** you have API keys for (GPT-5, Claude Sonnet 4.5, Gemini 2.5 Pro)
+- ✅ Generates **consensus scores** showing agreement/disagreement across models
+- ✅ Aggregates **all strengths and concerns** from each provider
+- ✅ Shows **detailed comparison** table with min/max/avg scores per pillar
+- ✅ Provides **multiple perspectives** on the same candidate
+
+**When to Use:**
+- Making final hiring decisions
+- Screening senior/principal candidates
+- When you want maximum confidence in the evaluation
+- To identify areas where models agree (high confidence) vs. disagree (needs human judgment)
+
+**Cost:** $0.45-$1.50 per resume (runs 3 analyses instead of 1)
+
+**Example Output:**
+```
+Consensus Score: 52.3/60
+
+Individual Scores:
+- GPT-5: 53/60 - Strong Screen
+- Claude Sonnet 4.5: 48/60 - Strong Screen
+- Gemini 2.5 Pro: 56/60 - Strong Screen
+
+Pillar Scores (showing agreement/disagreement):
+Technical Skills: 8.0/10 (range: 7-9)
+Communication: 9.3/10 (range: 9-10)  ← High consensus
+AI/ML Knowledge: 7.7/10 (range: 6-9)  ← More variation
+```
+
 ---
 
 ## 📊 Understanding the Output

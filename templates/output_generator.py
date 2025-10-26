@@ -639,3 +639,168 @@ def generate_html(analysis, output_path):
     # Write to file
     with open(output_path, 'w') as f:
         f.write(html_content)
+
+
+def generate_aggregated_report(analyses, output_path):
+    """Generate aggregated report from multiple provider analyses"""
+
+    # Get candidate name from first analysis
+    candidate = list(analyses.values())[0].get('candidate_name', 'Candidate')
+    now = datetime.now()
+    date_formatted = now.strftime('%B %d, %Y at %H:%M:%S')
+
+    # Calculate consensus scores
+    pillar_keys = ['pillar_1', 'pillar_2', 'pillar_3', 'pillar_4', 'pillar_5', 'pillar_6']
+    pillar_names = ['Technical Skills', 'Product Thinking', 'AI/ML Knowledge',
+                    'Communication', 'Strategic Thinking', 'Execution']
+
+    consensus_scores = {}
+    for i, pillar_key in enumerate(pillar_keys):
+        scores = [a.get('pillars', {}).get(pillar_key, {}).get('score', 0) for a in analyses.values()]
+        consensus_scores[pillar_names[i]] = {
+            'avg': round(sum(scores) / len(scores), 1) if scores else 0,
+            'min': min(scores) if scores else 0,
+            'max': max(scores) if scores else 0,
+            'scores': {provider: score for provider, score in zip(analyses.keys(), scores)}
+        }
+
+    # Calculate total scores
+    total_scores = {provider: a.get('total_score', 0) for provider, a in analyses.items()}
+    avg_total = round(sum(total_scores.values()) / len(total_scores), 1)
+
+    # Get all strengths and concerns
+    all_strengths = []
+    all_concerns = []
+    for provider, analysis in analyses.items():
+        provider_display = analysis.get('_metadata', {}).get('model_display_name', provider.upper())
+        for strength in analysis.get('top_strengths', []):
+            all_strengths.append(f"**[{provider_display}]** {strength}")
+        for concern in analysis.get('top_concerns', []):
+            all_concerns.append(f"**[{provider_display}]** {concern}")
+
+    # Build markdown content
+    md_content = f"""# Deep AI PM Resume Analysis: {candidate}
+
+**Analysis Date**: {date_formatted}
+**Providers**: {', '.join([a.get('_metadata', {}).get('model_display_name', p.upper()) for p, a in analyses.items()])}
+**Consensus Score**: {avg_total}/60
+
+---
+
+## 🔬 Deep Analysis Overview
+
+This is an **aggregated deep analysis** using multiple AI providers to provide maximum feedback and diverse perspectives on the candidate's profile.
+
+**Providers analyzed:**
+"""
+
+    for provider, analysis in analyses.items():
+        model_name = analysis.get('_metadata', {}).get('model_display_name', provider.upper())
+        score = analysis.get('total_score', 0)
+        decision = analysis.get('decision', 'Unknown')
+        md_content += f"- **{model_name}**: {score}/60 - {decision}\n"
+
+    md_content += f"""
+**Consensus Total Score**: {avg_total}/60
+
+---
+
+## 📊 Consensus Pillar Scores
+
+| Pillar | Avg | Min | Max | {' | '.join([a.get('_metadata', {}).get('model_display_name', p)[:15] for p, a in analyses.items()])} |
+|--------|-----|-----|-----|{'----|' * len(analyses)}
+"""
+
+    for pillar_name in pillar_names:
+        scores_data = consensus_scores[pillar_name]
+        provider_scores = ' | '.join([str(scores_data['scores'].get(p, 0)) for p in analyses.keys()])
+        md_content += f"| {pillar_name} | {scores_data['avg']}/10 | {scores_data['min']} | {scores_data['max']} | {provider_scores} |\n"
+
+    md_content += f"""
+---
+
+## ✨ All Identified Strengths
+
+"""
+
+    for i, strength in enumerate(all_strengths, 1):
+        md_content += f"{i}. {strength}\n"
+
+    md_content += f"""
+---
+
+## ⚠️ All Identified Concerns
+
+"""
+
+    for i, concern in enumerate(all_concerns, 1):
+        md_content += f"{i}. {concern}\n"
+
+    md_content += """
+---
+
+## 📋 Detailed Analysis by Provider
+
+"""
+
+    for provider, analysis in analyses.items():
+        model_name = analysis.get('_metadata', {}).get('model_display_name', provider.upper())
+        score = analysis.get('total_score', 0)
+        decision = analysis.get('decision', 'Unknown')
+        recommendation = analysis.get('recommendation', '')
+
+        md_content += f"""
+### {model_name}
+
+**Score**: {score}/60 | **Decision**: {decision}
+
+**Executive Summary:**
+{recommendation}
+
+**Pillar Breakdown:**
+"""
+
+        for i, pillar_key in enumerate(pillar_keys):
+            pillar_data = analysis.get('pillars', {}).get(pillar_key, {})
+            pillar_score = pillar_data.get('score', 0)
+            pillar_level = pillar_data.get('level', 'Unknown')
+            md_content += f"- **{pillar_names[i]}**: {pillar_score}/10 ({pillar_level})\n"
+
+        md_content += "\n"
+
+    md_content += f"""
+---
+
+## 💡 How to Use This Deep Analysis
+
+This report aggregates insights from multiple AI models to provide:
+- **Consensus view**: Where all models agree, there's high confidence
+- **Diverse perspectives**: Different models may emphasize different strengths/concerns
+- **Comprehensive feedback**: More detailed than single-provider analysis
+
+**Action items:**
+1. Review consensus scores for overall assessment
+2. Note where models disagree - these areas may need human judgment
+3. Read all identified strengths and concerns for complete picture
+4. Review individual provider analyses for detailed reasoning
+
+---
+
+## About This Analysis
+
+**Aggregated Deep Analysis** using the Applied AI PM Evaluation Framework
+
+**Framework**: 6 Pillars (Technical Skills, Product Thinking, AI/ML Knowledge, Communication, Strategic Thinking, Execution)
+
+**Providers Used**: {', '.join([a.get('_metadata', {}).get('model_display_name', p.upper()) for p, a in analyses.items()])}
+
+**Learn more**: https://github.com/abe238/aipm-resume-analyzer
+
+---
+
+*Deep analysis generated on {date_formatted}*
+"""
+
+    # Write to file
+    with open(output_path, 'w') as f:
+        f.write(md_content)

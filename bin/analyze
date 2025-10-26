@@ -439,6 +439,8 @@ For setup help, see README.md
                         help='Output format (default: both)')
     parser.add_argument('--list-models', action='store_true',
                         help='List all available models and exit')
+    parser.add_argument('--deep-analysis', action='store_true',
+                        help='Run analysis with ALL available providers and aggregate results for maximum feedback')
 
     args = parser.parse_args()
 
@@ -492,6 +494,53 @@ For setup help, see README.md
     # Create output directory
     output_dir = Path(args.output)
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Handle deep analysis mode
+    if args.deep_analysis:
+        print("\n🔬 DEEP ANALYSIS MODE")
+        print("=" * 60)
+        print("Running analysis with all available providers...")
+        print(f"Available providers: {', '.join(available_providers)}")
+        print("=" * 60 + "\n")
+
+        analyses = {}
+        for prov in available_providers:
+            try:
+                prov_key = os.getenv(f'{prov.upper()}_API_KEY')
+                print(f"🤖 Analyzing with {prov.upper()}...")
+
+                # Use default (best) model for each provider
+                prov_analyzer = ResumeAnalyzer(api_provider=prov, api_key=prov_key, model=None)
+                prov_analysis = prov_analyzer.analyze_resume(args.resume)
+                analyses[prov] = prov_analysis
+
+                print(f"✅ {prov.upper()} complete: {prov_analysis.get('total_score', 0)}/60")
+            except Exception as e:
+                print(f"⚠️  {prov.upper()} failed: {str(e)}")
+
+        if not analyses:
+            print("❌ No analyses completed successfully")
+            sys.exit(1)
+
+        # Generate aggregated report
+        from templates.output_generator import generate_aggregated_report
+
+        candidate_name = list(analyses.values())[0].get('candidate_name', 'Candidate').replace(' ', '_')
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        base_filename = f"{candidate_name}_DEEP_{timestamp}"
+
+        md_path = output_dir / f"{base_filename}.md"
+        generate_aggregated_report(analyses, md_path)
+        print(f"\n📊 Aggregated Deep Analysis Report: {md_path}")
+
+        # Save individual JSONs
+        for prov, analysis in analyses.items():
+            json_path = output_dir / f"{base_filename}_{prov}.json"
+            with open(json_path, 'w') as f:
+                json.dump(analysis, f, indent=2)
+
+        print(f"\n✨ Deep analysis complete! Analyzed with {len(analyses)} provider(s)")
+        sys.exit(0)
 
     try:
         # Initialize analyzer
