@@ -4,19 +4,20 @@
 [![Python](https://img.shields.io/badge/Python-3.7%2B-blue.svg)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-green.svg)](#installation)
 
-**Analyze AI PM resumes against the 6-pillar framework** - Get instant, consistent evaluations using OpenAI GPT-4, Anthropic Claude, or Google Gemini.
+**Analyze AI PM resumes against the 6-pillar framework** - Get instant, consistent evaluations using OpenAI GPT-5, Anthropic Claude Sonnet 4.5, or Google Gemini 2.5 Pro.
 
 Perfect for hiring managers screening AI PM candidates, recruiters standardizing evaluations, or candidates self-assessing their readiness.
 
 ## ✨ Features
 
 - 🎯 **6-Pillar Framework** - Evaluates Technical Skills, Product Thinking, AI/ML Knowledge, Communication, Strategic Thinking, and Execution
-- 🤖 **3 AI Providers** - Choose OpenAI (GPT-4), Anthropic (Claude Sonnet), or Google (Gemini)
+- 🤖 **Latest AI Models** - GPT-5, Claude Sonnet 4.5, Gemini 2.5 Pro (with cheaper alternatives)
+- 🔄 **Multiple Model Options** - Choose from 8 different models across 3 providers
 - 📊 **Detailed Scoring** - 0-10 scores per pillar with evidence and level assessment
 - 📝 **Beautiful Reports** - Generates markdown and HTML outputs with clean design
 - ⚡ **Fast Analysis** - Get results in 30 seconds vs 10+ minutes manual review
 - 🔒 **Privacy-First** - Runs locally, your data stays on your machine
-- 💰 **Cost-Effective** - ~$0.10-0.50 per resume analysis
+- 💰 **Cost-Effective** - $0.10-0.60 per resume depending on model choice
 - 🎨 **Professional Design** - HTML reports styled with Stripe/Tailwind-inspired CSS
 
 ## 📦 Quick Start
@@ -24,10 +25,10 @@ Perfect for hiring managers screening AI PM candidates, recruiters standardizing
 ### Prerequisites
 
 - **Python 3.7+** installed on your computer
-- **API key** from ONE of these providers (see Step 1 below):
-  - [OpenAI](https://platform.openai.com/api-keys) (GPT-4)
-  - [Anthropic](https://console.anthropic.com/settings/keys) (Claude)
-  - [Google](https://aistudio.google.com/app/apikey) (Gemini)
+- **API key** from ONE of these providers:
+  - [OpenAI](https://platform.openai.com/api-keys) (GPT-5, GPT-5 Mini, GPT-4o)
+  - [Anthropic](https://console.anthropic.com/settings/keys) (Claude Sonnet 4.5, Haiku 4.5, Opus 4.1)
+  - [Google](https://aistudio.google.com/app/apikey) (Gemini 2.5 Pro, Gemini 2.5 Flash)
 
 ### Installation & Setup
 
@@ -115,26 +116,29 @@ DEFAULT_PROVIDER=openai
 
 Choose **ONE** provider and get your API key:
 
-#### Option A: OpenAI (GPT-4) - Most Popular
+#### Option A: OpenAI (GPT-5) - Most Advanced Reasoning
 1. Go to https://platform.openai.com/api-keys
 2. Click "+ Create new secret key"
 3. Name it "AI PM Resume Analyzer"
 4. Copy the key (starts with `sk-...`)
-5. **Cost**: ~$0.10-0.30 per resume
+5. **Models**: GPT-5 (default), GPT-5 Mini, GPT-4o
+6. **Cost**: $0.15-0.50 per resume
 
-#### Option B: Anthropic (Claude Sonnet) - Best Quality
+#### Option B: Anthropic (Claude Sonnet 4.5) - Best for Complex Analysis
 1. Go to https://console.anthropic.com/settings/keys
 2. Click "Create Key"
 3. Name it "Resume Analyzer"
 4. Copy the key (starts with `sk-ant-...`)
-5. **Cost**: ~$0.15-0.40 per resume
+5. **Models**: Claude Sonnet 4.5 (default), Claude Haiku 4.5, Claude Opus 4.1
+6. **Cost**: $0.20-0.60 per resume
 
-#### Option C: Google (Gemini) - Most Affordable
+#### Option C: Google (Gemini 2.5 Pro) - Advanced Thinking
 1. Go to https://aistudio.google.com/app/apikey
 2. Click "Create API Key"
 3. Select or create a project
 4. Copy the key
-5. **Cost**: ~$0.05-0.15 per resume (often free tier available)
+5. **Models**: Gemini 2.5 Pro (default), Gemini 2.5 Flash
+6. **Cost**: $0.10-0.30 per resume (often free tier available)
 
 ### Step 2: Run the Analyzer (It Will Create .env File)
 
@@ -189,8 +193,31 @@ Output files will be created in `./output/`:
 # Use Gemini
 ./bin/analyze resume.pdf --provider google
 
-# Use GPT-4 (default)
+# Use OpenAI (default)
 ./bin/analyze resume.pdf --provider openai
+```
+
+### Choose Specific Model
+
+Each provider has multiple models with different speed/cost tradeoffs:
+
+```bash
+# List all available models
+./bin/analyze --list-models
+
+# OpenAI models
+./bin/analyze resume.pdf --provider openai --model gpt-5          # Best reasoning (default)
+./bin/analyze resume.pdf --provider openai --model gpt-5-mini     # Faster, cheaper
+./bin/analyze resume.pdf --provider openai --model gpt-4o         # Budget option
+
+# Anthropic models
+./bin/analyze resume.pdf --provider anthropic --model claude-sonnet-4-5-20250929  # Best (default)
+./bin/analyze resume.pdf --provider anthropic --model claude-haiku-4-5            # Fast & cheap
+./bin/analyze resume.pdf --provider anthropic --model claude-opus-4-1             # Most capable
+
+# Google models
+./bin/analyze resume.pdf --provider google --model gemini-2.5-pro    # Advanced (default)
+./bin/analyze resume.pdf --provider google --model gemini-2.5-flash  # Fast & affordable
 ```
 
 ### Custom Output Location
@@ -356,11 +383,19 @@ python3 --version
 
 ### Cost Optimization
 
-- **Google Gemini**: Usually free tier, cheapest option (~$0.05-0.15/resume)
-- **OpenAI**: Mid-range cost (~$0.10-0.30/resume), reliable
-- **Anthropic**: Highest cost (~$0.15-0.40/resume), best quality
+**Budget Options** (Best for high-volume screening):
+- **Gemini 2.5 Flash**: $0.10-0.15/resume - Fast and affordable
+- **Claude Haiku 4.5**: $0.15-0.25/resume - Fast with great quality
+- **GPT-5 Mini**: $0.20-0.30/resume - Faster GPT-5 variant
+- **GPT-4o**: $0.15-0.25/resume - Budget-friendly OpenAI option
 
-**Recommendation**: Start with Google Gemini for high-volume screening, use Claude for final rounds.
+**Premium Options** (Best for final round evaluations):
+- **GPT-5**: $0.40-0.50/resume - Best reasoning capabilities
+- **Claude Sonnet 4.5**: $0.45-0.60/resume - Best for complex analysis
+- **Gemini 2.5 Pro**: $0.25-0.30/resume - Advanced thinking model
+- **Claude Opus 4.1**: $0.50-0.70/resume - Most capable (highest cost)
+
+**Recommendation**: Use Gemini Flash or Claude Haiku for initial screening (100+ resumes), then use GPT-5 or Claude Sonnet for top candidates in final rounds.
 
 ### Batch Processing
 
@@ -447,7 +482,7 @@ A: Treat it as a screening tool, not a final decision. Always validate with huma
 A: Yes! Edit `bin/analyze` to modify the scoring prompts and framework.
 
 **Q: Which AI provider is most accurate?**
-A: Claude Sonnet typically gives the most nuanced analysis. GPT-4 is solid. Gemini is fastest/cheapest.
+A: Claude Sonnet 4.5 and GPT-5 give the most nuanced analysis. Use `--list-models` to see all options. Gemini 2.5 Flash is fastest/cheapest for high-volume screening.
 
 **Q: Does this work with non-PDF resumes?**
 A: Currently PDF only. Convert Word docs to PDF first.

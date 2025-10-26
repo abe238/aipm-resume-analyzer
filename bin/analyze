@@ -83,9 +83,35 @@ class ResumeAnalyzer:
         }
     }
 
-    def __init__(self, api_provider="openai", api_key=None):
+    # Available models for each provider
+    AVAILABLE_MODELS = {
+        "openai": {
+            "gpt-5": {"name": "GPT-5", "description": "Most advanced reasoning model", "cost": "$$$"},
+            "gpt-5-mini": {"name": "GPT-5 Mini", "description": "Faster, cost-effective GPT-5", "cost": "$$"},
+            "gpt-4o": {"name": "GPT-4o", "description": "Budget-friendly option", "cost": "$"}
+        },
+        "anthropic": {
+            "claude-sonnet-4-5-20250929": {"name": "Claude Sonnet 4.5", "description": "Best for coding and complex analysis", "cost": "$$$"},
+            "claude-haiku-4-5": {"name": "Claude Haiku 4.5", "description": "Fast and cost-effective", "cost": "$"},
+            "claude-opus-4-1": {"name": "Claude Opus 4.1", "description": "Most capable reasoning model", "cost": "$$$$"}
+        },
+        "google": {
+            "gemini-2.5-pro": {"name": "Gemini 2.5 Pro", "description": "Advanced thinking model", "cost": "$$$"},
+            "gemini-2.5-flash": {"name": "Gemini 2.5 Flash", "description": "Fast and intelligent", "cost": "$"}
+        }
+    }
+
+    # Default models for each provider
+    DEFAULT_MODELS = {
+        "openai": "gpt-5",
+        "anthropic": "claude-sonnet-4-5-20250929",
+        "google": "gemini-2.5-pro"
+    }
+
+    def __init__(self, api_provider="openai", api_key=None, model=None):
         self.api_provider = api_provider.lower()
         self.api_key = api_key
+        self.model = model
         self._initialize_client()
 
     def _initialize_client(self):
@@ -95,25 +121,49 @@ class ResumeAnalyzer:
                 raise ImportError("OpenAI package not installed. Run: pip install openai")
             if not self.api_key:
                 raise ValueError("OpenAI API key required")
+
+            # Set default model if not specified
+            if not self.model:
+                self.model = self.DEFAULT_MODELS["openai"]
+
+            # Validate model
+            if self.model not in self.AVAILABLE_MODELS["openai"]:
+                raise ValueError(f"Unknown OpenAI model: {self.model}. Available: {', '.join(self.AVAILABLE_MODELS['openai'].keys())}")
+
             self.client = openai.OpenAI(api_key=self.api_key)
-            self.model = "gpt-4o"
 
         elif self.api_provider == "anthropic":
             if not ANTHROPIC_AVAILABLE:
                 raise ImportError("Anthropic package not installed. Run: pip install anthropic")
             if not self.api_key:
                 raise ValueError("Anthropic API key required")
+
+            # Set default model if not specified
+            if not self.model:
+                self.model = self.DEFAULT_MODELS["anthropic"]
+
+            # Validate model
+            if self.model not in self.AVAILABLE_MODELS["anthropic"]:
+                raise ValueError(f"Unknown Anthropic model: {self.model}. Available: {', '.join(self.AVAILABLE_MODELS['anthropic'].keys())}")
+
             self.client = anthropic.Anthropic(api_key=self.api_key)
-            self.model = "claude-sonnet-4-20250514"
 
         elif self.api_provider == "google":
             if not GOOGLE_AVAILABLE:
                 raise ImportError("Google Generative AI package not installed. Run: pip install google-generativeai")
             if not self.api_key:
                 raise ValueError("Google API key required")
+
+            # Set default model if not specified
+            if not self.model:
+                self.model = self.DEFAULT_MODELS["google"]
+
+            # Validate model
+            if self.model not in self.AVAILABLE_MODELS["google"]:
+                raise ValueError(f"Unknown Google model: {self.model}. Available: {', '.join(self.AVAILABLE_MODELS['google'].keys())}")
+
             genai.configure(api_key=self.api_key)
-            self.client = genai.GenerativeModel("gemini-2.0-flash-exp")
-            self.model = "gemini-2.0-flash-exp"
+            self.client = genai.GenerativeModel(self.model)
 
         else:
             raise ValueError(f"Unknown API provider: {self.api_provider}")
@@ -255,16 +305,19 @@ def check_env_file():
         env_template = """# AI PM Resume Analyzer - API Keys Configuration
 # Add your API keys below (you only need ONE of these)
 
-# OpenAI API Key (GPT-4)
+# OpenAI API Key (GPT-5)
 # Get yours at: https://platform.openai.com/api-keys
+# Default: GPT-5 | Optional: gpt-5-mini, gpt-4o
 OPENAI_API_KEY=
 
-# Anthropic API Key (Claude Sonnet)
+# Anthropic API Key (Claude Sonnet 4.5)
 # Get yours at: https://console.anthropic.com/settings/keys
+# Default: Claude Sonnet 4.5 | Optional: claude-haiku-4-5, claude-opus-4-1
 ANTHROPIC_API_KEY=
 
-# Google API Key (Gemini)
+# Google API Key (Gemini 2.5 Pro)
 # Get yours at: https://aistudio.google.com/app/apikey
+# Default: Gemini 2.5 Pro | Optional: gemini-2.5-flash
 GOOGLE_API_KEY=
 
 # Default provider (openai, anthropic, or google)
@@ -333,15 +386,35 @@ For setup help, see README.md
         """
     )
 
-    parser.add_argument('resume', help='Path to resume PDF file')
+    parser.add_argument('resume', nargs='?', help='Path to resume PDF file')
     parser.add_argument('--provider', choices=['openai', 'anthropic', 'google'],
                         help='AI provider to use (overrides .env DEFAULT_PROVIDER)')
+    parser.add_argument('--model',
+                        help='Specific model to use (e.g., gpt-5, gpt-5-mini, claude-haiku-4-5, gemini-2.5-flash)')
     parser.add_argument('--output', default='./output',
                         help='Output directory for analysis reports (default: ./output)')
     parser.add_argument('--format', choices=['markdown', 'html', 'both'], default='both',
                         help='Output format (default: both)')
+    parser.add_argument('--list-models', action='store_true',
+                        help='List all available models and exit')
 
     args = parser.parse_args()
+
+    # Handle --list-models flag
+    if args.list_models:
+        print("\n📋 Available Models by Provider:\n")
+        for provider, models in ResumeAnalyzer.AVAILABLE_MODELS.items():
+            print(f"🔹 {provider.upper()}:")
+            for model_id, info in models.items():
+                default_marker = " (default)" if model_id == ResumeAnalyzer.DEFAULT_MODELS[provider] else ""
+                print(f"  • {model_id:<35} - {info['name']:<25} {info['cost']:<5} - {info['description']}{default_marker}")
+            print()
+        print("Usage: ./analyze resume.pdf --provider <provider> --model <model_id>\n")
+        sys.exit(0)
+
+    # Validate resume argument is provided
+    if not args.resume:
+        parser.error("resume path is required (or use --list-models to see available models)")
 
     # Check environment setup
     print("🔍 Checking API configuration...")
@@ -373,7 +446,7 @@ For setup help, see README.md
 
     try:
         # Initialize analyzer
-        analyzer = ResumeAnalyzer(api_provider=provider, api_key=api_key)
+        analyzer = ResumeAnalyzer(api_provider=provider, api_key=api_key, model=args.model)
 
         # Run analysis
         analysis = analyzer.analyze_resume(args.resume)

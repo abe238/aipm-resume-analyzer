@@ -53,13 +53,13 @@ The file starts with a dot (.), making it hidden by default:
 Open `.env` in any text editor and add ONE of these:
 
 ```bash
-# For OpenAI (GPT-4) - Most popular
+# For OpenAI (GPT-5) - Most advanced
 OPENAI_API_KEY=sk-your-key-here
 
-# OR for Anthropic (Claude) - Best quality
+# OR for Anthropic (Claude Sonnet 4.5) - Best analysis
 ANTHROPIC_API_KEY=sk-ant-your-key-here
 
-# OR for Google (Gemini) - Most affordable
+# OR for Google (Gemini 2.5 Pro) - Advanced thinking
 GOOGLE_API_KEY=your-key-here
 
 # Default provider
@@ -69,12 +69,20 @@ DEFAULT_PROVIDER=openai
 ### Step 3: Analyze resumes!
 
 ```bash
-# Analyze with default provider
+# Analyze with default provider and model
 ./analyze path/to/resume.pdf
 
 # Use specific provider
 ./analyze resume.pdf --provider anthropic
 ./analyze resume.pdf --provider google
+
+# Use specific model for cost savings
+./analyze resume.pdf --model gpt-5-mini          # Cheaper OpenAI
+./analyze resume.pdf --model claude-haiku-4-5    # Cheaper Anthropic
+./analyze resume.pdf --model gemini-2.5-flash    # Cheaper Google
+
+# List all available models
+./analyze --list-models
 
 # Custom output location
 ./analyze resume.pdf --output ./my_reports/
@@ -102,7 +110,7 @@ Reports will be created in `./output/`:
 
 ## Getting API Keys
 
-### OpenAI (Recommended for most users)
+### OpenAI (Most Advanced)
 1. Go to https://platform.openai.com/api-keys
 2. Sign in or create account
 3. Click "+ Create new secret key"
@@ -110,25 +118,28 @@ Reports will be created in `./output/`:
 5. Copy key and paste in .env
 6. Add $5-10 credits at https://platform.openai.com/account/billing
 
-**Cost**: ~$0.10-0.30 per resume
+**Models**: GPT-5, GPT-5 Mini, GPT-4o
+**Cost**: $0.15-0.50 per resume
 
-### Anthropic (Best quality)
+### Anthropic (Best for Complex Analysis)
 1. Go to https://console.anthropic.com/settings/keys
 2. Sign in or create account
 3. Click "Create Key"
 4. Copy key and paste in .env
 5. Add credits if needed
 
-**Cost**: ~$0.15-0.40 per resume
+**Models**: Claude Sonnet 4.5, Claude Haiku 4.5, Claude Opus 4.1
+**Cost**: $0.20-0.60 per resume
 
-### Google Gemini (Most affordable)
+### Google Gemini (Most Affordable)
 1. Go to https://aistudio.google.com/app/apikey
 2. Sign in with Google
 3. Click "Create API Key"
 4. Select or create project
 5. Copy key and paste in .env
 
-**Cost**: ~$0.05-0.15 per resume (often has free tier)
+**Models**: Gemini 2.5 Pro, Gemini 2.5 Flash
+**Cost**: $0.10-0.30 per resume (often has free tier)
 
 ## Troubleshooting
 
