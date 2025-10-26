@@ -1241,6 +1241,45 @@ def generate_aggregated_html(analyses, output_path):
     total_scores = {provider: a.get('total_score', 0) for provider, a in analyses.items()}
     avg_total = round(sum(total_scores.values()) / len(total_scores), 1)
 
+    # Calculate consensus decision (most common decision)
+    decisions = [a.get('decision', 'No Screen') for a in analyses.values()]
+    consensus_decision = max(set(decisions), key=decisions.count)
+    decision_class = consensus_decision.lower().replace(' ', '-')
+
+    # Aggregate executive summaries from all providers
+    executive_summaries = []
+    for provider, analysis in analyses.items():
+        model_name = analysis.get('_metadata', {}).get('model_display_name', provider.UPPER())
+        recommendation = analysis.get('recommendation', '')
+        if recommendation:
+            executive_summaries.append(f"<p><strong>{model_name}:</strong> {recommendation}</p>")
+
+    executive_summary_html = '\n'.join(executive_summaries) if executive_summaries else '<p>No recommendations available.</p>'
+
+    # Aggregate 2025 framework evaluation data
+    all_min_thresholds = []
+    all_red_flags = []
+    all_must_have_missing = []
+    all_diff_signals_count = []
+
+    for analysis in analyses.values():
+        min_thresh = analysis.get('minimum_thresholds', {})
+        all_min_thresholds.append(min_thresh.get('all_met', False))
+
+        all_red_flags.extend(analysis.get('red_flags', []))
+
+        must_have = analysis.get('must_have_signals', {})
+        all_must_have_missing.extend(must_have.get('signals_missing', []))
+
+        diff_sig = analysis.get('differentiation_signals', {})
+        all_diff_signals_count.append(diff_sig.get('count', 0))
+
+    # Consensus framework evaluation
+    consensus_min_thresholds = any(all_min_thresholds)  # At least one passed
+    consensus_red_flags = len(set(all_red_flags))  # Unique red flags
+    consensus_must_have_missing = len(set(all_must_have_missing))  # Unique missing signals
+    consensus_diff_signals = round(sum(all_diff_signals_count) / len(all_diff_signals_count)) if all_diff_signals_count else 0
+
     # Get all strengths and concerns with provider labels
     all_strengths = []
     all_concerns = []
@@ -1499,6 +1538,90 @@ def generate_aggregated_html(analyses, output_path):
         }}
         .badge-consensus {{ background: #e6f3ff; color: #0066cc; }}
 
+        /* Header */
+        .header {{
+            background: linear-gradient(135deg, #0066CC 0%, #0052A3 100%);
+            color: white;
+            padding: 40px;
+            margin: -48px -48px 32px -48px;
+            border-radius: 12px 12px 0 0;
+        }}
+
+        .header h1 {{
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: white;
+            border: none;
+            padding-bottom: 0;
+        }}
+
+        .header .meta {{
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }}
+
+        /* Score Badge */
+        .score-badge {{
+            display: inline-block;
+            margin-top: 16px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }}
+
+        /* Decision Badge */
+        .decision-badge {{
+            display: inline-block;
+            margin-left: 12px;
+            margin-top: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }}
+
+        .decision-badge.no-screen {{
+            background: #EF4444;
+            color: white;
+        }}
+
+        .decision-badge.maybe {{
+            background: #F59E0B;
+            color: white;
+        }}
+
+        .decision-badge.screen {{
+            background: #3B82F6;
+            color: white;
+        }}
+
+        .decision-badge.strong-screen {{
+            background: #10B981;
+            color: white;
+        }}
+
+        /* Executive Summary */
+        .summary-box {{
+            background: #F0F9FF;
+            border-left: 4px solid #0066CC;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }}
+
+        .summary-box p {{
+            margin: 0 0 12px 0;
+            line-height: 1.8;
+        }}
+
+        .summary-box p:last-child {{
+            margin-bottom: 0;
+        }}
+
         /* Roles Section */
         .roles-list {{
             display: grid;
@@ -1541,13 +1664,53 @@ def generate_aggregated_html(analyses, output_path):
 </head>
 <body>
     <div class="container">
-        <h1>🔬 Deep AI PM Resume Analysis: {candidate}</h1>
-
-        <div class="metadata">
-            <p><strong>Analysis Date:</strong> {date_formatted}</p>
-            <p><strong>Providers:</strong> {', '.join([a.get('_metadata', {}).get('model_display_name', p.upper()) for p, a in analyses.items()])}</p>
-            <p><strong>Consensus Score:</strong> <span class="badge badge-consensus">{avg_total}/60</span></p>
+        <!-- Header -->
+        <div class="header">
+            <h1>🔬 Deep AI PM Resume Analysis: {candidate}</h1>
+            <div class="meta">Analysis Date: {date_formatted}</div>
+            <div class="score-badge">
+                Total Score: {avg_total}/60 (0/100 weighted)
+            </div>
+            <div class="decision-badge {decision_class}">
+                Decision: {consensus_decision}
+            </div>
         </div>
+
+        <!-- Executive Summary -->
+        <h2>Executive Summary</h2>
+        <div class="summary-box">
+            {executive_summary_html}
+            <p style="margin-top: 12px;"><strong>Decision Rationale:</strong> Consensus across {len(analyses)} provider(s): {consensus_decision} with average score of {avg_total}/60.</p>
+        </div>
+
+        <!-- 2025 Framework Evaluation -->
+        <h2>2025 Framework Evaluation</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Criteria</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Minimum Thresholds</strong></td>
+                    <td>{"✅ Some Met" if consensus_min_thresholds else "❌ Failed"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Red Flags</strong></td>
+                    <td>{"❌ " + str(consensus_red_flags) + " Found" if consensus_red_flags > 0 else "✅ None"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Must-Have Signals</strong></td>
+                    <td>{"✅ All Present" if consensus_must_have_missing == 0 else "⚠️ " + str(consensus_must_have_missing) + " Missing"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Differentiation Signals</strong></td>
+                    <td>{consensus_diff_signals}/8 ({"✅ Sufficient" if consensus_diff_signals >= 4 else "⚠️ Needs More"})</td>
+                </tr>
+            </tbody>
+        </table>
 
         <div class="overview">
             <h2>🔬 Deep Analysis Overview</h2>
