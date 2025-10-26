@@ -322,59 +322,59 @@ def generate_html(analysis, output_path):
 
         body {{
             font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
-            line-height: 1.6;
+            line-height: 1.5;
             color: #2D3748;
-            background: #F7FAFC;
-            padding: 20px;
+            background: #FAFAF9;
+            padding: 20px 10px;
         }}
 
         .container {{
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }}
 
         /* Header */
         .header {{
-            background: linear-gradient(135deg, #0066CC 0%, #0052A3 100%);
+            background: linear-gradient(135deg, #CC7744 0%, #B86434 100%);
             color: white;
-            padding: 40px;
+            padding: 24px;
         }}
 
         .header h1 {{
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }}
 
         .header .meta {{
             opacity: 0.9;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }}
 
         /* Score Badge */
         .score-badge {{
             display: inline-block;
-            margin-top: 16px;
-            padding: 12px 24px;
+            margin-top: 12px;
+            padding: 10px 20px;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 6px;
+            font-size: 1rem;
             font-weight: 600;
         }}
 
         /* Decision Badge */
         .decision-badge {{
             display: inline-block;
-            margin-top: 8px;
-            padding: 8px 16px;
-            border-radius: 6px;
+            margin-top: 6px;
+            padding: 6px 14px;
+            border-radius: 5px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }}
 
         .decision-badge.strong-screen {{
@@ -383,7 +383,7 @@ def generate_html(analysis, output_path):
         }}
 
         .decision-badge.screen {{
-            background: #3B82F6;
+            background: #CC7744;
             color: white;
         }}
 
@@ -399,50 +399,50 @@ def generate_html(analysis, output_path):
 
         /* Content */
         .content {{
-            padding: 40px;
+            padding: 24px;
         }}
 
         h2 {{
             font-size: 1.5rem;
             font-weight: 600;
             color: #1A202C;
-            margin: 32px 0 16px 0;
+            margin: 24px 0 12px 0;
             padding-bottom: 8px;
-            border-bottom: 2px solid #E2E8F0;
+            border-bottom: 1px solid #E7E5E4;
         }}
 
         h3 {{
             font-size: 1.25rem;
             font-weight: 600;
             color: #2D3748;
-            margin: 24px 0 12px 0;
+            margin: 20px 0 10px 0;
         }}
 
         /* Executive Summary */
         .summary-box {{
-            background: #F0F9FF;
-            border-left: 4px solid #0066CC;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 6px;
+            background: #FFF7ED;
+            border-left: 3px solid #CC7744;
+            padding: 14px;
+            margin: 14px 0;
+            border-radius: 5px;
         }}
 
         .summary-box p {{
             margin: 0;
-            line-height: 1.7;
+            line-height: 1.6;
         }}
 
         /* Lists */
         .strength-list, .concern-list {{
             list-style: none;
-            margin: 16px 0;
+            margin: 12px 0;
         }}
 
         .strength-list li {{
-            padding: 12px;
-            margin: 8px 0;
+            padding: 10px;
+            margin: 6px 0;
             background: #ECFDF5;
-            border-left: 4px solid #10B981;
+            border-left: 3px solid #10B981;
             border-radius: 4px;
         }}
 
@@ -452,10 +452,10 @@ def generate_html(analysis, output_path):
         }}
 
         .concern-list li {{
-            padding: 12px;
-            margin: 8px 0;
+            padding: 10px;
+            margin: 6px 0;
             background: #FEF3C7;
-            border-left: 4px solid #F59E0B;
+            border-left: 3px solid #F59E0B;
             border-radius: 4px;
         }}
 
@@ -468,9 +468,9 @@ def generate_html(analysis, output_path):
         .pillar-card {{
             background: white;
             border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            padding: 24px;
-            margin: 20px 0;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }}
 
@@ -478,80 +478,80 @@ def generate_html(analysis, output_path):
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }}
 
         .pillar-name {{
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             font-weight: 600;
             color: #1A202C;
         }}
 
         .pillar-score {{
-            font-size: 1.5rem;
+            font-size: 1.35rem;
             font-weight: 700;
-            color: #0066CC;
+            color: #CC7744;
         }}
 
         .level-badge {{
             display: inline-block;
-            padding: 4px 12px;
+            padding: 3px 10px;
             background: #E0E7FF;
             color: #4C51BF;
             border-radius: 4px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }}
 
         /* Progress Bar */
         .score-bar {{
             width: 100%;
-            height: 8px;
+            height: 6px;
             background: #E2E8F0;
-            border-radius: 4px;
+            border-radius: 3px;
             overflow: hidden;
-            margin: 8px 0 16px 0;
+            margin: 6px 0 12px 0;
         }}
 
         .score-bar-fill {{
             height: 100%;
-            background: linear-gradient(90deg, #0066CC 0%, #6C5CE7 100%);
-            border-radius: 4px;
+            background: linear-gradient(90deg, #CC7744 0%, #6C5CE7 100%);
+            border-radius: 3px;
             transition: width 0.3s ease;
         }}
 
         .evidence-box {{
             background: #F7FAFC;
-            padding: 16px;
-            border-radius: 6px;
-            margin: 12px 0;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            padding: 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }}
 
         .sub-list {{
-            margin: 12px 0;
+            margin: 10px 0;
             padding-left: 0;
             list-style: none;
         }}
 
         .sub-list li {{
-            padding: 8px 12px;
-            margin: 6px 0;
-            border-left: 3px solid #CBD5E0;
-            padding-left: 16px;
+            padding: 6px 10px;
+            margin: 4px 0;
+            border-left: 2px solid #CBD5E0;
+            padding-left: 12px;
         }}
 
         /* Table */
         table {{
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 16px 0;
         }}
 
         th, td {{
-            padding: 12px;
+            padding: 8px;
             text-align: left;
             border-bottom: 1px solid #E2E8F0;
         }}
@@ -565,14 +565,14 @@ def generate_html(analysis, output_path):
         /* Footer */
         .footer {{
             background: #F7FAFC;
-            padding: 24px 40px;
+            padding: 16px 24px;
             text-align: center;
             color: #718096;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }}
 
         .footer a {{
-            color: #0066CC;
+            color: #CC7744;
             text-decoration: none;
         }}
 
@@ -584,15 +584,15 @@ def generate_html(analysis, output_path):
         .roles-list {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 12px;
-            margin: 16px 0;
+            gap: 8px;
+            margin: 12px 0;
         }}
 
         .role-item {{
             background: #EFF6FF;
-            padding: 12px 16px;
-            border-radius: 6px;
-            border-left: 3px solid #3B82F6;
+            padding: 10px 14px;
+            border-radius: 5px;
+            border-left: 2px solid #3B82F6;
         }}
 
         @media print {{
@@ -1451,7 +1451,7 @@ def generate_aggregated_html(analyses, output_path):
             <p><strong>Score:</strong> {score}/60 | <strong>Decision:</strong> {decision}</p>
             <h4>Executive Summary:</h4>
             <p>{recommendation}</p>
-            <hr style="margin: 20px 0; border: none; border-top: 1px solid #e1e4e8;">
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #E7E5E4;">
             <h4>Detailed Pillar Analysis:</h4>
             {pillar_breakdown}
         </div>
@@ -1468,70 +1468,70 @@ def generate_aggregated_html(analyses, output_path):
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-            line-height: 1.6;
+            line-height: 1.5;
             color: #1a1a1a;
-            background: #f5f7fa;
-            padding: 40px 20px;
+            background: #FAFAF9;
+            padding: 20px 10px;
         }}
         .container {{
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
-            padding: 48px;
-            border-radius: 12px;
+            padding: 24px;
+            border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }}
         h1 {{
-            font-size: 2.5rem;
-            margin-bottom: 24px;
-            color: #0066cc;
-            border-bottom: 3px solid #0066cc;
-            padding-bottom: 16px;
+            font-size: 2rem;
+            margin-bottom: 12px;
+            color: #CC7744;
+            border-bottom: 2px solid #CC7744;
+            padding-bottom: 8px;
         }}
         h2 {{
-            font-size: 1.75rem;
-            margin: 40px 0 20px;
+            font-size: 1.5rem;
+            margin: 24px 0 12px;
             color: #333;
-            border-bottom: 2px solid #e1e4e8;
-            padding-bottom: 12px;
+            border-bottom: 1px solid #E7E5E4;
+            padding-bottom: 8px;
         }}
         h3 {{
-            font-size: 1.4rem;
-            margin: 32px 0 16px;
+            font-size: 1.25rem;
+            margin: 20px 0 10px;
             color: #444;
         }}
         h4 {{
-            font-size: 1.1rem;
-            margin: 20px 0 12px;
+            font-size: 1rem;
+            margin: 16px 0 8px;
             color: #555;
         }}
         .metadata {{
             background: #f0f8ff;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 32px;
-            border-left: 4px solid #0066cc;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            border-left: 3px solid #0066cc;
         }}
-        .metadata p {{ margin: 8px 0; }}
+        .metadata p {{ margin: 4px 0; }}
         .metadata strong {{ color: #0066cc; }}
         .overview {{
             background: #fff9e6;
-            padding: 24px;
-            border-radius: 8px;
-            margin: 24px 0;
-            border-left: 4px solid #ffcc00;
+            padding: 16px;
+            border-radius: 6px;
+            margin: 16px 0;
+            border-left: 3px solid #ffcc00;
         }}
-        .overview ul {{ margin: 16px 0 16px 24px; }}
+        .overview ul {{ margin: 8px 0 8px 20px; }}
         table {{
             width: 100%;
             border-collapse: collapse;
-            margin: 24px 0;
-            font-size: 0.95rem;
+            margin: 16px 0;
+            font-size: 0.9rem;
         }}
         th, td {{
-            padding: 12px;
+            padding: 8px;
             text-align: left;
-            border-bottom: 1px solid #e1e4e8;
+            border-bottom: 1px solid #E7E5E4;
         }}
         th {{
             background: #f6f8fa;
@@ -1539,63 +1539,63 @@ def generate_aggregated_html(analyses, output_path):
             color: #0066cc;
         }}
         tr:hover {{ background: #f6f8fa; }}
-        ul {{ margin: 16px 0 16px 24px; }}
-        li {{ margin: 8px 0; }}
+        ul {{ margin: 8px 0 8px 20px; }}
+        li {{ margin: 4px 0; }}
         .provider-section {{
             background: #f9f9f9;
-            padding: 24px;
-            border-radius: 8px;
-            margin: 24px 0;
-            border-left: 4px solid #28a745;
+            padding: 16px;
+            border-radius: 6px;
+            margin: 16px 0;
+            border-left: 3px solid #28a745;
         }}
         .pillar-detail {{
             background: white;
-            padding: 16px;
-            margin: 16px 0;
-            border-radius: 6px;
-            border-left: 3px solid #0066cc;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 4px;
+            border-left: 2px solid #0066cc;
         }}
         .pillar-detail h5 {{
             color: #0066cc;
-            margin: 0 0 12px 0;
-            font-size: 1.1rem;
+            margin: 0 0 8px 0;
+            font-size: 1rem;
         }}
         .pillar-detail p {{
-            margin: 8px 0;
+            margin: 4px 0;
         }}
         .pillar-detail ul {{
-            margin: 8px 0 8px 20px;
+            margin: 4px 0 4px 16px;
         }}
         .footer {{
-            margin-top: 48px;
-            padding-top: 24px;
-            border-top: 2px solid #e1e4e8;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #E7E5E4;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }}
         .badge {{
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin: 0 4px;
+            margin: 0 3px;
         }}
-        .badge-consensus {{ background: #e6f3ff; color: #0066cc; }}
+        .badge-consensus {{ background: #FFF7ED; color: #CC7744; }}
 
         /* Header */
         .header {{
-            background: linear-gradient(135deg, #0066CC 0%, #0052A3 100%);
+            background: linear-gradient(135deg, #CC7744 0%, #B86434 100%);
             color: white;
-            padding: 40px;
-            margin: -48px -48px 32px -48px;
-            border-radius: 12px 12px 0 0;
+            padding: 24px;
+            margin: -24px -24px 16px -24px;
+            border-radius: 8px 8px 0 0;
         }}
 
         .header h1 {{
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: white;
             border: none;
             padding-bottom: 0;
@@ -1603,30 +1603,30 @@ def generate_aggregated_html(analyses, output_path):
 
         .header .meta {{
             opacity: 0.9;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }}
 
         /* Score Badge */
         .score-badge {{
             display: inline-block;
-            margin-top: 16px;
-            padding: 12px 24px;
+            margin-top: 12px;
+            padding: 10px 20px;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 6px;
+            font-size: 1rem;
             font-weight: 600;
         }}
 
         /* Decision Badge */
         .decision-badge {{
             display: inline-block;
-            margin-left: 12px;
-            margin-top: 8px;
-            padding: 8px 16px;
-            border-radius: 6px;
+            margin-left: 10px;
+            margin-top: 6px;
+            padding: 6px 14px;
+            border-radius: 5px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }}
 
         .decision-badge.no-screen {{
@@ -1640,7 +1640,7 @@ def generate_aggregated_html(analyses, output_path):
         }}
 
         .decision-badge.screen {{
-            background: #3B82F6;
+            background: #CC7744;
             color: white;
         }}
 
@@ -1651,16 +1651,16 @@ def generate_aggregated_html(analyses, output_path):
 
         /* Executive Summary */
         .summary-box {{
-            background: #F0F9FF;
-            border-left: 4px solid #0066CC;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 6px;
+            background: #FFF7ED;
+            border-left: 3px solid #CC7744;
+            padding: 14px;
+            margin: 14px 0;
+            border-radius: 5px;
         }}
 
         .summary-box p {{
-            margin: 0 0 12px 0;
-            line-height: 1.8;
+            margin: 0 0 8px 0;
+            line-height: 1.6;
         }}
 
         .summary-box p:last-child {{
@@ -1671,39 +1671,39 @@ def generate_aggregated_html(analyses, output_path):
         .roles-list {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 12px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 12px 0;
         }}
 
         .role-item {{
             background: #EFF6FF;
-            padding: 12px 16px;
-            border-radius: 6px;
-            border-left: 3px solid #3B82F6;
-            font-size: 0.95rem;
+            padding: 10px 14px;
+            border-radius: 5px;
+            border-left: 2px solid #3B82F6;
+            font-size: 0.9rem;
             line-height: 1.5;
         }}
 
         /* Interview Focus Areas */
         .sub-list {{
-            margin: 12px 0;
+            margin: 8px 0;
             padding-left: 0;
             list-style: none;
         }}
 
         .sub-list li {{
-            padding: 8px 12px;
-            margin: 6px 0;
+            padding: 6px 10px;
+            margin: 4px 0;
             background: #F3F4F6;
-            border-left: 3px solid #9CA3AF;
-            border-radius: 4px;
-            font-size: 0.95rem;
+            border-left: 2px solid #9CA3AF;
+            border-radius: 3px;
+            font-size: 0.9rem;
         }}
 
         /* Grouped paragraph styling */
         .grouped-paragraph {{
-            line-height: 1.8;
-            margin: 16px 0;
+            line-height: 1.6;
+            margin: 12px 0;
         }}
     </style>
 </head>
