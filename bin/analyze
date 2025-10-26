@@ -271,6 +271,12 @@ Return your analysis in JSON format with this structure:
                 )
                 result = response.content[0].text
 
+                # Claude may wrap JSON in markdown code blocks, extract it
+                if "```json" in result:
+                    result = result.split("```json")[1].split("```")[0].strip()
+                elif "```" in result:
+                    result = result.split("```")[1].split("```")[0].strip()
+
             elif self.api_provider == "google":
                 response = self.client.generate_content(
                     prompt,
