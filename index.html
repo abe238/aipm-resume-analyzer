@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A rigorous, open-source evaluation framework for 2025 AI Product Manager candidates. Built for the era of rapid AI evolution.">
+    <title>Applied AI PM Evaluation Framework | 2025 Standards</title>
+    <style>
+        :root {
+            --background: #faf9f5;
+            --foreground: #3d3929;
+            --card: #faf9f5;
+            --card-foreground: #141413;
+            --popover: #ffffff;
+            --popover-foreground: #28261b;
+            --primary: #c96442;
+            --primary-foreground: #ffffff;
+            --secondary: #e9e6dc;
+            --secondary-foreground: #535146;
+            --muted: #ede9de;
+            --muted-foreground: #83827d;
+            --accent: #e9e6dc;
+            --accent-foreground: #28261b;
+            --destructive: #141413;
+            --destructive-foreground: #ffffff;
+            --border: #dad9d4;
+            --input: #b4b2a7;
+            --ring: #c96442;
+            --sidebar: #f5f4ee;
+            --sidebar-foreground: #3d3d3a;
+            --sidebar-primary: #c96442;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            --radius: 0.5rem;
+            --spacing: 0.25rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: #262624;
+                --foreground: #c3c0b6;
+                --card: #262624;
+                --card-foreground: #faf9f5;
+                --popover: #30302e;
+                --popover-foreground: #e5e5e2;
+                --primary: #d97757;
+                --secondary: #faf9f5;
+                --secondary-foreground: #30302e;
+                --muted: #1b1b19;
+                --muted-foreground: #b7b5a9;
+                --accent: #1a1915;
+                --accent-foreground: #f5f4ee;
+                --destructive: #ef4444;
+                --border: #3e3e38;
+                --input: #52514a;
+                --sidebar: #1f1e1d;
+                --sidebar-foreground: #c3c0b6;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--card-foreground);
+        }
+
+        h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+        h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+        h4 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+
+        p { margin-bottom: 1rem; }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header */
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            background: rgba(250, 249, 245, 0.95);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            header {
+                background: rgba(38, 38, 36, 0.95);
+            }
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 4rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--foreground);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 5rem 0 4rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, #a0533a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--muted-foreground);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--primary-foreground);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--secondary-foreground);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+        }
+
+        /* Section */
+        section {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--muted-foreground);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: calc(var(--radius) * 1.5);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 16px rgba(201, 100, 66, 0.1);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent);
+            border-radius: var(--radius);
+            font-size: 1.25rem;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid-2 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* Pillar Cards */
+        .pillar-card {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: calc(var(--radius) * 1.5);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        .pillar-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .pillar-card h3 {
+            margin-bottom: 0.75rem;
+        }
+
+        .pillar-card ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .pillar-card li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .pillar-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Personal Story */
+        .personal-story {
+            background: linear-gradient(135deg, rgba(201, 100, 66, 0.05) 0%, rgba(201, 100, 66, 0.02) 100%);
+            border: 2px solid var(--border);
+            border-radius: calc(var(--radius) * 2);
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+        }
+
+        .personal-story h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .story-placeholder {
+            background: var(--card);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            color: var(--muted-foreground);
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* Decision Framework */
+        .decision-flow {
+            background: var(--muted);
+            border-radius: calc(var(--radius) * 1.5);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .decision-step {
+            padding: 1rem;
+            margin: 1rem 0;
+            background: var(--card);
+            border-left: 4px solid var(--primary);
+            border-radius: var(--radius);
+        }
+
+        .decision-step h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--card);
+            border-radius: calc(var(--radius) * 1.5);
+            border: 1px solid var(--border);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .stat-label {
+            margin-top: 0.5rem;
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--muted);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-content {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+
+        /* Code blocks */
+        code {
+            background: var(--muted);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: var(--font-mono);
+            font-size: 0.875em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 3rem 0 2rem;
+            }
+
+            section {
+                padding: 3rem 0;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Highlights */
+        .highlight-box {
+            background: var(--accent);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 2rem 0;
+        }
+
+        .highlight-box strong {
+            color: var(--primary);
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--muted);
+            font-weight: 600;
+            color: var(--card-foreground);
+        }
+
+        tr:hover {
+            background: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Applied AI PM Framework</div>
+                <ul class="nav-links">
+                    <li><a href="#story">Story</a></li>
+                    <li><a href="#philosophy">Philosophy</a></li>
+                    <li><a href="#pillars">Pillars</a></li>
+                    <li><a href="#framework">Framework</a></li>
+                    <li><a href="https://github.com/abe238/aipm-resume-analyzer" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>The 2025 AI PM Evaluation Framework</h1>
+            <p>A rigorous, open-source framework for evaluating AI Product Manager candidates in the era of rapid AI evolution. Built for teams who need builders, not coordinators.</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/abe238/aipm-resume-analyzer" class="btn btn-primary">View on GitHub →</a>
+                <a href="#framework" class="btn btn-secondary">Read the Framework</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personal Story -->
+    <section id="story">
+        <div class="container">
+            <div class="personal-story">
+                <h2>Why I Built This</h2>
+                <p>I was listening to Jaclyn Konzelmann, Google's Director of AI Product, break down her AI PM evaluation process—and I mean <em>break it down</em>. The level of rigor was inspiring. My first thought was, "Okay, time for some tough self-reflection," and I started outlining the steps just for me.</p>
+
+                <p>But then, the disaster relief PM in me kicked in. Why map out a clear path to safety and keep it to yourself? It felt fundamentally wrong, especially when so many talented people are trying to navigate this new terrain.</p>
+
+                <p>So, instead of a personal checklist, this framework was born. The goal isn't just to create another hiring scorecard. It's to build a tool that gives everyone, especially those from non-traditional backgrounds, a clear, actionable guide on exactly what to build, where to focus, and how to tell their own story. Let's build better, together.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy -->
+    <section id="philosophy">
+        <div class="container">
+            <div class="section-header">
+                <h2>Framework Philosophy</h2>
+                <p>Why traditional PM evaluation fails for AI product builders in 2025</p>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-icon">🏗️</div>
+                    <h3>Builders Over Coordinators</h3>
+                    <p>The era of pure project management is over. 2025 AI PMs must ship code, prototype in hours, and demonstrate technical depth through personal projects.</p>
+                    <p><strong>Key shift:</strong> From "managed a team that built X" to "I built X in a weekend."</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Velocity as Core Competency</h3>
+                    <p>Speed isn't optional—it's existential. AI capabilities evolve weekly. PMs must prototype, test, and iterate faster than the technology changes.</p>
+                    <p><strong>Evidence required:</strong> Portfolio of 8-10 concurrent side projects, built in days not months.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🔬</div>
+                    <h3>Deep AI Intuition</h3>
+                    <p>Surface-level awareness isn't enough. True AI intuition comes from hands-on building—understanding model limitations, prompt engineering, and architectural tradeoffs.</p>
+                    <p><strong>Non-negotiable:</strong> Personal AI projects demonstrating creative application of LLMs, agents, or workflows.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🌐</div>
+                    <h3>Building in Public</h3>
+                    <p>The best AI PMs share their learning journey publicly—through blogs, GitHub repos, demos, and thought leadership that helps others build.</p>
+                    <p><strong>Signal:</strong> Active GitHub, technical blog, or regular AI experimentation shared openly.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>The 2025 Paradigm Shift:</strong> We're not hiring people to <em>manage</em> AI product development. We're hiring people who can <em>build</em> AI products themselves, then scale that capability through teams.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The 6 Pillars -->
+    <section id="pillars">
+        <div class="container">
+            <div class="section-header">
+                <h2>The 6 Pillars</h2>
+                <p>Comprehensive evaluation across the full spectrum of AI PM competencies</p>
+            </div>
+
+            <div class="grid">
+                <div class="pillar-card">
+                    <div class="pillar-number">01</div>
+                    <h3>Technical Skills & Hands-On Building</h3>
+                    <p>Can they actually build things, or just talk about building?</p>
+                    <ul>
+                        <li>Evidence of recent hands-on coding (GitHub activity, personal projects)</li>
+                        <li>Personal AI tools/agents/workflows built and shipped</li>
+                        <li>Ability to prototype ideas in hours, not weeks</li>
+                        <li>Comfort with modern development tools and workflows</li>
+                        <li>Technical curiosity demonstrated through experimentation</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <strong>Red Flag:</strong> No GitHub repos, no personal projects, last code written 5+ years ago
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-number">02</div>
+                    <h3>Product Thinking & 0-to-1 Leadership</h3>
+                    <p>Have they taken something from idea to shipped product?</p>
+                    <ul>
+                        <li>Clear examples of 0-to-1 product launches</li>
+                        <li>User-centric problem definition and validation</li>
+                        <li>Comfort navigating ambiguity and incomplete information</li>
+                        <li>Evidence of product taste and design sensibility</li>
+                        <li>Metrics-driven decision making</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <strong>Strong Signal:</strong> Launched multiple products from scratch with measurable user impact
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-number">03</div>
+                    <h3>AI/ML Knowledge & Deep Intuition</h3>
+                    <p>Do they understand AI from hands-on experience, not just articles?</p>
+                    <ul>
+                        <li>Personal AI projects demonstrating model understanding</li>
+                        <li>Knowledge of current capabilities and limitations</li>
+                        <li>Experience with prompt engineering, fine-tuning, or agent workflows</li>
+                        <li>Creative applications of AI to solve real problems</li>
+                        <li>Stays current through active experimentation, not passive reading</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <strong>Critical Test:</strong> Can they explain why they chose GPT-4 vs Claude vs Gemini for a specific use case?
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-number">04</div>
+                    <h3>Communication & Building in Public</h3>
+                    <p>Do they share their learning journey and help others build?</p>
+                    <ul>
+                        <li>Active technical blog, Substack, or public documentation</li>
+                        <li>GitHub repos with clear README and demos</li>
+                        <li>Thought leadership that advances the field</li>
+                        <li>Compelling storytelling and narrative structure</li>
+                        <li>Ability to explain complex technical concepts simply</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <strong>Differentiator:</strong> 5,000+ engaged followers sharing AI building insights regularly
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-number">05</div>
+                    <h3>Strategic Thinking & Second-Order Vision</h3>
+                    <p>Do they build platforms that enable others, or just first-order features?</p>
+                    <ul>
+                        <li>Platform thinking: tools that get better as AI improves</li>
+                        <li>Understanding of ecosystem dynamics and network effects</li>
+                        <li>Long-term vision balanced with rapid iteration</li>
+                        <li>Ability to identify leverage points and force multipliers</li>
+                        <li>Systems thinking applied to product architecture</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <strong>Question:</strong> Are they building for today's AI or tomorrow's?
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-number">06</div>
+                    <h3>Execution & Rapid Shipping</h3>
+                    <p>Do they treat ideas as cheap and execution as everything?</p>
+                    <ul>
+                        <li>Portfolio of projects shipped in days, not months</li>
+                        <li>8-10 concurrent side projects demonstrating breadth</li>
+                        <li>Bias toward action over analysis paralysis</li>
+                        <li>Comfortable with imperfect v1s and rapid iteration</li>
+                        <li>Language of building: "I shipped" not "I managed"</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <strong>Litmus Test:</strong> Can they build and ship a demo in a weekend?
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Decision Framework -->
+    <section id="framework">
+        <div class="container">
+            <div class="section-header">
+                <h2>The Decision Framework</h2>
+                <p>How we evaluate candidates using the 2025 standards</p>
+            </div>
+
+            <div class="decision-flow">
+                <h3>Evaluation Flow</h3>
+
+                <div class="decision-step">
+                    <h4>Step 1: Minimum Thresholds (Pass/Fail)</h4>
+                    <p><strong>Personal AI Projects:</strong> Must have at least 1 visible AI project with code/demo</p>
+                    <p><strong>Building in Public:</strong> Evidence of sharing work (GitHub, blog, demos)</p>
+                    <p><strong>Resume Creativity:</strong> Shows product taste beyond standard LinkedIn template</p>
+                    <p class="highlight-box">❌ <strong>Fail any threshold → No Screen</strong></p>
+                </div>
+
+                <div class="decision-step">
+                    <h4>Step 2: Red Flags (Disqualifiers)</h4>
+                    <p>Job hopping without clear narrative, inflated titles, vague responsibilities, no concrete metrics, plagiarism or misrepresentation</p>
+                    <p class="highlight-box">🚩 <strong>Any red flag → No Screen</strong></p>
+                </div>
+
+                <div class="decision-step">
+                    <h4>Step 3: Must-Have Signals (5/5 Required)</h4>
+                    <ol>
+                        <li>Evidence of continuous learning and staying current with AI</li>
+                        <li>At least 1 personal AI project with evidence</li>
+                        <li>Experience shipping products (not just planning)</li>
+                        <li>Compelling narrative explaining their journey</li>
+                        <li>Clear alignment with AI/ML product space</li>
+                    </ol>
+                    <p class="highlight-box">⚠️ <strong>Missing any → Maybe (at best)</strong></p>
+                </div>
+
+                <div class="decision-step">
+                    <h4>Step 4: Differentiation Signals (3+ for Strong Screen)</h4>
+                    <ul>
+                        <li>8-10 concurrent side projects</li>
+                        <li>Built something in hours/days, not months</li>
+                        <li>Active technical blog or significant following</li>
+                        <li>Open-source contributions or community leadership</li>
+                        <li>Platform/framework thinking in past work</li>
+                        <li>Speaking at conferences or thought leadership</li>
+                        <li>Unique background or unconventional path</li>
+                        <li>Evidence of rapid prototyping velocity</li>
+                    </ul>
+                    <p class="highlight-box">✅ <strong>3+ signals → Strong Screen</strong></p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1.5rem;">Scoring System</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pillar</th>
+                        <th>Weight</th>
+                        <th>Max Score</th>
+                        <th>Evaluation Focus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Technical Skills</td>
+                        <td>10 points</td>
+                        <td>10/10</td>
+                        <td>GitHub activity, personal projects, code quality</td>
+                    </tr>
+                    <tr>
+                        <td>Product Thinking</td>
+                        <td>10 points</td>
+                        <td>10/10</td>
+                        <td>0-to-1 launches, user impact, metrics</td>
+                    </tr>
+                    <tr>
+                        <td>AI/ML Knowledge</td>
+                        <td>10 points</td>
+                        <td>10/10</td>
+                        <td>Personal AI projects, hands-on evidence</td>
+                    </tr>
+                    <tr>
+                        <td>Communication</td>
+                        <td>10 points</td>
+                        <td>10/10</td>
+                        <td>Public building, blog, thought leadership</td>
+                    </tr>
+                    <tr>
+                        <td>Strategic Thinking</td>
+                        <td>10 points</td>
+                        <td>10/10</td>
+                        <td>Platform thinking, second-order effects</td>
+                    </tr>
+                    <tr>
+                        <td>Execution</td>
+                        <td>10 points</td>
+                        <td>10/10</td>
+                        <td>Shipping velocity, portfolio breadth</td>
+                    </tr>
+                    <tr style="font-weight: 600; background: var(--muted);">
+                        <td>Total</td>
+                        <td>60 points</td>
+                        <td>60/60</td>
+                        <td>Aggregate across all pillars</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">45+</div>
+                    <div class="stat-label">Strong Screen</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">35-44</div>
+                    <div class="stat-label">Screen</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">25-34</div>
+                    <div class="stat-label">Maybe</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">&lt;25</div>
+                    <div class="stat-label">No Screen</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Use -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2>How to Use This Framework</h2>
+                <p>Integrate this evaluation system into your hiring process</p>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>🔄 For Resume Screening</h3>
+                    <p>Use the automated analyzer to get AI-powered analysis from multiple providers (GPT-5, Claude Sonnet 4.5, Gemini 2.5 Pro):</p>
+                    <code>bin/analyze --deep-analysis resume.pdf</code>
+                    <p style="margin-top: 1rem;">Generates comprehensive HTML reports with consensus scoring and detailed pillar breakdowns.</p>
+                </div>
+
+                <div class="card">
+                    <h3>👥 For Interview Panels</h3>
+                    <p>Share the framework with all interviewers beforehand. Use pillar-specific questions to probe each area:</p>
+                    <ul style="list-style: disc; margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>"Walk me through your GitHub repos"</li>
+                        <li>"What did you build last weekend?"</li>
+                        <li>"Show me your AI experiments"</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>📊 For Calibration</h3>
+                    <p>Run multiple candidates through the framework and compare scores. Calibrate your team's understanding of what "Strong Screen" looks like in practice.</p>
+                </div>
+
+                <div class="card">
+                    <h3>🔧 For Customization</h3>
+                    <p>Fork the GitHub repo and adapt the framework to your needs. Adjust weights, add custom criteria, or modify the scoring rubric.</p>
+                    <a href="https://github.com/abe238/aipm-resume-analyzer" style="display: inline-block; margin-top: 0.5rem;">View on GitHub →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section style="background: var(--muted); padding: 4rem 0;">
+        <div class="container" style="text-align: center;">
+            <h2 style="margin-bottom: 1rem;">Ready to Raise Your Hiring Bar?</h2>
+            <p style="font-size: 1.125rem; color: var(--muted-foreground); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Start evaluating AI PM candidates with the 2025 standards. Open source, free to use, and continuously evolving.
+            </p>
+            <div class="cta-buttons">
+                <a href="https://github.com/abe238/aipm-resume-analyzer" class="btn btn-primary">Get Started on GitHub →</a>
+                <a href="https://github.com/abe238/aipm-resume-analyzer/issues" class="btn btn-secondary">Request Features</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Applied AI PM Framework</h4>
+                    <p style="color: var(--muted-foreground);">A rigorous, open-source evaluation system for AI Product Manager candidates in 2025.</p>
+                    <p style="margin-top: 1rem;"><a href="https://github.com/abe238/aipm-resume-analyzer">View on GitHub →</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Framework</h4>
+                    <ul>
+                        <li><a href="#philosophy">Philosophy</a></li>
+                        <li><a href="#pillars">The 6 Pillars</a></li>
+                        <li><a href="#framework">Decision Process</a></li>
+                        <li><a href="https://github.com/abe238/aipm-resume-analyzer#readme">Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://github.com/abe238/aipm-resume-analyzer">GitHub Repository</a></li>
+                        <li><a href="https://github.com/abe238/aipm-resume-analyzer/issues">Report Issues</a></li>
+                        <li><a href="https://github.com/abe238/aipm-resume-analyzer/blob/main/LICENSE">License</a></li>
+                        <li><a href="https://github.com/abe238/aipm-resume-analyzer/blob/main/CONTRIBUTING.md">Contributing</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Built with ❤️ for PMs looking to transition and for teams hiring AI Product Managers</p>
+                <p style="margin-top: 0.5rem;">Framework Version 1.0 • Last Updated October 2025</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
