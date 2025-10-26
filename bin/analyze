@@ -243,15 +243,21 @@ Return your analysis in JSON format with this structure:
 
         try:
             if self.api_provider == "openai":
-                response = self.client.chat.completions.create(
-                    model=self.model,
-                    messages=[
+                # GPT-5 models don't support custom temperature, only default (1)
+                params = {
+                    "model": self.model,
+                    "messages": [
                         {"role": "system", "content": "You are an expert AI PM hiring consultant. Return valid JSON only."},
                         {"role": "user", "content": prompt}
                     ],
-                    response_format={"type": "json_object"},
-                    temperature=0.3
-                )
+                    "response_format": {"type": "json_object"}
+                }
+
+                # Only add temperature for non-GPT-5 models
+                if not self.model.startswith("gpt-5"):
+                    params["temperature"] = 0.3
+
+                response = self.client.chat.completions.create(**params)
                 result = response.choices[0].message.content
 
             elif self.api_provider == "anthropic":
