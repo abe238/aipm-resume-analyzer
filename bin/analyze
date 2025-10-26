@@ -1,0 +1,413 @@
+#!/usr/bin/env python3
+"""
+AI PM Resume Analyzer
+Analyzes resumes against the 6-pillar AI PM framework using AI
+"""
+
+import sys
+import os
+import argparse
+import json
+from pathlib import Path
+from datetime import datetime
+import re
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+try:
+    from dotenv import load_dotenv
+    import PyPDF2
+except ImportError:
+    print("ERROR: Required packages not installed.")
+    print("Please run: pip install -r requirements.txt")
+    sys.exit(1)
+
+# Import API clients (will be imported dynamically based on availability)
+OPENAI_AVAILABLE = False
+ANTHROPIC_AVAILABLE = False
+GOOGLE_AVAILABLE = False
+
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    pass
+
+try:
+    import anthropic
+    ANTHROPIC_AVAILABLE = True
+except ImportError:
+    pass
+
+try:
+    import google.generativeai as genai
+    GOOGLE_AVAILABLE = True
+except ImportError:
+    pass
+
+
+class ResumeAnalyzer:
+    """Analyze resumes using AI against the 6-pillar framework"""
+
+    FRAMEWORK_PILLARS = {
+        "pillar_1": {
+            "name": "Technical Skills",
+            "weight": 20,
+            "description": "Understanding of technical concepts, ability to work with engineers, making informed technical tradeoffs"
+        },
+        "pillar_2": {
+            "name": "Product Thinking",
+            "weight": 25,
+            "description": "User empathy, problem definition, prioritization, product strategy, metrics thinking"
+        },
+        "pillar_3": {
+            "name": "AI/ML Knowledge",
+            "weight": 20,
+            "description": "ML fundamentals, model types, data requirements, responsible AI awareness"
+        },
+        "pillar_4": {
+            "name": "Communication",
+            "weight": 10,
+            "description": "Written/verbal communication, stakeholder management, influence without authority"
+        },
+        "pillar_5": {
+            "name": "Strategic Thinking",
+            "weight": 15,
+            "description": "Vision setting, long-term planning, market positioning, opportunity identification"
+        },
+        "pillar_6": {
+            "name": "Execution",
+            "weight": 10,
+            "description": "Shipping products, driving results, overcoming obstacles, maintaining velocity"
+        }
+    }
+
+    def __init__(self, api_provider="openai", api_key=None):
+        self.api_provider = api_provider.lower()
+        self.api_key = api_key
+        self._initialize_client()
+
+    def _initialize_client(self):
+        """Initialize the AI client based on provider"""
+        if self.api_provider == "openai":
+            if not OPENAI_AVAILABLE:
+                raise ImportError("OpenAI package not installed. Run: pip install openai")
+            if not self.api_key:
+                raise ValueError("OpenAI API key required")
+            self.client = openai.OpenAI(api_key=self.api_key)
+            self.model = "gpt-4o"
+
+        elif self.api_provider == "anthropic":
+            if not ANTHROPIC_AVAILABLE:
+                raise ImportError("Anthropic package not installed. Run: pip install anthropic")
+            if not self.api_key:
+                raise ValueError("Anthropic API key required")
+            self.client = anthropic.Anthropic(api_key=self.api_key)
+            self.model = "claude-sonnet-4-20250514"
+
+        elif self.api_provider == "google":
+            if not GOOGLE_AVAILABLE:
+                raise ImportError("Google Generative AI package not installed. Run: pip install google-generativeai")
+            if not self.api_key:
+                raise ValueError("Google API key required")
+            genai.configure(api_key=self.api_key)
+            self.client = genai.GenerativeModel("gemini-2.0-flash-exp")
+            self.model = "gemini-2.0-flash-exp"
+
+        else:
+            raise ValueError(f"Unknown API provider: {self.api_provider}")
+
+    def extract_text_from_pdf(self, pdf_path):
+        """Extract text content from PDF resume"""
+        try:
+            with open(pdf_path, 'rb') as file:
+                reader = PyPDF2.PdfReader(file)
+                text = ""
+                for page in reader.pages:
+                    text += page.extract_text() + "\n"
+                return text.strip()
+        except Exception as e:
+            raise Exception(f"Error reading PDF: {str(e)}")
+
+    def create_analysis_prompt(self, resume_text):
+        """Create the prompt for AI analysis"""
+        prompt = f"""You are an expert AI Product Manager hiring consultant. Analyze the following resume against the 6-pillar AI PM evaluation framework.
+
+RESUME TEXT:
+{resume_text}
+
+EVALUATION FRAMEWORK:
+{json.dumps(self.FRAMEWORK_PILLARS, indent=2)}
+
+For each pillar, provide:
+1. Score (0-10)
+2. Evidence from resume (specific examples, quotes, or observations)
+3. Strengths in this area
+4. Gaps or concerns
+5. Level assessment (1=Developing, 2=Functional, 3=Proficient, 4=Advanced, 5=Expert)
+
+SCORING GUIDELINES:
+- Technical Skills: Look for engineering background, technical roles, coding skills, technical projects
+- Product Thinking: PM experience, user research, metrics, shipped products
+- AI/ML Knowledge: AI/ML education, AI projects, ML engineering background
+- Communication: Resume clarity, stakeholder management mentions, presentations
+- Strategic Thinking: Strategic roles, vision setting, long-term planning
+- Execution: Shipping track record, quantified outcomes, project management
+
+After scoring all pillars, provide:
+- Total weighted score (out of 100)
+- Overall decision: "Strong Screen", "Screen", "Maybe", or "No Screen"
+- 3 key strengths
+- 3 key concerns or gaps
+- Recommendation summary (2-3 sentences)
+
+Return your analysis in JSON format with this structure:
+{{
+  "candidate_name": "Name from resume",
+  "analysis_date": "{datetime.now().isoformat()}",
+  "pillars": {{
+    "pillar_1": {{
+      "name": "Technical Skills",
+      "score": 0-10,
+      "level": 1-5,
+      "evidence": "specific examples from resume",
+      "strengths": ["strength 1", "strength 2"],
+      "gaps": ["gap 1", "gap 2"]
+    }},
+    ... (repeat for all 6 pillars)
+  }},
+  "total_score": 0-60,
+  "weighted_score": 0-100,
+  "decision": "Strong Screen | Screen | Maybe | No Screen",
+  "top_strengths": ["strength 1", "strength 2", "strength 3"],
+  "top_concerns": ["concern 1", "concern 2", "concern 3"],
+  "recommendation": "2-3 sentence recommendation",
+  "suitable_roles": ["role suggestions based on profile"]
+}}"""
+        return prompt
+
+    def analyze_with_ai(self, resume_text):
+        """Send resume to AI for analysis"""
+        prompt = self.create_analysis_prompt(resume_text)
+
+        try:
+            if self.api_provider == "openai":
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    messages=[
+                        {"role": "system", "content": "You are an expert AI PM hiring consultant. Return valid JSON only."},
+                        {"role": "user", "content": prompt}
+                    ],
+                    response_format={"type": "json_object"},
+                    temperature=0.3
+                )
+                result = response.choices[0].message.content
+
+            elif self.api_provider == "anthropic":
+                response = self.client.messages.create(
+                    model=self.model,
+                    max_tokens=4000,
+                    temperature=0.3,
+                    messages=[
+                        {"role": "user", "content": prompt}
+                    ]
+                )
+                result = response.content[0].text
+
+            elif self.api_provider == "google":
+                response = self.client.generate_content(
+                    prompt,
+                    generation_config=genai.GenerationConfig(
+                        temperature=0.3,
+                        response_mime_type="application/json"
+                    )
+                )
+                result = response.text
+
+            # Parse JSON response
+            analysis = json.loads(result)
+            return analysis
+
+        except Exception as e:
+            raise Exception(f"AI analysis failed: {str(e)}")
+
+    def analyze_resume(self, pdf_path):
+        """Main analysis function"""
+        print(f"📄 Extracting text from PDF...")
+        resume_text = self.extract_text_from_pdf(pdf_path)
+
+        print(f"🤖 Analyzing with {self.api_provider.upper()} ({self.model})...")
+        analysis = self.analyze_with_ai(resume_text)
+
+        print(f"✅ Analysis complete!")
+        return analysis
+
+
+def check_env_file():
+    """Check if .env file exists and has required keys"""
+    env_path = Path.cwd() / '.env'
+
+    if not env_path.exists():
+        print("⚠️  No .env file found!")
+        print("\nCreating .env template...")
+
+        env_template = """# AI PM Resume Analyzer - API Keys Configuration
+# Add your API keys below (you only need ONE of these)
+
+# OpenAI API Key (GPT-4)
+# Get yours at: https://platform.openai.com/api-keys
+OPENAI_API_KEY=
+
+# Anthropic API Key (Claude Sonnet)
+# Get yours at: https://console.anthropic.com/settings/keys
+ANTHROPIC_API_KEY=
+
+# Google API Key (Gemini)
+# Get yours at: https://aistudio.google.com/app/apikey
+GOOGLE_API_KEY=
+
+# Default provider (openai, anthropic, or google)
+DEFAULT_PROVIDER=openai
+"""
+
+        with open(env_path, 'w') as f:
+            f.write(env_template)
+
+        print(f"✅ Created .env file at: {env_path}")
+        print("\n📝 SETUP INSTRUCTIONS:")
+        print("\n1. Get an API key from ONE of these providers:")
+        print("   • OpenAI (GPT-4): https://platform.openai.com/api-keys")
+        print("   • Anthropic (Claude): https://console.anthropic.com/settings/keys")
+        print("   • Google (Gemini): https://aistudio.google.com/app/apikey")
+        print("\n2. Open the .env file and paste your API key")
+        print("3. Save the file and run the analyzer again")
+        print("\nFor detailed setup help, see README.md")
+        sys.exit(0)
+
+    # Load environment variables
+    load_dotenv(env_path)
+
+    # Check which keys are available
+    openai_key = os.getenv('OPENAI_API_KEY')
+    anthropic_key = os.getenv('ANTHROPIC_API_KEY')
+    google_key = os.getenv('GOOGLE_API_KEY')
+
+    available_providers = []
+    if openai_key:
+        available_providers.append('openai')
+    if anthropic_key:
+        available_providers.append('anthropic')
+    if google_key:
+        available_providers.append('google')
+
+    if not available_providers:
+        print("❌ No API keys found in .env file!")
+        print("\nPlease add at least one API key to your .env file:")
+        print("   • OPENAI_API_KEY=your_key_here")
+        print("   • ANTHROPIC_API_KEY=your_key_here")
+        print("   • GOOGLE_API_KEY=your_key_here")
+        print("\nSee README.md for detailed instructions.")
+        sys.exit(1)
+
+    return available_providers
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description='AI PM Resume Analyzer - Evaluate resumes against the 6-pillar framework',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Analyze with default provider (from .env)
+  ./bin/analyze resume.pdf
+
+  # Specify provider
+  ./bin/analyze resume.pdf --provider anthropic
+  ./bin/analyze resume.pdf --provider google
+
+  # Custom output location
+  ./bin/analyze resume.pdf --output ./reports/
+
+For setup help, see README.md
+        """
+    )
+
+    parser.add_argument('resume', help='Path to resume PDF file')
+    parser.add_argument('--provider', choices=['openai', 'anthropic', 'google'],
+                        help='AI provider to use (overrides .env DEFAULT_PROVIDER)')
+    parser.add_argument('--output', default='./output',
+                        help='Output directory for analysis reports (default: ./output)')
+    parser.add_argument('--format', choices=['markdown', 'html', 'both'], default='both',
+                        help='Output format (default: both)')
+
+    args = parser.parse_args()
+
+    # Check environment setup
+    print("🔍 Checking API configuration...")
+    available_providers = check_env_file()
+    load_dotenv()
+
+    # Determine which provider to use
+    provider = args.provider or os.getenv('DEFAULT_PROVIDER', 'openai')
+
+    if provider not in available_providers:
+        print(f"❌ Provider '{provider}' selected but no API key found!")
+        print(f"\n✅ Available providers: {', '.join(available_providers)}")
+        print(f"\nEither:")
+        print(f"  1. Add {provider.upper()}_API_KEY to your .env file")
+        print(f"  2. Use a different provider: --provider {available_providers[0]}")
+        sys.exit(1)
+
+    # Get API key
+    api_key = os.getenv(f'{provider.upper()}_API_KEY')
+
+    # Check if resume file exists
+    if not os.path.exists(args.resume):
+        print(f"❌ Resume file not found: {args.resume}")
+        sys.exit(1)
+
+    # Create output directory
+    output_dir = Path(args.output)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        # Initialize analyzer
+        analyzer = ResumeAnalyzer(api_provider=provider, api_key=api_key)
+
+        # Run analysis
+        analysis = analyzer.analyze_resume(args.resume)
+
+        # Generate output files
+        from templates.output_generator import generate_markdown, generate_html
+
+        candidate_name = analysis.get('candidate_name', 'Candidate').replace(' ', '_')
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        base_filename = f"{candidate_name}_{timestamp}"
+
+        if args.format in ['markdown', 'both']:
+            md_path = output_dir / f"{base_filename}.md"
+            generate_markdown(analysis, md_path)
+            print(f"📝 Markdown report: {md_path}")
+
+        if args.format in ['html', 'both']:
+            html_path = output_dir / f"{base_filename}.html"
+            generate_html(analysis, html_path)
+            print(f"🌐 HTML report: {html_path}")
+
+        # Also save JSON
+        json_path = output_dir / f"{base_filename}.json"
+        with open(json_path, 'w') as f:
+            json.dump(analysis, f, indent=2)
+        print(f"💾 JSON data: {json_path}")
+
+        print(f"\n✨ Analysis complete! Total score: {analysis.get('total_score', 0)}/60")
+        print(f"📊 Decision: {analysis.get('decision', 'Unknown')}")
+
+    except Exception as e:
+        print(f"\n❌ Error: {str(e)}")
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()

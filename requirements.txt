@@ -1,0 +1,13 @@
+# AI PM Resume Analyzer - Python Dependencies
+
+# Core dependencies (required)
+PyPDF2>=3.0.0
+python-dotenv>=1.0.0
+
+# AI Provider SDKs (install at least ONE)
+openai>=1.0.0        # For GPT-4
+anthropic>=0.18.0    # For Claude Sonnet
+google-generativeai>=0.3.0  # For Gemini
+
+# Note: You only need to install ONE of the AI provider packages,
+# but having all three installed gives you maximum flexibility.
