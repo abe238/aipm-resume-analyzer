@@ -1275,10 +1275,55 @@ def generate_aggregated_html(analyses, output_path):
         all_diff_signals_count.append(diff_sig.get('count', 0))
 
     # Consensus framework evaluation
-    consensus_min_thresholds = any(all_min_thresholds)  # At least one passed
-    consensus_red_flags = len(set(all_red_flags))  # Unique red flags
-    consensus_must_have_missing = len(set(all_must_have_missing))  # Unique missing signals
+    consensus_min_thresholds_met = any(all_min_thresholds)  # At least one passed
+    unique_red_flags = list(set(all_red_flags))  # Unique red flags
+    consensus_red_flags_count = len(unique_red_flags)
+    unique_must_have_missing = list(set(all_must_have_missing))  # Unique missing signals
+    consensus_must_have_missing = len(unique_must_have_missing)
     consensus_diff_signals = round(sum(all_diff_signals_count) / len(all_diff_signals_count)) if all_diff_signals_count else 0
+
+    # Aggregate detailed framework data
+    all_personal_ai = []
+    all_building_public = []
+    all_resume_creativity = []
+    all_yellow_flags = []
+    all_critical_questions = {'paradigm_shift': [], 'future_proofing': [], 'magic_wand': []}
+    all_must_have_found = []
+    all_diff_signals_found = []
+    all_top_strengths = []
+    all_top_concerns = []
+
+    for analysis in analyses.values():
+        min_thresh = analysis.get('minimum_thresholds', {})
+        all_personal_ai.append(min_thresh.get('personal_ai_projects', False))
+        all_building_public.append(min_thresh.get('building_in_public', False))
+        all_resume_creativity.append(min_thresh.get('resume_creativity', False))
+
+        all_yellow_flags.extend(analysis.get('yellow_flags', []))
+
+        crit_q = analysis.get('critical_questions', {})
+        all_critical_questions['paradigm_shift'].extend(crit_q.get('paradigm_shift_examples', []))
+        all_critical_questions['future_proofing'].extend(crit_q.get('future_proofing_examples', []))
+        all_critical_questions['magic_wand'].extend(crit_q.get('magic_wand_examples', []))
+
+        must_have = analysis.get('must_have_signals', {})
+        all_must_have_found.extend(must_have.get('signals_found', []))
+
+        diff_sig = analysis.get('differentiation_signals', {})
+        all_diff_signals_found.extend(diff_sig.get('signals', []))
+
+        all_top_strengths.extend(analysis.get('top_strengths', [])[:3])
+        all_top_concerns.extend(analysis.get('top_concerns', [])[:3])
+
+    # Deduplicate
+    unique_yellow_flags = list(set(all_yellow_flags))
+    unique_must_have_found = list(set(all_must_have_found))
+    unique_diff_signals_found = list(set(all_diff_signals_found))
+
+    # Consensus on minimum thresholds
+    consensus_personal_ai = any(all_personal_ai)
+    consensus_building_public = any(all_building_public)
+    consensus_resume_creativity = any(all_resume_creativity)
 
     # Get all strengths and concerns with provider labels
     all_strengths = []
@@ -1695,11 +1740,11 @@ def generate_aggregated_html(analyses, output_path):
             <tbody>
                 <tr>
                     <td><strong>Minimum Thresholds</strong></td>
-                    <td>{"✅ Some Met" if consensus_min_thresholds else "❌ Failed"}</td>
+                    <td>{"✅ Some Met" if consensus_min_thresholds_met else "❌ Failed"}</td>
                 </tr>
                 <tr>
                     <td><strong>Red Flags</strong></td>
-                    <td>{"❌ " + str(consensus_red_flags) + " Found" if consensus_red_flags > 0 else "✅ None"}</td>
+                    <td>{"❌ " + str(consensus_red_flags_count) + " Found" if consensus_red_flags_count > 0 else "✅ None"}</td>
                 </tr>
                 <tr>
                     <td><strong>Must-Have Signals</strong></td>
@@ -1711,6 +1756,63 @@ def generate_aggregated_html(analyses, output_path):
                 </tr>
             </tbody>
         </table>
+
+        <!-- Minimum Thresholds Detail -->
+        <h2>Minimum Thresholds</h2>
+        <ul class="sub-list">
+            <li>{"✅" if consensus_personal_ai else "❌"} Personal AI Projects</li>
+            <li>{"✅" if consensus_building_public else "❌"} Building in Public</li>
+            <li>{"✅" if consensus_resume_creativity else "❌"} Resume Creativity</li>
+        </ul>
+
+        <!-- Red Flags -->
+        {f'''<h2>🚩 Red Flags (Critical Issues)</h2>
+        <ul class="sub-list">
+            {''.join([f"<li>{flag}</li>" for flag in unique_red_flags])}
+        </ul>''' if unique_red_flags else ''}
+
+        <!-- Yellow Flags -->
+        {f'''<h2>⚠️ Yellow Flags (Investigate Further)</h2>
+        <ul class="sub-list">
+            {''.join([f"<li>{flag}</li>" for flag in unique_yellow_flags])}
+        </ul>''' if unique_yellow_flags else ''}
+
+        <!-- Three Critical Questions -->
+        {f'''<h2>The Three Critical Questions Analysis</h2>
+
+        <h3>1. Paradigm Shift (Car vs. Faster Horse)</h3>
+        <ul class="sub-list">
+            {''.join([f"<li>{ex}</li>" for ex in all_critical_questions['paradigm_shift']]) if all_critical_questions['paradigm_shift'] else '<li>No examples found across providers</li>'}
+        </ul>
+
+        <h3>2. Future-Proofing (Gets Better with AI Advances)</h3>
+        <ul class="sub-list">
+            {''.join([f"<li>{ex}</li>" for ex in all_critical_questions['future_proofing']]) if all_critical_questions['future_proofing'] else '<li>No examples found across providers</li>'}
+        </ul>
+
+        <h3>3. Magic Wand Test (Designed for Full Automation)</h3>
+        <ul class="sub-list">
+            {''.join([f"<li>{ex}</li>" for ex in all_critical_questions['magic_wand']]) if all_critical_questions['magic_wand'] else '<li>No examples found across providers</li>'}
+        </ul>''' if any([all_critical_questions['paradigm_shift'], all_critical_questions['future_proofing'], all_critical_questions['magic_wand']]) else ''}
+
+        <!-- Must-Have Signals -->
+        <h2>Must-Have Signals</h2>
+        {f'''<h3>Signals Found ({len(unique_must_have_found)}/5):</h3>
+        <ul class="sub-list">
+            {''.join([f"<li>{signal}</li>" for signal in unique_must_have_found])}
+        </ul>''' if unique_must_have_found else ''}
+        {f'''<h3>Signals Missing ({len(unique_must_have_missing)}/5):</h3>
+        <ul class="sub-list">
+            {''.join([f"<li>{signal}</li>" for signal in unique_must_have_missing])}
+        </ul>''' if unique_must_have_missing else ''}
+
+        <!-- Differentiation Signals -->
+        <h2>Differentiation Signals</h2>
+        <p><strong>Count:</strong> {len(unique_diff_signals_found)}/8 (Need 3+ for Strong Screen)</p>
+        {f'''<h3>Signals Found:</h3>
+        <ul class="sub-list">
+            {''.join([f"<li>{signal}</li>" for signal in unique_diff_signals_found])}
+        </ul>''' if unique_diff_signals_found else '<p>No differentiation signals found across any provider.</p>'}
 
         <div class="overview">
             <h2>🔬 Deep Analysis Overview</h2>
