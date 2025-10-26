@@ -1249,7 +1249,7 @@ def generate_aggregated_html(analyses, output_path):
     # Aggregate executive summaries from all providers
     executive_summaries = []
     for provider, analysis in analyses.items():
-        model_name = analysis.get('_metadata', {}).get('model_display_name', provider.UPPER())
+        model_name = analysis.get('_metadata', {}).get('model_display_name', provider.upper())
         recommendation = analysis.get('recommendation', '')
         if recommendation:
             executive_summaries.append(f"<p><strong>{model_name}:</strong> {recommendation}</p>")
