@@ -52,36 +52,233 @@ class ResumeAnalyzer:
 
     FRAMEWORK_PILLARS = {
         "pillar_1": {
-            "name": "Technical Skills",
+            "name": "Technical Skills & Hands-On Building",
             "weight": 20,
-            "description": "Understanding of technical concepts, ability to work with engineers, making informed technical tradeoffs"
+            "description": "Engineering background, coding ability, hands-on AI building, personal projects",
+            "what_exceptional_looks_like": [
+                "Multiple personal AI projects spanning different domains (productivity, creative, workflow automation)",
+                "Public GitHub repos showing real experimentation, not just tutorials",
+                "Evidence of building tools to solve their own problems",
+                "Portfolio approach: 8-10 concurrent side projects demonstrating creative range",
+                "Projects built in hours/days, not weeks/months (speed is critical in 2025)",
+                "Unusual creativity in applications showing original thinking"
+            ],
+            "what_NOT_sufficient": [
+                "Only managed teams building AI features without personal hands-on work",
+                "Just used ChatGPT as productivity tool",
+                "Took online courses but didn't build anything",
+                "Pure management role with no IC technical work"
+            ],
+            "strong_signals": [
+                "GitHub repos with AI experiments and real projects",
+                "Building in 1-2 hour timeframes (not days)",
+                "Tools solving personal problems or for family/kids",
+                "Diverse experimentation across multiple domains",
+                "Evidence of using AI creatively in unexpected ways"
+            ]
         },
         "pillar_2": {
-            "name": "Product Thinking",
+            "name": "Product Thinking & 0-to-1 Leadership",
             "weight": 25,
-            "description": "User empathy, problem definition, prioritization, product strategy, metrics thinking"
+            "description": "User empathy, problem definition, navigating ambiguity, 0-to-1 experience, decision-making under uncertainty",
+            "what_exceptional_looks_like": [
+                "Multiple 0-to-1 product launches (not just feature additions to mature products)",
+                "Clear evidence of leading through ambiguity and making decisions without complete information",
+                "User-centered approach with empathy for pain points",
+                "Examples of pivots handled gracefully with team trust maintained",
+                "Product metrics and outcomes clearly tied to user value"
+            ],
+            "what_NOT_sufficient": [
+                "Only worked on mature products with clear requirements",
+                "Feature-focused rather than systems-focused thinking",
+                "No evidence of handling ambiguity or making hard tradeoffs"
+            ],
+            "strong_signals": [
+                "Language about 'led team through' ambiguity",
+                "0-to-1 launches with measurable user impact",
+                "Evidence of building user trust during uncertainty",
+                "Clear problem framing and hypothesis-driven approach"
+            ]
         },
         "pillar_3": {
-            "name": "AI/ML Knowledge",
+            "name": "Deep AI Intuition & Applied Creativity (NON-NEGOTIABLE)",
             "weight": 20,
-            "description": "ML fundamentals, model types, data requirements, responsible AI awareness"
+            "description": "Hands-on AI experience, understanding of capabilities/limitations, creative applications, staying current",
+            "what_exceptional_looks_like": [
+                "Personal AI projects showing deep intuition about what's possible",
+                "Creative applications of AI in unexpected ways",
+                "Evidence of experimenting with models, fine-tuning, or novel use cases",
+                "Understanding of AI limitations through hands-on building",
+                "Staying current with latest models and techniques",
+                "Can generate creative ideas consistently (not just one idea)"
+            ],
+            "what_NOT_sufficient": [
+                "Only managed ML engineers without hands-on AI work",
+                "Worked with ML teams but never built with AI personally",
+                "Defined requirements for AI systems without understanding them deeply",
+                "Generic PM experience with 'AI' label added"
+            ],
+            "strong_signals": [
+                "Personal AI agents or automation built",
+                "Creative use cases showing original thinking",
+                "Blog posts about AI learnings and experiments",
+                "Evidence of using AI daily to be more productive",
+                "Systems thinking: 'Built workflow using agents X and Y'"
+            ]
         },
         "pillar_4": {
-            "name": "Communication",
+            "name": "Communication & Compelling Storytelling",
             "weight": 10,
-            "description": "Written/verbal communication, stakeholder management, influence without authority"
+            "description": "Written/verbal communication, stakeholder management, inspiring narratives, building in public",
+            "what_exceptional_looks_like": [
+                "Resume itself tells compelling story about their journey",
+                "Building in public: blog posts, LinkedIn, speaking, GitHub",
+                "Ability to inspire teams to build things that don't exist yet",
+                "Clear articulation of vision and 'why' behind products",
+                "Evidence of thought leadership and sharing learnings publicly"
+            ],
+            "what_NOT_sufficient": [
+                "Only internal communication, no public presence",
+                "Generic corporate communication without compelling narratives",
+                "No evidence of inspiring others or building belief"
+            ],
+            "strong_signals": [
+                "Active blog, Substack, or LinkedIn with AI insights",
+                "Speaking at events or meetups",
+                "Public GitHub repos (building in public)",
+                "Resume narrative that makes their journey clear and compelling"
+            ]
         },
         "pillar_5": {
-            "name": "Strategic Thinking",
+            "name": "Strategic Thinking & Second-Order Vision",
             "weight": 15,
-            "description": "Vision setting, long-term planning, market positioning, opportunity identification"
+            "description": "Systems thinking, platforms vs features, future-proofing, market positioning, paradigm shifts",
+            "what_exceptional_looks_like": [
+                "Second-order thinking: building platforms/tools that enable others to build",
+                "Understanding paradigm shifts (not just incremental improvements)",
+                "Designing for future AI capabilities, not just current limitations",
+                "Projects that get better as AI improves (future-proof architecture)",
+                "Vision for where AI is going, not just where it is"
+            ],
+            "what_NOT_sufficient": [
+                "Only first-order thinking: building specific features",
+                "Incremental improvements to existing workflows",
+                "No evidence of systems thinking or platform approach"
+            ],
+            "strong_signals": [
+                "Language about 'platforms,' 'frameworks,' 'enabling infrastructure'",
+                "Examples of enabling others to build (not just building features)",
+                "Understanding that incremental improvements get disrupted",
+                "Projects architected to leverage future AI advances"
+            ]
         },
         "pillar_6": {
-            "name": "Execution",
+            "name": "Full-Spectrum Execution & Rapid Shipping",
             "weight": 10,
-            "description": "Shipping products, driving results, overcoming obstacles, maintaining velocity"
+            "description": "Bias for action, shipping products, rapid prototyping, overcoming obstacles, velocity",
+            "what_exceptional_looks_like": [
+                "Evidence of rapid prototyping: built in hours (1-2 hours), not days/weeks",
+                "Multiple shipped products with user adoption",
+                "Language of ownership: 'I built' not 'we discussed'",
+                "Going from idea to working prototype same-day",
+                "Treating ideas as commoditizable, maintaining high velocity"
+            ],
+            "what_NOT_sufficient": [
+                "Only 'managed' or 'led' projects without shipping",
+                "Slow execution measured in weeks/months",
+                "Just planning and strategy without hands-on building"
+            ],
+            "strong_signals": [
+                "Timeframes of hours/days in project descriptions",
+                "Portfolio of shipped products (not just managed)",
+                "Evidence of rapid iteration and de-risking through speed",
+                "Multiple concurrent projects showing high velocity"
+            ]
         }
     }
+
+    # The Three Critical Questions (Apply to Every Project)
+    CRITICAL_QUESTIONS = {
+        "paradigm_shift": {
+            "question": "Are you building a faster horse or a car? Process improvement or entirely new workflow?",
+            "incremental_example": "Built AI chatbot to answer support questions 20% faster",
+            "transformational_example": "Created AI self-service platform that eliminated 60% of support tickets by teaching users through interactive workflows"
+        },
+        "future_proofing": {
+            "question": "When next AI model drops, will it commoditize your feature or unlock new capabilities?",
+            "vulnerable_example": "Built summarization tool using GPT-4",
+            "future_proof_example": "Built workflow orchestration where summarization is one interchangeable step; gets better as models improve"
+        },
+        "magic_wand": {
+            "question": "What human-in-the-loop step exists only because of technical limitations?",
+            "present_bound_example": "Added human review because AI makes mistakes",
+            "future_oriented_example": "Designed pluggable verification layer; uses humans now, but architected for future AI verification without redesign"
+        }
+    }
+
+    # Minimum Thresholds (Must Have to Be Considered)
+    MINIMUM_THRESHOLDS = {
+        "personal_ai_projects": {
+            "minimum_required": 1,
+            "strong_signal": "2-5 projects showing diverse experimentation",
+            "exceptional_signal": "Active portfolio of 8-10 concurrent side projects",
+            "rationale": "One project = basic hands-on ability. Multiple = creative range. Large portfolio = continuous idea generation"
+        },
+        "building_in_public": {
+            "required": True,
+            "examples": ["LinkedIn posts", "Blog/Substack", "GitHub repos", "Speaking at events", "Sharing on social platforms"],
+            "rationale": "Demonstrates thought leadership and ability to articulate vision"
+        },
+        "resume_creativity": {
+            "required": True,
+            "red_flag": "Plain text wall resume",
+            "rationale": "Resume design itself demonstrates PM creativity competency. Boring resume signals lack of creativity essential for AI PM work"
+        }
+    }
+
+    # Must-Have Signals (All Required for Strong Screen)
+    MUST_HAVE_SIGNALS = [
+        "At least 1 personal AI project with evidence",
+        "Experience shipping products (not just planning)",
+        "Clear alignment with AI/ML product space",
+        "Evidence of continuous learning and staying current with AI",
+        "Compelling narrative explaining their journey"
+    ]
+
+    # Strong Differentiation Signals (Need 3+ for Strong Screen)
+    DIFFERENTIATION_SIGNALS = [
+        "Multiple 0-to-1 product launches",
+        "Technical depth (can discuss AI architectures, not just manage)",
+        "Portfolio of side projects showing creativity (ideally 8-10 concurrent)",
+        "Thought leadership (blog, speaking, community contributions)",
+        "Exceptional design taste evident in resume/portfolio",
+        "Speed of execution (examples of building in hours not months)",
+        "Systems thinking (built platforms/tools, not just features)",
+        "Building in public with visible presence"
+    ]
+
+    # Red Flags (Strong Pass Signals)
+    RED_FLAGS = [
+        "No evidence of hands-on AI work or personal projects",
+        "Pure management role with no IC product work",
+        "Only 'managed' or 'led' teams - no 'I built' or 'I shipped'",
+        "Buzzword-heavy with no substance or specific examples",
+        "Plain text wall resume showing no creativity",
+        "No shipped products, only planned or discussed",
+        "Unclear why they want to work in AI",
+        "Slow execution timeframes (weeks/months instead of hours/days)"
+    ]
+
+    # Yellow Flags (Investigate Further)
+    YELLOW_FLAGS = [
+        "Only corporate/assigned work, no personal projects",
+        "Gaps in timeline without explanation",
+        "Generic PM language with no AI-specific depth",
+        "No links or verifiable work products",
+        "No public presence or building in public",
+        "Only worked on mature products, no 0-to-1 experience",
+        "First-order thinking only (features, not platforms)"
+    ]
 
     # Available models for each provider
     AVAILABLE_MODELS = {
@@ -201,76 +398,350 @@ class ResumeAnalyzer:
         except Exception as e:
             raise Exception(f"Error reading document: {str(e)}")
 
-    def create_analysis_prompt(self, resume_text):
-        """Create the prompt for AI analysis"""
-        prompt = f"""You are an expert AI Product Manager hiring consultant. Analyze the following resume against the 6-pillar AI PM evaluation framework.
+    def convert_pdf_to_images(self, file_path):
+        """Convert PDF pages to images for visual analysis"""
+        try:
+            from pdf2image import convert_from_path
+            # Convert only first page for resume design evaluation
+            images = convert_from_path(file_path, first_page=1, last_page=1, dpi=200)
+            return images[0] if images else None
+        except ImportError:
+            # pdf2image not available, return None (text-only analysis)
+            return None
+        except Exception as e:
+            print(f"⚠️  Warning: Could not convert PDF to image: {str(e)}")
+            return None
 
-RESUME TEXT:
+    def create_analysis_prompt(self, resume_text):
+        """Create the prompt for AI analysis with comprehensive framework"""
+        prompt = f"""You are an expert AI Product Manager hiring consultant specializing in evaluating candidates for 2025 AI PM roles.
+
+# CONTEXT: What We're Looking For in 2025
+
+The AI PM role has fundamentally changed. We need people who:
+- **BUILD in hours, not days/weeks** - Speed is critical; ideas are commoditizable
+- **Maintain a PORTFOLIO of 8-10 concurrent side projects** - Not one idea, but continuous idea generation
+- **Build in PUBLIC** - Blog, LinkedIn, GitHub, speaking - demonstrating thought leadership
+- **Think SECOND-ORDER** - Platforms/tools that enable others to build, not just features
+- **Have DEEP AI intuition** - From hands-on building, not just managing ML teams
+
+# RESUME TO EVALUATE
+
 {resume_text}
 
-EVALUATION FRAMEWORK:
-{json.dumps(self.FRAMEWORK_PILLARS, indent=2)}
+# EVALUATION METHODOLOGY
 
-For each pillar, provide:
-1. Score (0-10)
-2. Evidence from resume (specific examples, quotes, or observations)
-3. Strengths in this area
-4. Gaps or concerns
-5. Level assessment (1=Developing, 2=Functional, 3=Proficient, 4=Advanced, 5=Expert)
+## STEP 1: Minimum Thresholds (Screen Out Immediately if Missing)
 
-SCORING GUIDELINES:
-- Technical Skills: Look for engineering background, technical roles, coding skills, technical projects
-- Product Thinking: PM experience, user research, metrics, shipped products
-- AI/ML Knowledge: AI/ML education, AI projects, ML engineering background
-- Communication: Resume clarity, stakeholder management mentions, presentations
-- Strategic Thinking: Strategic roles, vision setting, long-term planning
-- Execution: Shipping track record, quantified outcomes, project management
+Check for these MINIMUM requirements:
 
-After scoring all pillars, provide:
-- Total weighted score (out of 100)
-- Overall decision: "Strong Screen", "Screen", "Maybe", or "No Screen"
-- 3 key strengths
-- 3 key concerns or gaps
-- Recommendation summary (2-3 sentences)
+**Personal AI Projects Threshold:**
+{json.dumps(self.MINIMUM_THRESHOLDS['personal_ai_projects'], indent=2)}
 
-Return your analysis in JSON format with this structure:
+**Building in Public Threshold:**
+{json.dumps(self.MINIMUM_THRESHOLDS['building_in_public'], indent=2)}
+
+**Resume Creativity Threshold:**
+{json.dumps(self.MINIMUM_THRESHOLDS['resume_creativity'], indent=2)}
+
+If candidate fails ANY minimum threshold → Decision = "No Screen" (stop evaluation)
+
+## STEP 2: Red Flags Check (Strong Pass Signals)
+
+Check for these RED FLAGS (any one is serious concern):
+{json.dumps(self.RED_FLAGS, indent=2)}
+
+## STEP 3: Yellow Flags (Investigate Further)
+
+Note any YELLOW FLAGS (multiple yellows = concern):
+{json.dumps(self.YELLOW_FLAGS, indent=2)}
+
+## STEP 4: The Three Critical Questions (Apply to EVERY Project Listed)
+
+For each significant project/role on the resume, ask:
+
+**Question 1: Paradigm Shift?**
+{json.dumps(self.CRITICAL_QUESTIONS['paradigm_shift'], indent=2)}
+
+**Question 2: Future-Proofing?**
+{json.dumps(self.CRITICAL_QUESTIONS['future_proofing'], indent=2)}
+
+**Question 3: Magic Wand Test?**
+{json.dumps(self.CRITICAL_QUESTIONS['magic_wand'], indent=2)}
+
+## STEP 5: Six Pillars Deep Evaluation
+
+Evaluate each pillar with detailed criteria:
+
+### Pillar 1: {self.FRAMEWORK_PILLARS['pillar_1']['name']} (Weight: {self.FRAMEWORK_PILLARS['pillar_1']['weight']}%)
+
+**Description:** {self.FRAMEWORK_PILLARS['pillar_1']['description']}
+
+**What Exceptional Looks Like:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_1']['what_exceptional_looks_like'], indent=2)}
+
+**What is NOT Sufficient:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_1']['what_NOT_sufficient'], indent=2)}
+
+**Strong Signals to Look For:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_1']['strong_signals'], indent=2)}
+
+Score: 0-10 where:
+- 0-3: Does not meet minimum bar
+- 4-5: Functional but not strong
+- 6-7: Solid, meets expectations
+- 8-9: Strong, above average
+- 10: Exceptional, top-tier
+
+### Pillar 2: {self.FRAMEWORK_PILLARS['pillar_2']['name']} (Weight: {self.FRAMEWORK_PILLARS['pillar_2']['weight']}%)
+
+**Description:** {self.FRAMEWORK_PILLARS['pillar_2']['description']}
+
+**What Exceptional Looks Like:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_2']['what_exceptional_looks_like'], indent=2)}
+
+**What is NOT Sufficient:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_2']['what_NOT_sufficient'], indent=2)}
+
+**Strong Signals to Look For:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_2']['strong_signals'], indent=2)}
+
+Score: 0-10 (same scale as above)
+
+### Pillar 3: {self.FRAMEWORK_PILLARS['pillar_3']['name']} (Weight: {self.FRAMEWORK_PILLARS['pillar_3']['weight']}%) - NON-NEGOTIABLE
+
+**Description:** {self.FRAMEWORK_PILLARS['pillar_3']['description']}
+
+**What Exceptional Looks Like:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_3']['what_exceptional_looks_like'], indent=2)}
+
+**What is NOT Sufficient:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_3']['what_NOT_sufficient'], indent=2)}
+
+**Strong Signals to Look For:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_3']['strong_signals'], indent=2)}
+
+Score: 0-10 (same scale) - **CRITICAL: Score < 6 = automatic "No Screen"**
+
+### Pillar 4: {self.FRAMEWORK_PILLARS['pillar_4']['name']} (Weight: {self.FRAMEWORK_PILLARS['pillar_4']['weight']}%)
+
+**Description:** {self.FRAMEWORK_PILLARS['pillar_4']['description']}
+
+**What Exceptional Looks Like:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_4']['what_exceptional_looks_like'], indent=2)}
+
+**What is NOT Sufficient:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_4']['what_NOT_sufficient'], indent=2)}
+
+**Strong Signals to Look For:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_4']['strong_signals'], indent=2)}
+
+Score: 0-10 (same scale as above)
+
+### Pillar 5: {self.FRAMEWORK_PILLARS['pillar_5']['name']} (Weight: {self.FRAMEWORK_PILLARS['pillar_5']['weight']}%)
+
+**Description:** {self.FRAMEWORK_PILLARS['pillar_5']['description']}
+
+**What Exceptional Looks Like:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_5']['what_exceptional_looks_like'], indent=2)}
+
+**What is NOT Sufficient:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_5']['what_NOT_sufficient'], indent=2)}
+
+**Strong Signals to Look For:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_5']['strong_signals'], indent=2)}
+
+Score: 0-10 (same scale as above)
+
+### Pillar 6: {self.FRAMEWORK_PILLARS['pillar_6']['name']} (Weight: {self.FRAMEWORK_PILLARS['pillar_6']['weight']}%)
+
+**Description:** {self.FRAMEWORK_PILLARS['pillar_6']['description']}
+
+**What Exceptional Looks Like:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_6']['what_exceptional_looks_like'], indent=2)}
+
+**What is NOT Sufficient:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_6']['what_NOT_sufficient'], indent=2)}
+
+**Strong Signals to Look For:**
+{json.dumps(self.FRAMEWORK_PILLARS['pillar_6']['strong_signals'], indent=2)}
+
+Score: 0-10 (same scale as above)
+
+## STEP 6: Must-Have Signals Check (ALL Required for Strong Screen)
+
+Does candidate demonstrate ALL of these?
+{json.dumps(self.MUST_HAVE_SIGNALS, indent=2)}
+
+Missing any → max decision = "Screen" (not "Strong Screen")
+
+## STEP 7: Differentiation Signals Check (Need 3+ for Strong Screen)
+
+Count how many of these the candidate demonstrates:
+{json.dumps(self.DIFFERENTIATION_SIGNALS, indent=2)}
+
+- 0-2 differentiators → "Maybe" or "Screen"
+- 3-5 differentiators → "Screen" or "Strong Screen"
+- 6+ differentiators → Likely "Strong Screen"
+
+## STEP 8: Final Decision Criteria
+
+**Calculate Total Score:**
+- Sum of all 6 pillar scores = Total Score (out of 60)
+
+**Decision Thresholds:**
+- **Strong Screen (48-60 points)**: Meets all must-haves + 3+ differentiators + no red flags + Pillar 3 ≥ 7
+- **Screen (36-47 points)**: Meets most must-haves + some differentiators + 1-2 yellow flags acceptable
+- **Maybe (24-35 points)**: Missing some must-haves or multiple yellow flags + requires further conversation
+- **No Screen (<24 points)**: Fails minimum thresholds or has red flags or Pillar 3 < 6
+
+# OUTPUT FORMAT
+
+Return your analysis as JSON with this EXACT structure:
+
 {{
   "candidate_name": "Name from resume",
   "analysis_date": "{datetime.now().isoformat()}",
+  "minimum_thresholds_met": {{
+    "personal_ai_projects": true/false,
+    "building_in_public": true/false,
+    "resume_creativity": true/false,
+    "all_met": true/false
+  }},
+  "red_flags_found": ["list any red flags found, or empty array"],
+  "yellow_flags_found": ["list any yellow flags found, or empty array"],
+  "critical_questions_analysis": {{
+    "paradigm_shift_examples": ["specific projects showing transformational vs incremental thinking"],
+    "future_proofing_examples": ["projects architected for future AI capabilities"],
+    "magic_wand_examples": ["projects designed for eventual full automation"]
+  }},
   "pillars": {{
     "pillar_1": {{
-      "name": "Technical Skills",
+      "name": "{self.FRAMEWORK_PILLARS['pillar_1']['name']}",
       "score": 0-10,
-      "level": 1-5,
-      "evidence": "specific examples from resume",
-      "strengths": ["strength 1", "strength 2"],
-      "gaps": ["gap 1", "gap 2"]
+      "level": "Developing|Functional|Proficient|Advanced|Expert",
+      "evidence": "Specific examples from resume with quotes",
+      "strengths": ["strength 1", "strength 2", "..."],
+      "gaps": ["gap 1", "gap 2", "..."]
     }},
-    ... (repeat for all 6 pillars)
+    "pillar_2": {{
+      "name": "{self.FRAMEWORK_PILLARS['pillar_2']['name']}",
+      "score": 0-10,
+      "level": "Developing|Functional|Proficient|Advanced|Expert",
+      "evidence": "Specific examples from resume with quotes",
+      "strengths": ["strength 1", "strength 2", "..."],
+      "gaps": ["gap 1", "gap 2", "..."]
+    }},
+    "pillar_3": {{
+      "name": "{self.FRAMEWORK_PILLARS['pillar_3']['name']}",
+      "score": 0-10,
+      "level": "Developing|Functional|Proficient|Advanced|Expert",
+      "evidence": "Specific examples from resume with quotes",
+      "strengths": ["strength 1", "strength 2", "..."],
+      "gaps": ["gap 1", "gap 2", "..."]
+    }},
+    "pillar_4": {{
+      "name": "{self.FRAMEWORK_PILLARS['pillar_4']['name']}",
+      "score": 0-10,
+      "level": "Developing|Functional|Proficient|Advanced|Expert",
+      "evidence": "Specific examples from resume with quotes",
+      "strengths": ["strength 1", "strength 2", "..."],
+      "gaps": ["gap 1", "gap 2", "..."]
+    }},
+    "pillar_5": {{
+      "name": "{self.FRAMEWORK_PILLARS['pillar_5']['name']}",
+      "score": 0-10,
+      "level": "Developing|Functional|Proficient|Advanced|Expert",
+      "evidence": "Specific examples from resume with quotes",
+      "strengths": ["strength 1", "strength 2", "..."],
+      "gaps": ["gap 1", "gap 2", "..."]
+    }},
+    "pillar_6": {{
+      "name": "{self.FRAMEWORK_PILLARS['pillar_6']['name']}",
+      "score": 0-10,
+      "level": "Developing|Functional|Proficient|Advanced|Expert",
+      "evidence": "Specific examples from resume with quotes",
+      "strengths": ["strength 1", "strength 2", "..."],
+      "gaps": ["gap 1", "gap 2", "..."]
+    }}
+  }},
+  "must_have_signals": {{
+    "signals_found": ["which must-have signals were found"],
+    "signals_missing": ["which must-have signals were missing"],
+    "all_present": true/false
+  }},
+  "differentiation_signals": {{
+    "signals_found": ["which differentiation signals were found"],
+    "count": number,
+    "sufficient_for_strong_screen": true/false
   }},
   "total_score": 0-60,
-  "weighted_score": 0-100,
-  "decision": "Strong Screen | Screen | Maybe | No Screen",
+  "decision": "Strong Screen|Screen|Maybe|No Screen",
+  "decision_rationale": "2-3 sentences explaining the decision based on framework",
   "top_strengths": ["strength 1", "strength 2", "strength 3"],
   "top_concerns": ["concern 1", "concern 2", "concern 3"],
-  "recommendation": "2-3 sentence recommendation",
-  "suitable_roles": ["role suggestions based on profile"]
-}}"""
+  "recommendation": "Detailed 3-5 sentence recommendation",
+  "suitable_roles": ["specific role suggestions based on profile"],
+  "interview_focus_areas": ["areas to probe deeper in interview"]
+}}
+
+# IMPORTANT INSTRUCTIONS
+
+1. **Be CRITICAL and RIGOROUS** - This is 2025, the bar is high
+2. **Look for EVIDENCE** - Claims without examples = not sufficient
+3. **Speed matters** - Building in hours/days, not weeks/months
+4. **Personal projects trump corporate work** - We want builders who can't NOT build
+5. **AI depth is NON-NEGOTIABLE** - Pillar 3 score < 6 = automatic No Screen
+6. **Creative range matters** - Portfolio approach (8-10 concurrent projects) is exceptional
+7. **Quote SPECIFIC examples** from the resume in your evidence
+8. **Apply The Three Critical Questions** to judge quality of thinking
+9. **Check for building in public** - Blog/LinkedIn/GitHub/speaking presence
+
+Return ONLY valid JSON, nothing else."""
         return prompt
 
-    def analyze_with_ai(self, resume_text):
-        """Send resume to AI for analysis"""
+    def analyze_with_ai(self, resume_text, resume_image=None):
+        """Send resume to AI for analysis (with optional visual analysis)"""
+        import base64
+        from io import BytesIO
+
         prompt = self.create_analysis_prompt(resume_text)
 
         try:
             if self.api_provider == "openai":
-                # GPT-5 models don't support custom temperature, only default (1)
+                # Prepare messages
+                messages = [
+                    {"role": "system", "content": "You are an expert AI PM hiring consultant. Return valid JSON only."}
+                ]
+
+                # If image available, add vision analysis
+                if resume_image:
+                    # Convert PIL image to base64
+                    buffered = BytesIO()
+                    resume_image.save(buffered, format="PNG")
+                    img_str = base64.b64encode(buffered.getvalue()).decode()
+
+                    messages.append({
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": prompt + "\n\nADDITIONALLY: Evaluate the VISUAL DESIGN of this resume. Consider: creativity, visual hierarchy, readability, professional appearance, use of color/typography, and whether design demonstrates product taste. Include this in your analysis under a 'design_evaluation' field with score (0-10) and comments."
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/png;base64,{img_str}"
+                                }
+                            }
+                        ]
+                    })
+                else:
+                    messages.append({"role": "user", "content": prompt})
+
                 params = {
                     "model": self.model,
-                    "messages": [
-                        {"role": "system", "content": "You are an expert AI PM hiring consultant. Return valid JSON only."},
-                        {"role": "user", "content": prompt}
-                    ],
+                    "messages": messages,
                     "response_format": {"type": "json_object"}
                 }
 
@@ -282,12 +753,39 @@ Return your analysis in JSON format with this structure:
                 result = response.choices[0].message.content
 
             elif self.api_provider == "anthropic":
+                # Prepare content blocks
+                content_blocks = []
+
+                # Add image if available
+                if resume_image:
+                    buffered = BytesIO()
+                    resume_image.save(buffered, format="PNG")
+                    img_str = base64.b64encode(buffered.getvalue()).decode()
+
+                    content_blocks.append({
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": "image/png",
+                            "data": img_str
+                        }
+                    })
+                    content_blocks.append({
+                        "type": "text",
+                        "text": prompt + "\n\nADDITIONALLY: Evaluate the VISUAL DESIGN of this resume shown in the image. Consider: creativity, visual hierarchy, readability, professional appearance, use of color/typography, and whether design demonstrates product taste. Include this in your analysis under a 'design_evaluation' field with score (0-10) and comments."
+                    })
+                else:
+                    content_blocks.append({
+                        "type": "text",
+                        "text": prompt
+                    })
+
                 response = self.client.messages.create(
                     model=self.model,
                     max_tokens=4000,
                     temperature=0.3,
                     messages=[
-                        {"role": "user", "content": prompt}
+                        {"role": "user", "content": content_blocks}
                     ]
                 )
                 result = response.content[0].text
@@ -299,8 +797,18 @@ Return your analysis in JSON format with this structure:
                     result = result.split("```")[1].split("```")[0].strip()
 
             elif self.api_provider == "google":
+                # Prepare content parts
+                content_parts = []
+
+                if resume_image:
+                    # Gemini can accept PIL images directly
+                    content_parts.append(resume_image)
+                    content_parts.append(prompt + "\n\nADDITIONALLY: Evaluate the VISUAL DESIGN of this resume shown in the image. Consider: creativity, visual hierarchy, readability, professional appearance, use of color/typography, and whether design demonstrates product taste. Include this in your analysis under a 'design_evaluation' field with score (0-10) and comments.")
+                else:
+                    content_parts.append(prompt)
+
                 response = self.client.generate_content(
-                    prompt,
+                    content_parts,
                     generation_config=genai.GenerationConfig(
                         temperature=0.3,
                         response_mime_type="application/json"
@@ -322,14 +830,25 @@ Return your analysis in JSON format with this structure:
         print(f"📄 Extracting text from {file_type}...")
         resume_text = self.extract_text_from_document(file_path)
 
+        # Try to get visual representation for PDF files
+        resume_image = None
+        if file_ext == '.pdf':
+            print(f"🖼️  Converting PDF to image for visual design analysis...")
+            resume_image = self.convert_pdf_to_images(file_path)
+            if resume_image:
+                print(f"✅ Visual analysis enabled")
+            else:
+                print(f"⚠️  Visual analysis unavailable (install pdf2image for design evaluation)")
+
         print(f"🤖 Analyzing with {self.api_provider.upper()} ({self.model})...")
-        analysis = self.analyze_with_ai(resume_text)
+        analysis = self.analyze_with_ai(resume_text, resume_image)
 
         # Add metadata about the analysis
         analysis['_metadata'] = {
             'provider': self.api_provider,
             'model': self.model,
-            'model_display_name': self.AVAILABLE_MODELS[self.api_provider][self.model]['name']
+            'model_display_name': self.AVAILABLE_MODELS[self.api_provider][self.model]['name'],
+            'visual_analysis': resume_image is not None
         }
 
         print(f"✅ Analysis complete!")

@@ -26,11 +26,22 @@ def generate_markdown(analysis, output_path):
     metadata = analysis.get('_metadata', {})
     model_name = metadata.get('model_display_name', 'Unknown Model')
 
+    # Extract new framework fields
+    min_thresholds = analysis.get('minimum_thresholds_met', {})
+    red_flags = analysis.get('red_flags_found', [])
+    yellow_flags = analysis.get('yellow_flags_found', [])
+    critical_q = analysis.get('critical_questions_analysis', {})
+    must_have = analysis.get('must_have_signals', {})
+    diff_signals = analysis.get('differentiation_signals', {})
+    decision_rationale = analysis.get('decision_rationale', '')
+    interview_areas = analysis.get('interview_focus_areas', [])
+    design_eval = analysis.get('design_evaluation', {})
+
     md_content = f"""# AI PM Resume Analysis: {candidate}
 
 **Analysis Date**: {date_formatted}
 **Model**: {model_name}
-**Total Score**: {total_score}/60 ({weighted_score}/100 weighted)
+**Total Score**: {total_score}/60
 **Decision**: **{decision}**
 
 ---
@@ -39,17 +50,113 @@ def generate_markdown(analysis, output_path):
 
 {recommendation}
 
-### Decision Criteria
+**Decision Rationale**: {decision_rationale}
 
-| Score Range | Decision | Meaning |
-|-------------|----------|---------|
-| 8.0 - 10.0 | **Strong Screen** | Top candidate, prioritize for interview |
-| 6.5 - 7.9 | **Screen** | Solid candidate, invite to interview |
-| 5.0 - 6.4 | **Maybe** | Borderline, use additional criteria |
-| Below 5.0 | **No Screen** | Does not meet bar |
+### 2025 Framework Evaluation
 
-**This Candidate**: {decision} ({weighted_score}/100)
+| Criteria | Status |
+|----------|--------|
+| **Minimum Thresholds** | {"✅ All Met" if min_thresholds.get('all_met') else "❌ Failed"} |
+| **Red Flags** | {"❌ " + str(len(red_flags)) + " Found" if red_flags else "✅ None"} |
+| **Must-Have Signals** | {"✅ All Present" if must_have.get('all_present') else "⚠️ " + str(len(must_have.get('signals_missing', []))) + " Missing"} |
+| **Differentiation Signals** | {diff_signals.get('count', 0)}/8 ({" ✅ Sufficient" if diff_signals.get('sufficient_for_strong_screen') else "⚠️ Needs More"})|
 
+---
+
+## Minimum Thresholds
+
+"""
+
+    if min_thresholds:
+        md_content += f"""
+- **Personal AI Projects**: {"✅ Met" if min_thresholds.get('personal_ai_projects') else "❌ Not Met"}
+- **Building in Public**: {"✅ Met" if min_thresholds.get('building_in_public') else "❌ Not Met"}
+- **Resume Creativity**: {"✅ Met" if min_thresholds.get('resume_creativity') else "❌ Not Met"}
+
+"""
+
+    # Red and Yellow Flags
+    if red_flags:
+        md_content += f"""## 🚩 Red Flags (Critical Issues)
+
+"""
+        for flag in red_flags:
+            md_content += f"- ❌ {flag}\n"
+        md_content += "\n"
+
+    if yellow_flags:
+        md_content += f"""## ⚠️ Yellow Flags (Investigate Further)
+
+"""
+        for flag in yellow_flags:
+            md_content += f"- ⚠️ {flag}\n"
+        md_content += "\n"
+
+    # Critical Questions Analysis
+    if critical_q:
+        md_content += f"""---
+
+## The Three Critical Questions Analysis
+
+### 1. Paradigm Shift (Car vs. Faster Horse)
+"""
+        for ex in critical_q.get('paradigm_shift_examples', []):
+            md_content += f"- {ex}\n"
+
+        md_content += f"""
+### 2. Future-Proofing (Gets Better with AI Advances)
+"""
+        for ex in critical_q.get('future_proofing_examples', []):
+            md_content += f"- {ex}\n"
+
+        md_content += f"""
+### 3. Magic Wand Test (Designed for Full Automation)
+"""
+        for ex in critical_q.get('magic_wand_examples', []):
+            md_content += f"- {ex}\n"
+        md_content += "\n"
+
+    # Design Evaluation
+    if design_eval:
+        md_content += f"""---
+
+## Resume Design Evaluation
+
+**Design Score**: {design_eval.get('score', 'N/A')}/10
+
+**Comments**: {design_eval.get('comments', 'Visual analysis not available')}
+
+"""
+
+    md_content += f"""---
+
+## Must-Have Signals
+
+**Signals Found** ({len(must_have.get('signals_found', []))}/5):
+"""
+    for signal in must_have.get('signals_found', []):
+        md_content += f"- ✅ {signal}\n"
+
+    if must_have.get('signals_missing'):
+        md_content += f"""
+**Signals Missing** ({len(must_have.get('signals_missing', []))}/5):
+"""
+        for signal in must_have.get('signals_missing', []):
+            md_content += f"- ❌ {signal}\n"
+
+    md_content += f"""
+---
+
+## Differentiation Signals
+
+**Count**: {diff_signals.get('count', 0)}/8 (Need 3+ for Strong Screen)
+
+**Signals Found**:
+"""
+    for signal in diff_signals.get('signals_found', []):
+        md_content += f"- ✅ {signal}\n"
+
+    md_content += f"""
 ---
 
 ## Top 3 Strengths
@@ -124,6 +231,18 @@ Based on this candidate's profile, they may be a better fit for:
 
         md_content += "\n---\n\n"
 
+    # Interview focus areas
+    if interview_areas:
+        md_content += f"""## Interview Focus Areas
+
+If moving forward, probe these areas in depth:
+
+"""
+        for area in interview_areas:
+            md_content += f"- {area}\n"
+
+        md_content += "\n---\n\n"
+
     # Footer
     md_content += f"""
 ## About This Analysis
@@ -164,6 +283,17 @@ def generate_html(analysis, output_path):
     # Extract model metadata
     metadata = analysis.get('_metadata', {})
     model_name = metadata.get('model_display_name', 'Unknown Model')
+
+    # Extract new framework fields
+    min_thresholds = analysis.get('minimum_thresholds_met', {})
+    red_flags = analysis.get('red_flags_found', [])
+    yellow_flags = analysis.get('yellow_flags_found', [])
+    critical_q = analysis.get('critical_questions_analysis', {})
+    must_have = analysis.get('must_have_signals', {})
+    diff_signals = analysis.get('differentiation_signals', {})
+    decision_rationale = analysis.get('decision_rationale', '')
+    interview_areas = analysis.get('interview_focus_areas', [])
+    design_eval = analysis.get('design_evaluation', {})
 
     # Decision styling
     decision_class = {
@@ -496,42 +626,143 @@ def generate_html(analysis, output_path):
             <h2>Executive Summary</h2>
             <div class="summary-box">
                 <p>{recommendation}</p>
+                {f'<p style="margin-top: 12px;"><strong>Decision Rationale:</strong> {decision_rationale}</p>' if decision_rationale else ''}
             </div>
 
-            <!-- Decision Criteria Table -->
+            <!-- 2025 Framework Evaluation -->
+            <h2>2025 Framework Evaluation</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Score Range</th>
-                        <th>Decision</th>
-                        <th>Meaning</th>
+                        <th>Criteria</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>8.0 - 10.0</td>
-                        <td><strong>Strong Screen</strong></td>
-                        <td>Top candidate, prioritize for interview</td>
+                        <td><strong>Minimum Thresholds</strong></td>
+                        <td>{"✅ All Met" if min_thresholds.get('all_met') else "❌ Failed"}</td>
                     </tr>
                     <tr>
-                        <td>6.5 - 7.9</td>
-                        <td><strong>Screen</strong></td>
-                        <td>Solid candidate, invite to interview</td>
+                        <td><strong>Red Flags</strong></td>
+                        <td>{"❌ " + str(len(red_flags)) + " Found" if red_flags else "✅ None"}</td>
                     </tr>
                     <tr>
-                        <td>5.0 - 6.4</td>
-                        <td><strong>Maybe</strong></td>
-                        <td>Borderline, use additional criteria</td>
+                        <td><strong>Must-Have Signals</strong></td>
+                        <td>{"✅ All Present" if must_have.get('all_present') else "⚠️ " + str(len(must_have.get('signals_missing', []))) + " Missing"}</td>
                     </tr>
                     <tr>
-                        <td>Below 5.0</td>
-                        <td><strong>No Screen</strong></td>
-                        <td>Does not meet bar</td>
+                        <td><strong>Differentiation Signals</strong></td>
+                        <td>{diff_signals.get('count', 0)}/8 ({" ✅ Sufficient" if diff_signals.get('sufficient_for_strong_screen') else "⚠️ Needs More"})</td>
                     </tr>
                 </tbody>
             </table>
 
-            <p><strong>This Candidate</strong>: {decision} ({weighted_score}/100)</p>
+            <!-- Minimum Thresholds -->
+            <h2>Minimum Thresholds</h2>
+            <ul class="sub-list">
+                <li>{"✅" if min_thresholds.get('personal_ai_projects') else "❌"} Personal AI Projects</li>
+                <li>{"✅" if min_thresholds.get('building_in_public') else "❌"} Building in Public</li>
+                <li>{"✅" if min_thresholds.get('resume_creativity') else "❌"} Resume Creativity</li>
+            </ul>
+"""
+
+    # Add Red Flags section if any
+    if red_flags:
+        html_content += """
+            <!-- Red Flags -->
+            <h2>🚩 Red Flags (Critical Issues)</h2>
+            <ul class="concern-list">
+"""
+        for flag in red_flags:
+            html_content += f"                <li>{flag}</li>\n"
+        html_content += """            </ul>
+"""
+
+    # Add Yellow Flags section if any
+    if yellow_flags:
+        html_content += """
+            <!-- Yellow Flags -->
+            <h2>⚠️ Yellow Flags (Investigate Further)</h2>
+            <ul class="concern-list" style="background: #FEF3C7; border-left-color: #F59E0B;">
+"""
+        for flag in yellow_flags:
+            html_content += f"                <li>{flag}</li>\n"
+        html_content += """            </ul>
+"""
+
+    # Add Critical Questions Analysis
+    if critical_q:
+        html_content += """
+            <!-- Critical Questions Analysis -->
+            <h2>The Three Critical Questions Analysis</h2>
+
+            <h3>1. Paradigm Shift (Car vs. Faster Horse)</h3>
+            <ul class="sub-list">
+"""
+        for ex in critical_q.get('paradigm_shift_examples', []):
+            html_content += f"                <li>{ex}</li>\n"
+        html_content += """            </ul>
+
+            <h3>2. Future-Proofing (Gets Better with AI Advances)</h3>
+            <ul class="sub-list">
+"""
+        for ex in critical_q.get('future_proofing_examples', []):
+            html_content += f"                <li>{ex}</li>\n"
+        html_content += """            </ul>
+
+            <h3>3. Magic Wand Test (Designed for Full Automation)</h3>
+            <ul class="sub-list">
+"""
+        for ex in critical_q.get('magic_wand_examples', []):
+            html_content += f"                <li>{ex}</li>\n"
+        html_content += """            </ul>
+"""
+
+    # Add Design Evaluation
+    if design_eval:
+        html_content += f"""
+            <!-- Resume Design Evaluation -->
+            <h2>Resume Design Evaluation</h2>
+            <div class="summary-box" style="background: #F0FDF4; border-left-color: #10B981;">
+                <p><strong>Design Score:</strong> {design_eval.get('score', 'N/A')}/10</p>
+                <p style="margin-top: 8px;">{design_eval.get('comments', 'Visual analysis not available')}</p>
+            </div>
+"""
+
+    # Add Must-Have Signals
+    html_content += f"""
+            <!-- Must-Have Signals -->
+            <h2>Must-Have Signals</h2>
+            <p><strong>Signals Found</strong> ({len(must_have.get('signals_found', []))}/5):</p>
+            <ul class="strength-list">
+"""
+    for signal in must_have.get('signals_found', []):
+        html_content += f"                <li>{signal}</li>\n"
+    html_content += """            </ul>
+"""
+
+    if must_have.get('signals_missing'):
+        html_content += f"""
+            <p><strong>Signals Missing</strong> ({len(must_have.get('signals_missing', []))}/5):</p>
+            <ul class="concern-list">
+"""
+        for signal in must_have.get('signals_missing', []):
+            html_content += f"                <li>{signal}</li>\n"
+        html_content += """            </ul>
+"""
+
+    # Add Differentiation Signals
+    html_content += f"""
+            <!-- Differentiation Signals -->
+            <h2>Differentiation Signals</h2>
+            <p><strong>Count:</strong> {diff_signals.get('count', 0)}/8 (Need 3+ for Strong Screen)</p>
+            <p><strong>Signals Found:</strong></p>
+            <ul class="strength-list">
+"""
+    for signal in diff_signals.get('signals_found', []):
+        html_content += f"                <li>{signal}</li>\n"
+    html_content += """            </ul>
 
             <!-- Top Strengths -->
             <h2>Top 3 Strengths</h2>
@@ -617,6 +848,20 @@ def generate_html(analysis, output_path):
             html_content += f"                <div class=\"role-item\">{role}</div>\n"
 
         html_content += """            </div>
+"""
+
+    # Interview focus areas
+    if interview_areas:
+        html_content += """
+            <!-- Interview Focus Areas -->
+            <h2>Interview Focus Areas</h2>
+            <p>If moving forward, probe these areas in depth:</p>
+            <ul class="sub-list">
+"""
+        for area in interview_areas:
+            html_content += f"                <li>{area}</li>\n"
+
+        html_content += """            </ul>
 """
 
     # Footer

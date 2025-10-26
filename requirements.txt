@@ -5,9 +5,16 @@ PyPDF2>=3.0.0
 python-dotenv>=1.0.0
 
 # AI Provider SDKs (install at least ONE)
-openai>=1.0.0        # For GPT-4
-anthropic>=0.18.0    # For Claude Sonnet
-google-generativeai>=0.3.0  # For Gemini
+openai>=1.0.0        # For GPT-5
+anthropic>=0.18.0    # For Claude Sonnet 4.5
+google-generativeai>=0.3.0  # For Gemini 2.5 Pro
+
+# Optional: For resume design evaluation (visual analysis)
+pdf2image>=1.16.0    # Converts PDF to images for visual analysis
+# Note: pdf2image also requires poppler-utils to be installed on your system:
+#   macOS: brew install poppler
+#   Linux: sudo apt-get install poppler-utils
+#   Windows: Download from https://github.com/oschwartz10612/poppler-windows/releases/
 
 # Note: You only need to install ONE of the AI provider packages,
 # but having all three installed gives you maximum flexibility.
