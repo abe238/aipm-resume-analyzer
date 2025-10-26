@@ -1498,6 +1498,45 @@ def generate_aggregated_html(analyses, output_path):
             margin: 0 4px;
         }}
         .badge-consensus {{ background: #e6f3ff; color: #0066cc; }}
+
+        /* Roles Section */
+        .roles-list {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }}
+
+        .role-item {{
+            background: #EFF6FF;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border-left: 3px solid #3B82F6;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }}
+
+        /* Interview Focus Areas */
+        .sub-list {{
+            margin: 12px 0;
+            padding-left: 0;
+            list-style: none;
+        }}
+
+        .sub-list li {{
+            padding: 8px 12px;
+            margin: 6px 0;
+            background: #F3F4F6;
+            border-left: 3px solid #9CA3AF;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }}
+
+        /* Grouped paragraph styling */
+        .grouped-paragraph {{
+            line-height: 1.8;
+            margin: 16px 0;
+        }}
     </style>
 </head>
 <body>
