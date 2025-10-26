@@ -17,7 +17,6 @@ Perfect for hiring managers screening AI PM candidates, recruiters standardizing
 - 📊 **Detailed Scoring** - 0-10 scores per pillar with evidence and level assessment
 - 📝 **Beautiful Reports** - Generates markdown and HTML outputs with clean design
 - ⚡ **Fast Analysis** - Get results in 30 seconds vs 10+ minutes manual review
-- 🔒 **Privacy-First** - Runs locally, your data stays on your machine
 - 💰 **Cost-Effective** - $0.10-0.60 per resume depending on model choice
 - 🎨 **Professional Design** - HTML reports styled with Stripe/Tailwind-inspired CSS
 
@@ -467,16 +466,18 @@ aipm-resume-analyzer/
 
 ## 🔒 Privacy & Security
 
-**Your data stays private:**
-- ✅ Runs locally on your computer
-- ✅ Resumes sent only to YOUR chosen AI provider
-- ✅ No data stored on our servers (we don't have any!)
-- ✅ API keys stored in local `.env` file
+**How your data is handled:**
+- ⚠️ **Resume data is sent to your chosen AI provider** (OpenAI, Anthropic, or Google) for analysis
+- ✅ **No data stored by this tool** - we don't have servers, only your local machine
+- ✅ **You control which provider** receives your data via API selection
+- ✅ **API keys stored locally** in `.env` file on your machine
+- 📋 **Review provider policies**: Each AI provider has their own data retention and privacy policies
 
 **Best practices:**
 - Never commit `.env` file to git (it's in `.gitignore`)
 - Don't share your API keys
 - Rotate keys if accidentally exposed
+- Review your chosen AI provider's data policies before analyzing sensitive resumes
 - Keep this tool updated for security patches
 
 ---
