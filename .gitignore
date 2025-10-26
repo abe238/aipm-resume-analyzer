@@ -74,3 +74,6 @@ $RECYCLE.BIN/
 # !examples/*.pdf
 # !examples/*.md
 # !examples/*.html
+
+# Allow example.env in examples folder
+!examples/example.env

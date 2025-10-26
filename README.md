@@ -24,12 +24,12 @@ Perfect for hiring managers screening AI PM candidates, recruiters standardizing
 ### Prerequisites
 
 - **Python 3.7+** installed on your computer
-- **API key** from ONE of these providers:
+- **API key** from ONE of these providers (see Step 1 below):
   - [OpenAI](https://platform.openai.com/api-keys) (GPT-4)
   - [Anthropic](https://console.anthropic.com/settings/keys) (Claude)
   - [Google](https://aistudio.google.com/app/apikey) (Gemini)
 
-### Installation
+### Installation & Setup
 
 **1. Download or clone this repository:**
 ```bash
@@ -37,7 +37,7 @@ git clone https://github.com/abediaz/aipm-resume-analyzer.git
 cd aipm-resume-analyzer
 ```
 
-**2. Run the installation script:**
+**2. Install dependencies:**
 
 **macOS/Linux:**
 ```bash
@@ -49,7 +49,63 @@ cd aipm-resume-analyzer
 pip install -r requirements.txt
 ```
 
-**3. You're ready!** The tool will guide you through API setup on first run.
+**3. ⚠️ REQUIRED: Create your .env file with API key**
+
+**IMPORTANT**: The `.env` file is **hidden** by default. Follow these steps carefully:
+
+**Option A: Copy from example (recommended)**
+```bash
+# Copy the example file to create your .env
+cp examples/example.env .env
+
+# Then edit .env and add your API key
+nano .env  # or use any text editor
+```
+
+**Option B: Let the tool create it**
+```bash
+# Run the analyzer once - it will create .env automatically
+./analyze resume.pdf
+
+# You'll see instructions showing where the .env file was created
+# Then edit .env and add your API key
+```
+
+**📁 Where is the .env file?**
+- **Exact location**: `aipm-resume-analyzer/.env` (in the same folder as the `analyze` script)
+- **Full path example**: `/Users/yourname/aipm-resume-analyzer/.env`
+
+**🔍 Can't see the .env file?**
+
+The `.env` file starts with a dot (.), making it hidden by default:
+
+- **macOS Finder**: Press `Cmd + Shift + .` to show hidden files
+- **macOS Terminal**: Use `ls -la` instead of `ls`
+- **Windows Explorer**: Go to View → Show → Hidden items
+- **Windows Command Prompt**: Use `dir /a` instead of `dir`
+- **Linux Terminal**: Use `ls -la` instead of `ls`
+
+**✏️ Editing the .env file:**
+
+Open `.env` in any text editor and add your API key:
+
+```bash
+# For OpenAI (example)
+OPENAI_API_KEY=sk-proj-your-actual-key-here
+
+# OR for Anthropic
+ANTHROPIC_API_KEY=sk-ant-your-actual-key-here
+
+# OR for Google
+GOOGLE_API_KEY=your-actual-key-here
+
+# Default provider
+DEFAULT_PROVIDER=openai
+```
+
+**See `examples/example.env` for a complete template with all options.**
+
+**4. You're ready!** Run your first analysis:
 
 ---
 
@@ -216,9 +272,46 @@ pip3 install -r requirements.txt
 
 ### "API key not found"
 
-1. Check your `.env` file exists: `ls -la .env`
-2. Ensure key is on the correct line (no extra spaces)
-3. Save the file after adding your key
+**Problem**: The tool can't find your API key.
+
+**Solutions**:
+
+1. **Check `.env` file exists**:
+   ```bash
+   # Show all files including hidden ones
+   ls -la .env
+
+   # Should show: -rw-r--r--  1 yourname  staff  XXX Oct 25 XX:XX .env
+   ```
+
+2. **Verify `.env` file location**:
+   - Must be in the **root directory** of the project
+   - Same folder as the `analyze` script
+   - NOT in `examples/`, `bin/`, or any subfolder
+
+3. **Check file contents**:
+   ```bash
+   # View the .env file
+   cat .env
+
+   # Make sure you see your actual API key, not just empty values
+   ```
+
+4. **Common mistakes**:
+   - ❌ Extra spaces: `OPENAI_API_KEY = sk-...` (wrong)
+   - ✅ No spaces: `OPENAI_API_KEY=sk-...` (correct)
+   - ❌ Quotes around key: `OPENAI_API_KEY="sk-..."` (wrong)
+   - ✅ No quotes: `OPENAI_API_KEY=sk-...` (correct)
+   - ❌ Wrong filename: `.env.txt` or `env` (wrong)
+   - ✅ Exact name: `.env` (correct)
+
+5. **Start fresh**:
+   ```bash
+   # Delete old .env and copy from example
+   rm .env
+   cp examples/example.env .env
+   nano .env  # Add your key
+   ```
 
 ### "Resume file not found"
 
@@ -295,9 +388,7 @@ Open multiple HTML reports in browser tabs for side-by-side comparison.
 ## 📖 Examples
 
 See the `examples/` folder for:
-- `sample_resume.pdf` - Example input
-- `sample_output.md` - Example markdown report
-- `sample_output.html` - Example HTML report
+- **`example.env`** - Complete template for configuring your API keys (copy this to create your `.env` file)
 
 ---
 
@@ -312,16 +403,19 @@ aipm-resume-analyzer/
 ├── templates/
 │   └── output_generator.py        # Report generation
 ├── examples/
-│   ├── sample_resume.pdf          # Example resume
-│   ├── sample_output.md           # Example markdown output
-│   └── sample_output.html         # Example HTML output
+│   └── example.env                # ⭐ Template for your .env file (copy this!)
 ├── output/                        # Generated reports (created on first run)
 ├── requirements.txt               # Python dependencies
-├── .env                          # API keys (created on first run)
+├── analyze                        # Convenience wrapper script
+├── .env                          # ⚠️ YOUR API KEYS (create from example.env)
 ├── .gitignore
 ├── LICENSE
 └── README.md
 ```
+
+**Key files:**
+- **`examples/example.env`** - Template showing all API configuration options
+- **`.env`** - Your actual API keys (you must create this from the example)
 
 ---
 

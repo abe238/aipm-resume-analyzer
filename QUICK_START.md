@@ -4,40 +4,53 @@
 
 **1. Navigate to the folder:**
 ```bash
-cd /Users/abediaz/Documents/SecondBrain/10\ -\ Projects/Applied_AI_PM/tools/aipm-resume-analyzer
+cd aipm-resume-analyzer
 ```
 
-**2. The dependencies are already installed in the virtual environment!**
+**2. Install dependencies:**
+```bash
+# macOS/Linux
+./scripts/install.sh
+
+# Windows
+pip install -r requirements.txt
+```
 
 ## Usage
 
-### Step 1: Run the analyzer (it will create .env file)
+### Step 1: ⚠️ REQUIRED - Create your .env file
 
+**IMPORTANT**: The `.env` file is **hidden** by default (starts with a dot).
+
+**Option A: Copy from example (recommended)**
+```bash
+cp examples/example.env .env
+```
+
+**Option B: Let the tool create it**
 ```bash
 ./analyze resume.pdf
+# It will create .env and show you where it is
 ```
 
-You'll see:
-```
-⚠️  No .env file found!
+**📁 Where is the .env file?**
+- **Exact location**: `aipm-resume-analyzer/.env` (same folder as `analyze` script)
+- **Full path example**: `/Users/yourname/aipm-resume-analyzer/.env` (macOS/Linux)
+- **Full path example**: `C:\Users\yourname\aipm-resume-analyzer\.env` (Windows)
 
-Creating .env template...
-✅ Created .env file at: /path/to/.env
+**🔍 Can't see the .env file?**
 
-📝 SETUP INSTRUCTIONS:
+The file starts with a dot (.), making it hidden by default:
 
-1. Get an API key from ONE of these providers:
-   • OpenAI (GPT-4): https://platform.openai.com/api-keys
-   • Anthropic (Claude): https://console.anthropic.com/settings/keys
-   • Google (Gemini): https://aistudio.google.com/app/apikey
-
-2. Open the .env file and paste your API key
-3. Save the file and run the analyzer again
-```
+- **macOS Finder**: Press `Cmd + Shift + .` to show hidden files
+- **macOS Terminal**: Use `ls -la` instead of `ls`
+- **Windows Explorer**: View → Show → Hidden items
+- **Windows Command Prompt**: Use `dir /a` instead of `dir`
+- **Linux Terminal**: Use `ls -la` instead of `ls`
 
 ### Step 2: Add your API key
 
-Open `.env` and add ONE of these:
+Open `.env` in any text editor and add ONE of these:
 
 ```bash
 # For OpenAI (GPT-4) - Most popular
@@ -74,11 +87,17 @@ Reports will be created in `./output/`:
 - `Candidate_Name_TIMESTAMP.html` - Beautiful HTML report (open in browser)
 - `Candidate_Name_TIMESTAMP.json` - Raw JSON data
 
-## Example: Analyze Cheryl's Resume
+## Example Usage
 
 ```bash
-# Copy Cheryl's resume to test
-./analyze "/Users/abediaz/Downloads/Cheryl Stubrud 06.2025.pdf" --provider anthropic
+# Analyze a resume with default provider
+./analyze path/to/resume.pdf
+
+# Use specific provider
+./analyze resume.pdf --provider anthropic
+
+# Save to custom location
+./analyze resume.pdf --output ./my_reports/
 ```
 
 ## Getting API Keys
@@ -122,9 +141,12 @@ pip install -r requirements.txt
 ```
 
 **"API key not found":**
-- Make sure you saved the .env file
-- Check there are no extra spaces in the key
-- Make sure key is on correct line (OPENAI_API_KEY=... not just API_KEY=...)
+- Check `.env` file exists in root directory: `ls -la .env`
+- Verify file location (must be same folder as `analyze` script)
+- Check no extra spaces: `OPENAI_API_KEY=sk-...` (correct) vs `OPENAI_API_KEY = sk-...` (wrong)
+- Check no quotes: `OPENAI_API_KEY=sk-...` (correct) vs `OPENAI_API_KEY="sk-..."` (wrong)
+- Make sure filename is exactly `.env` not `.env.txt` or `env`
+- Start fresh: `cp examples/example.env .env` then edit
 
 **"Permission denied":**
 ```bash
@@ -132,20 +154,31 @@ chmod +x analyze
 chmod +x bin/analyze
 ```
 
-## Ready to Ship to GitHub
+## Tips
 
-This folder is ready to be uploaded as a GitHub repository!
-
-Just copy this entire folder to your GitHub directory:
+**Find your .env file:**
 ```bash
-cp -r /Users/abediaz/Documents/SecondBrain/10\ -\ Projects/Applied_AI_PM/tools/aipm-resume-analyzer ~/Documents/GitHub/aipm-resume-analyzer
-cd ~/Documents/GitHub/aipm-resume-analyzer
-git init
-git add .
-git commit -m "Initial commit: AI PM Resume Analyzer"
+# Show hidden files (macOS/Linux)
+ls -la
+
+# Should see: -rw-r--r--  1 user  staff  XXX Oct 25 XX:XX .env
 ```
 
-Then create repo on GitHub and push!
+**Edit your .env file:**
+```bash
+# macOS/Linux
+nano .env
+
+# Or use any text editor like VS Code, Sublime, etc.
+```
+
+**Verify your setup:**
+```bash
+# Check .env exists
+cat .env
+
+# You should see your API key (not empty values)
+```
 
 ---
 
