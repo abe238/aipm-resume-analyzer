@@ -13,6 +13,7 @@ Perfect for hiring managers screening AI PM candidates, recruiters standardizing
 - 🎯 **6-Pillar Framework** - Evaluates Technical Skills, Product Thinking, AI/ML Knowledge, Communication, Strategic Thinking, and Execution
 - 🤖 **Latest AI Models** - GPT-5, Claude Sonnet 4.5, Gemini 2.5 Pro (with cheaper alternatives)
 - 🔄 **Multiple Model Options** - Choose from 8 different models across 3 providers
+- 📄 **Multiple File Formats** - Supports PDF, DOC, and DOCX resume files
 - 📊 **Detailed Scoring** - 0-10 scores per pillar with evidence and level assessment
 - 📝 **Beautiful Reports** - Generates markdown and HTML outputs with clean design
 - ⚡ **Fast Analysis** - Get results in 30 seconds vs 10+ minutes manual review
@@ -25,6 +26,10 @@ Perfect for hiring managers screening AI PM candidates, recruiters standardizing
 ### Prerequisites
 
 - **Python 3.7+** installed on your computer
+- **Pandoc** (optional, for .doc/.docx support) - Install with:
+  - macOS: `brew install pandoc`
+  - Linux: `sudo apt-get install pandoc`
+  - Windows: Download from [pandoc.org](https://pandoc.org/installing.html)
 - **API key** from ONE of these providers:
   - [OpenAI](https://platform.openai.com/api-keys) (GPT-5, GPT-5 Mini, GPT-4o)
   - [Anthropic](https://console.anthropic.com/settings/keys) (Claude Sonnet 4.5, Haiku 4.5, Opus 4.1)
@@ -172,11 +177,16 @@ Save the file. **Done!** You're ready to analyze resumes.
 
 ## 🚀 Usage
 
+**Supported file formats:** `.pdf`, `.doc`, `.docx`
+
 ### Basic Analysis
 
 ```bash
 # Analyze resume (uses default provider from .env)
 ./bin/analyze resume.pdf
+# Or with Word documents:
+./bin/analyze resume.docx
+./bin/analyze resume.doc
 ```
 
 Output files will be created in `./output/`:
@@ -351,11 +361,12 @@ cp ~/Downloads/resume.pdf ./
 ./bin/analyze resume.pdf
 ```
 
-### "Invalid PDF" Error
+### "Unsupported file format" Error
 
-- Ensure file is actually a PDF (not a screenshot renamed to .pdf)
-- Try re-exporting as PDF from original document
-- Some encrypted PDFs may not work - remove password protection first
+- Ensure file extension is .pdf, .doc, or .docx
+- For .doc/.docx files, make sure pandoc is installed (see Prerequisites)
+- Try re-exporting from the original application if file appears corrupted
+- Some password-protected files may not work - remove protection first
 
 ### Python Version Issues
 
@@ -484,8 +495,8 @@ A: Yes! Edit `bin/analyze` to modify the scoring prompts and framework.
 **Q: Which AI provider is most accurate?**
 A: Claude Sonnet 4.5 and GPT-5 give the most nuanced analysis. Use `--list-models` to see all options. Gemini 2.5 Flash is fastest/cheapest for high-volume screening.
 
-**Q: Does this work with non-PDF resumes?**
-A: Currently PDF only. Convert Word docs to PDF first.
+**Q: What file formats are supported?**
+A: PDF, DOC, and DOCX files are supported. For .doc/.docx files, pandoc must be installed (see Prerequisites).
 
 **Q: Can I analyze my own resume?**
 A: Absolutely! Great for self-assessment before applying to AI PM roles.
@@ -523,10 +534,11 @@ MIT License - see LICENSE file for details.
 ## 🙏 Acknowledgments
 
 **Built with:**
-- [OpenAI GPT-4](https://openai.com/) - Powerful language model
-- [Anthropic Claude](https://anthropic.com/) - Best-in-class AI assistant
-- [Google Gemini](https://ai.google.dev/) - Fast and affordable AI
+- [OpenAI GPT-5](https://openai.com/) - Most advanced reasoning model
+- [Anthropic Claude Sonnet 4.5](https://anthropic.com/) - Best-in-class AI assistant
+- [Google Gemini 2.5 Pro](https://ai.google.dev/) - Fast and affordable AI
 - [PyPDF2](https://github.com/py-pdf/pypdf2) - PDF text extraction
+- [Pandoc](https://pandoc.org/) - Universal document converter (.doc/.docx support)
 - Applied AI PM Framework - Open-source evaluation system
 
 **Design inspired by:**

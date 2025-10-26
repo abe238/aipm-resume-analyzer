@@ -16,6 +16,19 @@ cd aipm-resume-analyzer
 pip install -r requirements.txt
 ```
 
+**3. (Optional) Install Pandoc for .doc/.docx support:**
+```bash
+# macOS
+brew install pandoc
+
+# Linux
+sudo apt-get install pandoc
+
+# Windows: Download from https://pandoc.org/installing.html
+```
+
+> Note: Pandoc is only needed if you want to analyze .doc or .docx files. PDF files work without it.
+
 ## Usage
 
 ### Step 1: ⚠️ REQUIRED - Create your .env file
@@ -68,9 +81,13 @@ DEFAULT_PROVIDER=openai
 
 ### Step 3: Analyze resumes!
 
+**Supported formats:** PDF, DOC, DOCX
+
 ```bash
 # Analyze with default provider and model
 ./analyze path/to/resume.pdf
+./analyze path/to/resume.docx
+./analyze path/to/resume.doc
 
 # Use specific provider
 ./analyze resume.pdf --provider anthropic

@@ -168,17 +168,38 @@ class ResumeAnalyzer:
         else:
             raise ValueError(f"Unknown API provider: {self.api_provider}")
 
-    def extract_text_from_pdf(self, pdf_path):
-        """Extract text content from PDF resume"""
+    def extract_text_from_document(self, file_path):
+        """Extract text content from resume (.pdf, .doc, .docx)"""
+        import subprocess
+
+        file_ext = Path(file_path).suffix.lower()
+
         try:
-            with open(pdf_path, 'rb') as file:
-                reader = PyPDF2.PdfReader(file)
-                text = ""
-                for page in reader.pages:
-                    text += page.extract_text() + "\n"
-                return text.strip()
+            if file_ext in ['.doc', '.docx']:
+                # Use pandoc for Word documents
+                result = subprocess.run([
+                    'pandoc', file_path,
+                    '-t', 'plain',
+                    '--wrap=none'
+                ], capture_output=True, text=True, check=True)
+                return result.stdout.strip()
+
+            elif file_ext == '.pdf':
+                # Use PyPDF2 for PDF files
+                with open(file_path, 'rb') as file:
+                    reader = PyPDF2.PdfReader(file)
+                    text = ""
+                    for page in reader.pages:
+                        text += page.extract_text() + "\n"
+                    return text.strip()
+
+            else:
+                raise ValueError(f"Unsupported file format: {file_ext}. Supported formats: .pdf, .doc, .docx")
+
+        except subprocess.CalledProcessError as e:
+            raise Exception(f"Error extracting text from {file_ext}: {e.stderr}")
         except Exception as e:
-            raise Exception(f"Error reading PDF: {str(e)}")
+            raise Exception(f"Error reading document: {str(e)}")
 
     def create_analysis_prompt(self, resume_text):
         """Create the prompt for AI analysis"""
@@ -294,10 +315,12 @@ Return your analysis in JSON format with this structure:
         except Exception as e:
             raise Exception(f"AI analysis failed: {str(e)}")
 
-    def analyze_resume(self, pdf_path):
+    def analyze_resume(self, file_path):
         """Main analysis function"""
-        print(f"📄 Extracting text from PDF...")
-        resume_text = self.extract_text_from_pdf(pdf_path)
+        file_ext = Path(file_path).suffix.lower()
+        file_type = {'.pdf': 'PDF', '.doc': 'DOC', '.docx': 'DOCX'}.get(file_ext, 'document')
+        print(f"📄 Extracting text from {file_type}...")
+        resume_text = self.extract_text_from_document(file_path)
 
         print(f"🤖 Analyzing with {self.api_provider.upper()} ({self.model})...")
         analysis = self.analyze_with_ai(resume_text)
@@ -405,7 +428,7 @@ For setup help, see README.md
         """
     )
 
-    parser.add_argument('resume', nargs='?', help='Path to resume PDF file')
+    parser.add_argument('resume', nargs='?', help='Path to resume file (.pdf, .doc, .docx)')
     parser.add_argument('--provider', choices=['openai', 'anthropic', 'google'],
                         help='AI provider to use (overrides .env DEFAULT_PROVIDER)')
     parser.add_argument('--model',
@@ -457,6 +480,13 @@ For setup help, see README.md
     # Check if resume file exists
     if not os.path.exists(args.resume):
         print(f"❌ Resume file not found: {args.resume}")
+        sys.exit(1)
+
+    # Validate file extension
+    resume_ext = Path(args.resume).suffix.lower()
+    if resume_ext not in ['.pdf', '.doc', '.docx']:
+        print(f"❌ Unsupported file format: {resume_ext}")
+        print(f"   Supported formats: .pdf, .doc, .docx")
         sys.exit(1)
 
     # Create output directory
