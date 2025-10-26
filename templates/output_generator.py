@@ -1127,7 +1127,7 @@ def generate_aggregated_html(analyses, output_path):
         provider_summary += f"<li><strong>{model_name}</strong>: {score}/60 - {decision}</li>\n"
 
     # Build consensus table
-    consensus_table_headers = ' | '.join([a.get('_metadata', {}).get('model_display_name', p)[:15] for p, a in analyses.items()])
+    consensus_table_headers = ' | '.join([a.get('_metadata', {}).get('model_display_name', p) for p, a in analyses.items()])
     consensus_table_rows = ""
     for pillar_name in pillar_names:
         scores_data = consensus_scores[pillar_name]
