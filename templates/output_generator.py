@@ -757,14 +757,39 @@ This is an **aggregated deep analysis** using multiple AI providers to provide m
 **Executive Summary:**
 {recommendation}
 
-**Pillar Breakdown:**
+---
+
 """
 
+        # Add detailed pillar analysis
         for i, pillar_key in enumerate(pillar_keys):
             pillar_data = analysis.get('pillars', {}).get(pillar_key, {})
             pillar_score = pillar_data.get('score', 0)
             pillar_level = pillar_data.get('level', 'Unknown')
-            md_content += f"- **{pillar_names[i]}**: {pillar_score}/10 ({pillar_level})\n"
+            pillar_evidence = pillar_data.get('evidence', 'No evidence provided')
+            pillar_strengths = pillar_data.get('strengths', [])
+            pillar_gaps = pillar_data.get('gaps', [])
+
+            md_content += f"""
+#### {pillar_names[i]}
+
+**Score**: {pillar_score}/10 | **Level**: {pillar_level}
+
+**Evidence:**
+{pillar_evidence}
+
+"""
+            if pillar_strengths:
+                md_content += "**Strengths:**\n"
+                for strength in pillar_strengths:
+                    md_content += f"- ✅ {strength}\n"
+                md_content += "\n"
+
+            if pillar_gaps:
+                md_content += "**Gaps/Concerns:**\n"
+                for gap in pillar_gaps:
+                    md_content += f"- ⚠️ {gap}\n"
+                md_content += "\n"
 
         md_content += "\n"
 
@@ -886,7 +911,29 @@ def generate_aggregated_html(analyses, output_path):
             pillar_data = analysis.get('pillars', {}).get(pillar_key, {})
             pillar_score = pillar_data.get('score', 0)
             pillar_level = pillar_data.get('level', 'Unknown')
-            pillar_breakdown += f"<li><strong>{pillar_names[i]}</strong>: {pillar_score}/10 ({pillar_level})</li>\n"
+            pillar_evidence = pillar_data.get('evidence', 'No evidence provided').replace('\n', '<br>')
+            pillar_strengths = pillar_data.get('strengths', [])
+            pillar_gaps = pillar_data.get('gaps', [])
+
+            pillar_breakdown += f"""
+            <div class="pillar-detail">
+                <h5>{pillar_names[i]}</h5>
+                <p><strong>Score:</strong> {pillar_score}/10 | <strong>Level:</strong> {pillar_level}</p>
+                <p><strong>Evidence:</strong><br>{pillar_evidence}</p>
+"""
+            if pillar_strengths:
+                pillar_breakdown += "<p><strong>Strengths:</strong></p><ul>\n"
+                for strength in pillar_strengths:
+                    pillar_breakdown += f"<li>✅ {strength}</li>\n"
+                pillar_breakdown += "</ul>\n"
+
+            if pillar_gaps:
+                pillar_breakdown += "<p><strong>Gaps/Concerns:</strong></p><ul>\n"
+                for gap in pillar_gaps:
+                    pillar_breakdown += f"<li>⚠️ {gap}</li>\n"
+                pillar_breakdown += "</ul>\n"
+
+            pillar_breakdown += "</div>\n"
 
         provider_details += f"""
         <div class="provider-section">
@@ -894,10 +941,9 @@ def generate_aggregated_html(analyses, output_path):
             <p><strong>Score:</strong> {score}/60 | <strong>Decision:</strong> {decision}</p>
             <h4>Executive Summary:</h4>
             <p>{recommendation}</p>
-            <h4>Pillar Breakdown:</h4>
-            <ul>
-                {pillar_breakdown}
-            </ul>
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #e1e4e8;">
+            <h4>Detailed Pillar Analysis:</h4>
+            {pillar_breakdown}
         </div>
 """
 
@@ -991,6 +1037,24 @@ def generate_aggregated_html(analyses, output_path):
             border-radius: 8px;
             margin: 24px 0;
             border-left: 4px solid #28a745;
+        }}
+        .pillar-detail {{
+            background: white;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 6px;
+            border-left: 3px solid #0066cc;
+        }}
+        .pillar-detail h5 {{
+            color: #0066cc;
+            margin: 0 0 12px 0;
+            font-size: 1.1rem;
+        }}
+        .pillar-detail p {{
+            margin: 8px 0;
+        }}
+        .pillar-detail ul {{
+            margin: 8px 0 8px 20px;
         }}
         .footer {{
             margin-top: 48px;

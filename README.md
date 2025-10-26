@@ -38,7 +38,7 @@ Perfect for hiring managers screening AI PM candidates, recruiters standardizing
 
 **1. Download or clone this repository:**
 ```bash
-git clone https://github.com/abediaz/aipm-resume-analyzer.git
+git clone https://github.com/abe238/aipm-resume-analyzer.git
 cd aipm-resume-analyzer
 ```
 
@@ -591,9 +591,8 @@ MIT License - see LICENSE file for details.
 ## 📚 Related Resources
 
 - **Framework Website**: https://aipmframework.com (coming soon)
-- **Full Evaluation Rubrics**: [GitHub Repo](https://github.com/abediaz/aipm-framework)
-- **Resume Review Template**: [Manual template](https://github.com/abediaz/aipm-framework/tree/main/templates)
-- **Interview Scorecards**: [Full interview process](https://github.com/abediaz/aipm-framework)
+- **Source Code**: [GitHub Repository](https://github.com/abe238/aipm-resume-analyzer)
+- **Full Evaluation Framework**: Detailed in this repository's documentation
 
 ---
 
@@ -616,6 +615,5 @@ The best hiring process combines AI-assisted screening with thoughtful human eva
 
 ## Need Help?
 
-- **Issues**: https://github.com/abediaz/aipm-resume-analyzer/issues
-- **Discussions**: https://github.com/abediaz/aipm-resume-analyzer/discussions
+- **Issues**: https://github.com/abe238/aipm-resume-analyzer/issues
 - **Email**: abe@aipmframework.com
