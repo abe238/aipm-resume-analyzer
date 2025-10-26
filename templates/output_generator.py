@@ -889,6 +889,51 @@ def generate_html(analysis, output_path):
         f.write(html_content)
 
 
+def group_feedback_by_theme(feedback_items):
+    """Group strengths/concerns by theme for better readability"""
+
+    # Define themes with keywords to match
+    themes = {
+        "AI Experience & Technical Knowledge": ["ai", "ml", "machine learning", "technical", "hands-on", "coding", "engineering"],
+        "Building in Public & Portfolio": ["public", "github", "blog", "portfolio", "thought leadership", "linkedin", "speaking"],
+        "Product Management Background": ["product management", "pm experience", "product work", "0-to-1", "shipped"],
+        "Strategic & Systems Thinking": ["platform", "second-order", "paradigm shift", "strategic", "systems", "future-proof"],
+        "Execution Speed & Velocity": ["rapid", "hours", "days", "velocity", "prototyping", "shipping", "speed"],
+        "Resume Quality & Creativity": ["resume", "design", "creativity", "plain text", "visual", "product taste"],
+        "Career Narrative & Trajectory": ["career", "pivot", "narrative", "journey", "compelling story", "why ai"]
+    }
+
+    # Group items by theme
+    grouped = {theme: [] for theme in themes.keys()}
+    ungrouped = []
+
+    for item in feedback_items:
+        item_lower = item.lower()
+        matched = False
+
+        # Try to match to a theme
+        for theme, keywords in themes.items():
+            if any(keyword in item_lower for keyword in keywords):
+                grouped[theme].append(item)
+                matched = True
+                break
+
+        if not matched:
+            ungrouped.append(item)
+
+    # Build output with only themes that have items
+    result = []
+    for theme, items in grouped.items():
+        if items:
+            result.append((theme, items))
+
+    # Add ungrouped items as "Other"
+    if ungrouped:
+        result.append(("Other", ungrouped))
+
+    return result
+
+
 def generate_aggregated_report(analyses, output_path):
     """Generate aggregated report from multiple provider analyses"""
 
@@ -916,7 +961,7 @@ def generate_aggregated_report(analyses, output_path):
     total_scores = {provider: a.get('total_score', 0) for provider, a in analyses.items()}
     avg_total = round(sum(total_scores.values()) / len(total_scores), 1)
 
-    # Get all strengths and concerns
+    # Get all strengths and concerns with provider labels
     all_strengths = []
     all_concerns = []
     for provider, analysis in analyses.items():
@@ -925,6 +970,10 @@ def generate_aggregated_report(analyses, output_path):
             all_strengths.append(f"**[{provider_display}]** {strength}")
         for concern in analysis.get('top_concerns', []):
             all_concerns.append(f"**[{provider_display}]** {concern}")
+
+    # Group by theme for readability
+    grouped_strengths = group_feedback_by_theme(all_strengths)
+    grouped_concerns = group_feedback_by_theme(all_concerns)
 
     # Build markdown content
     md_content = f"""# Deep AI PM Resume Analysis: {candidate}
@@ -971,18 +1020,23 @@ This is an **aggregated deep analysis** using multiple AI providers to provide m
 
 """
 
-    for i, strength in enumerate(all_strengths, 1):
-        md_content += f"{i}. {strength}\n"
+    for theme, items in grouped_strengths:
+        md_content += f"### {theme}\n\n"
+        for item in items:
+            md_content += f"- {item}\n"
+        md_content += "\n"
 
-    md_content += f"""
----
+    md_content += f"""---
 
 ## ⚠️ All Identified Concerns
 
 """
 
-    for i, concern in enumerate(all_concerns, 1):
-        md_content += f"{i}. {concern}\n"
+    for theme, items in grouped_concerns:
+        md_content += f"### {theme}\n\n"
+        for item in items:
+            md_content += f"- {item}\n"
+        md_content += "\n"
 
     md_content += """
 ---
@@ -1108,7 +1162,7 @@ def generate_aggregated_html(analyses, output_path):
     total_scores = {provider: a.get('total_score', 0) for provider, a in analyses.items()}
     avg_total = round(sum(total_scores.values()) / len(total_scores), 1)
 
-    # Get all strengths and concerns
+    # Get all strengths and concerns with provider labels
     all_strengths = []
     all_concerns = []
     for provider, analysis in analyses.items():
@@ -1117,6 +1171,10 @@ def generate_aggregated_html(analyses, output_path):
             all_strengths.append(f"<strong>[{provider_display}]</strong> {strength}")
         for concern in analysis.get('top_concerns', []):
             all_concerns.append(f"<strong>[{provider_display}]</strong> {concern}")
+
+    # Group by theme for readability
+    grouped_strengths = group_feedback_by_theme(all_strengths)
+    grouped_concerns = group_feedback_by_theme(all_concerns)
 
     # Build provider summary
     provider_summary = ""
@@ -1142,11 +1200,21 @@ def generate_aggregated_html(analyses, output_path):
         </tr>
 """
 
-    # Build strengths list
-    strengths_html = "".join([f"<li>{s}</li>\n" for s in all_strengths])
+    # Build grouped strengths HTML
+    strengths_html = ""
+    for theme, items in grouped_strengths:
+        strengths_html += f"<h3>{theme}</h3>\n<ul class='strength-list'>\n"
+        for item in items:
+            strengths_html += f"<li>{item}</li>\n"
+        strengths_html += "</ul>\n"
 
-    # Build concerns list
-    concerns_html = "".join([f"<li>{c}</li>\n" for c in all_concerns])
+    # Build grouped concerns HTML
+    concerns_html = ""
+    for theme, items in grouped_concerns:
+        concerns_html += f"<h3>{theme}</h3>\n<ul class='concern-list'>\n"
+        for item in items:
+            concerns_html += f"<li>{item}</li>\n"
+        concerns_html += "</ul>\n"
 
     # Build individual provider sections
     provider_details = ""
@@ -1362,14 +1430,10 @@ def generate_aggregated_html(analyses, output_path):
         </table>
 
         <h2>✨ All Identified Strengths</h2>
-        <ul>
-            {strengths_html}
-        </ul>
+        {strengths_html}
 
         <h2>⚠️ All Identified Concerns</h2>
-        <ul>
-            {concerns_html}
-        </ul>
+        {concerns_html}
 
         <h2>📋 Detailed Analysis by Provider</h2>
         {provider_details}
