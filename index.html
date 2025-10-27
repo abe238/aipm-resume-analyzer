@@ -345,12 +345,12 @@
 
         /* Sections */
         section {
-            padding: 2.5rem 0;
+            padding: 1.5rem 0;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .section-header h2 {
@@ -408,12 +408,23 @@
             padding: 2rem;
         }
 
+        .pillar-number {
+            display: inline-block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: hsl(var(--text-300));
+            margin-right: 0.5rem;
+        }
+
         .pillar-card h3 {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+            display: inline;
             color: var(--primary);
+            margin-bottom: 0;
+        }
+
+        .pillar-card p {
+            display: block;
+            margin-top: 0.75rem;
         }
 
         .pillar-card ul {
@@ -569,7 +580,7 @@
         /* Responsive */
         @media (max-width: 768px) {
             section {
-                padding: 2rem 0;
+                padding: 1rem 0;
             }
 
             .grid {
