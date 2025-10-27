@@ -79,3 +79,6 @@ $RECYCLE.BIN/
 
 # Allow example.env in examples folder
 !examples/example.env
+
+# CSS variations folder for testing
+css_variations/
