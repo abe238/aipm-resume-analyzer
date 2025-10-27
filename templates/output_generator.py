@@ -312,6 +312,8 @@ def generate_html(analysis, output_path):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI PM Resume Analysis: {candidate}</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap');
+
         /* Design inspiration from Stripe Docs + Tailwind CSS + Material-UI */
 
         * {{
@@ -321,7 +323,7 @@ def generate_html(analysis, output_path):
         }}
 
         body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+            font-family: 'Quattrocento', serif;
             line-height: 1.5;
             color: #2D3748;
             background: #FAFAF9;
@@ -1465,9 +1467,11 @@ def generate_aggregated_html(analyses, output_path):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deep AI PM Analysis: {candidate}</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap');
+
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-family: 'Quattrocento', serif;
             line-height: 1.5;
             color: #1a1a1a;
             background: #FAFAF9;
