@@ -312,42 +312,7 @@ def generate_html(analysis, output_path):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI PM Resume Analysis: {candidate}</title>
     <style>
-        /*
-         * ULTRA COMPACT VARIATION #23
-         * Aggressive space reduction optimizations for time-constrained users
-         * - Hero: 50vh (was 80vh) - saves 30% vertical space
-         * - Section padding: 2rem (was 3rem) - 33% reduction
-         * - Card padding: 1.5rem (was 2-2.5rem)
-         * - Tighter line-heights and margins throughout
-         * - Mobile: 60vh hero (was 100vh)
-         */
-
-        /* Modern Minimal Typography - Quattrocento (UNCHANGED) */
-        @import url('https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap');
-
-        /* Anthropic Color Palette - Warm Tan/Orange Brand Colors */
-        :root:not(.dark) {{
-            /* Anthropic design system tokens */
-            --accent-brand: 15 63.1% 59.6%;  /* Warm tan/orange */
-            --accent-main-000: 15 55.6% 52.4%;
-            --accent-main-100: 15 55.6% 52.4%;
-            --accent-main-200: 15 63.1% 59.6%;
-            --bg-000: 0 0% 100%;  /* Pure white */
-            --bg-100: 48 33.3% 97.1%;  /* Warm off-white */
-            --bg-200: 53 28.6% 94.5%;  /* Warm light gray */
-            --bg-300: 48 25% 92.2%;
-            --bg-400: 50 20.7% 88.6%;
-            --bg-500: 50 20.7% 88.6%;
-            --border-300: 30 3.3% 11.8%;
-            --border-400: 30 3.3% 11.8%;
-            --text-000: 60 2.6% 7.6%;  /* Near black */
-            --text-100: 60 2.6% 7.6%;
-            --text-200: 60 2.5% 23.3%;  /* Dark gray */
-            --text-300: 60 2.5% 23.3%;
-            --oncolor-100: 0 0% 100%;
-            --primary: #c96442;  /* Warm tan/orange */
-            --primary-foreground: #ffffff;
-        }}
+        /* Design inspiration from Stripe Docs + Tailwind CSS + Material-UI */
 
         * {{
             margin: 0;
@@ -356,690 +321,287 @@ def generate_html(analysis, output_path):
         }}
 
         body {{
-            font-family: 'Quattrocento', Georgia, serif;
-            background: hsl(var(--bg-100));
-            color: hsl(var(--text-100));
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            max-width: 100vw;
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.5;
+            color: #2D3748;
+            background: #FAFAF9;
+            padding: 20px 10px;
         }}
 
-        /* Typography */
-        h1, h2, h3, h4, h5, h6 {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-            color: hsl(var(--text-000));
-        }}
-
-        h1 {{ font-size: clamp(2rem, 5vw, 3.5rem); }}
-        h2 {{ font-size: clamp(1.75rem, 4vw, 2.5rem); }}
-        h3 {{ font-size: clamp(1.5rem, 3vw, 2rem); }}
-        h4 {{ font-size: clamp(1.25rem, 2.5vw, 1.5rem); }}
-
-        p {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-size: 1rem;
-            line-height: 1.65rem;
-            margin-bottom: 1rem;
-            color: hsl(var(--text-200));
-        }}
-
-        a {{
-            color: var(--primary);
-            text-decoration: none;
-            transition: opacity 0.2s ease;
-        }}
-
-        a:hover {{
-            opacity: 0.8;
-        }}
-
-        /* Container - wider gutters */
         .container {{
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
-            width: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }}
 
-        /* Tables */
+        /* Header */
+        .header {{
+            background: linear-gradient(135deg, #CC7744 0%, #B86434 100%);
+            color: white;
+            padding: 24px;
+        }}
+
+        .header h1 {{
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }}
+
+        .header .meta {{
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }}
+
+        /* Score Badge */
+        .score-badge {{
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+        }}
+
+        /* Decision Badge */
+        .decision-badge {{
+            display: inline-block;
+            margin-top: 6px;
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }}
+
+        .decision-badge.strong-screen {{
+            background: #10B981;
+            color: white;
+        }}
+
+        .decision-badge.screen {{
+            background: #CC7744;
+            color: white;
+        }}
+
+        .decision-badge.maybe {{
+            background: #F59E0B;
+            color: white;
+        }}
+
+        .decision-badge.no-screen {{
+            background: #EF4444;
+            color: white;
+        }}
+
+        /* Content */
+        .content {{
+            padding: 24px;
+        }}
+
+        h2 {{
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1A202C;
+            margin: 24px 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #E7E5E4;
+        }}
+
+        h3 {{
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2D3748;
+            margin: 20px 0 10px 0;
+        }}
+
+        /* Executive Summary */
+        .summary-box {{
+            background: #FFF7ED;
+            border-left: 3px solid #CC7744;
+            padding: 14px;
+            margin: 14px 0;
+            border-radius: 5px;
+        }}
+
+        .summary-box p {{
+            margin: 0;
+            line-height: 1.6;
+        }}
+
+        /* Lists */
+        .strength-list, .concern-list {{
+            list-style: none;
+            margin: 12px 0;
+        }}
+
+        .strength-list li {{
+            padding: 10px;
+            margin: 6px 0;
+            background: #ECFDF5;
+            border-left: 3px solid #10B981;
+            border-radius: 4px;
+        }}
+
+        .strength-list li::before {{
+            content: "✅ ";
+            margin-right: 8px;
+        }}
+
+        .concern-list li {{
+            padding: 10px;
+            margin: 6px 0;
+            background: #FEF3C7;
+            border-left: 3px solid #F59E0B;
+            border-radius: 4px;
+        }}
+
+        .concern-list li::before {{
+            content: "⚠️ ";
+            margin-right: 8px;
+        }}
+
+        /* Pillar Cards */
+        .pillar-card {{
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }}
+
+        .pillar-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }}
+
+        .pillar-name {{
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1A202C;
+        }}
+
+        .pillar-score {{
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #CC7744;
+        }}
+
+        .level-badge {{
+            display: inline-block;
+            padding: 3px 10px;
+            background: #E0E7FF;
+            color: #4C51BF;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }}
+
+        /* Progress Bar */
+        .score-bar {{
+            width: 100%;
+            height: 6px;
+            background: #E2E8F0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 6px 0 12px 0;
+        }}
+
+        .score-bar-fill {{
+            height: 100%;
+            background: linear-gradient(90deg, #CC7744 0%, #6C5CE7 100%);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }}
+
+        .evidence-box {{
+            background: #F7FAFC;
+            padding: 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }}
+
+        .sub-list {{
+            margin: 10px 0;
+            padding-left: 0;
+            list-style: none;
+        }}
+
+        .sub-list li {{
+            padding: 6px 10px;
+            margin: 4px 0;
+            border-left: 2px solid #CBD5E0;
+            padding-left: 12px;
+        }}
+
+        /* Table */
         table {{
             width: 100%;
             border-collapse: collapse;
-            margin: 2rem 0;
-            font-size: 0.9375rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-            overflow: hidden;
+            margin: 16px 0;
         }}
 
-        thead {{
-            background: var(--primary);
-            color: white;
+        th, td {{
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #E2E8F0;
         }}
 
         th {{
-            padding: 1rem 1.25rem;
-            text-align: left;
+            background: #F7FAFC;
             font-weight: 600;
-            color: white;
+            color: #4A5568;
         }}
 
-        td {{
-            padding: 0.875rem 1.25rem;
-            border-bottom: 1px solid hsl(var(--border-300));
-            color: hsl(var(--text-200));
+        /* Footer */
+        .footer {{
+            background: #F7FAFC;
+            padding: 16px 24px;
+            text-align: center;
+            color: #718096;
+            font-size: 0.85rem;
         }}
 
-        tbody tr:hover {{
-            background: hsl(var(--bg-200));
-        }}
-
-        /* Header with scroll shadow */
-        header {{
-            background: hsl(var(--bg-000) / 0.95);
-            border-bottom: 0.5px solid hsl(var(--border-400) / 0.25);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(10px);
-            transition: box-shadow 0.3s ease;
-        }}
-
-        header.scrolled {{
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }}
-
-        nav {{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 4rem;
-        }}
-
-        .logo {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-weight: 700;
-            font-size: 1.125rem;
-            color: var(--primary);
-        }}
-
-        .nav-links {{
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }}
-
-        .nav-links a {{
-            color: hsl(var(--text-100));
-            font-size: 0.9375rem;
-            font-weight: 500;
-            transition: color 0.2s ease;
-            padding-bottom: 0.25rem;
-            border-bottom: 2px solid transparent;
-        }}
-
-        .nav-links a:hover,
-        .nav-links a.active {{
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-            opacity: 1;
-        }}
-
-        @media (max-width: 768px) {{
-            nav {{
-                height: auto;
-                padding: 0.75rem 0;
-            }}
-
-            .logo {{
-                font-size: 1rem;
-            }}
-
-            .nav-links {{
-                gap: 0.5rem;
-                flex-wrap: wrap;
-                justify-content: flex-end;
-            }}
-
-            .nav-links a {{
-                font-size: 0.75rem;
-                padding: 0.25rem 0.5rem;
-            }}
-        }}
-
-        /* Buttons - Updated for deep blue primary */
-        .btn {{
-            position: relative;
-            display: inline-flex;
-            gap: 0.5rem;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            min-width: 5rem;
-            height: 2.5rem;
-            padding: 0.625rem 1.5rem;
-            white-space: nowrap;
-            font-family: 'Quattrocento', Georgia, serif;
-            font-weight: 700;
-            border-radius: 0.5rem;
-            font-size: 1rem;
+        .footer a {{
+            color: #CC7744;
             text-decoration: none;
-            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
         }}
 
-        .btn:active {{
-            transform: scale(0.985);
-        }}
-
-        .btn-primary {{
-            color: #ffffff;
-            background-color: var(--primary);
-            border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }}
-
-        .btn-primary:hover {{
-            background-color: #b5573a;
-            opacity: 1;
-        }}
-
-        .btn-secondary {{
-            color: var(--primary);
-            background-color: transparent;
-            border: 1px solid var(--primary);
-        }}
-
-        .btn-secondary:hover {{
-            background-color: rgba(201, 100, 66, 0.1);
-            opacity: 1;
-        }}
-
-        .cta-buttons {{
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-        }}
-
-        /* Hero Section - ULTRA COMPACT: 50vh Height */
-        .hero {{
-            position: relative;
-            min-height: 50vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #fff;
-            padding: 1rem 0;
-        }}
-
-        .hero-bg {{
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom right, rgba(30,10,5,0.85), rgba(60,30,20,0.9)),
-                        radial-gradient(ellipse at top, rgba(201,100,66,0.3), transparent 50%);
-            z-index: -1;
-        }}
-
-        .hero-content {{
-            position: relative;
-            z-index: 1;
-        }}
-
-        .hero h1 {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-weight: 700;
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-            line-height: 1.1;
-        }}
-
-        .hero p {{
-            font-size: 1.1rem;
-            max-width: 650px;
-            margin: 0 auto 1rem;
-            color: rgba(255,255,255,0.85);
-            line-height: 1.4;
-        }}
-
-        /* Scroll down indicator */
-        .scroll-down {{
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255,255,255,0.7);
-            font-size: 2rem;
-            animation: bounce 2s infinite;
-            cursor: pointer;
-        }}
-
-        @keyframes bounce {{
-            0%, 100% {{ transform: translate(-50%, 0); }}
-            50% {{ transform: translate(-50%, 10px); }}
-        }}
-
-        /* Sections - ULTRA COMPACT */
-        section {{
-            padding: 2rem 0;
-        }}
-
-        .section-header {{
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }}
-
-        .section-header h2 {{
-            margin-bottom: 0.5rem;
-        }}
-
-        .section-header p {{
-            font-size: 1.125rem;
-            color: hsl(var(--text-300));
-        }}
-
-        /* Cards - ULTRA COMPACT */
-        .card {{
-            background: hsl(var(--bg-000));
-            border: none;
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }}
-
-        .card:hover {{
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }}
-
-        .card h3 {{
-            margin-bottom: 0.75rem;
-            font-size: 1.35rem;
-            color: var(--primary);
-        }}
-
-        /* Reduce font-size for philosophy section to prevent wrapping */
-        #philosophy .card h3 {{
-            font-size: 1.15rem;
-        }}
-
-        .card p {{
-            color: hsl(var(--text-300));
-            margin-bottom: 0.5rem;
-        }}
-
-        /* Grid Layouts - Wider gutters */
-        .grid {{
-            display: grid;
-            gap: 2.5rem;
-        }}
-
-        .grid-2 {{
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        }}
-
-        .grid-3 {{
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        }}
-
-        /* Pillar Cards - ULTRA COMPACT */
-        .pillar-card {{
-            background: linear-gradient(135deg, hsl(var(--bg-000)) 0%, hsl(var(--bg-100)) 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }}
-
-        .pillar-card:hover {{
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            transform: translateY(-4px);
-        }}
-
-        .pillar-number {{
-            display: inline-block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-right: 0.5rem;
-        }}
-
-        .pillar-card h3 {{
-            display: inline;
-            color: var(--primary);
-            margin-bottom: 0;
-            font-size: 1.5rem;
-        }}
-
-        .pillar-card p {{
-            display: block;
-            margin-top: 0.75rem;
-        }}
-
-        .pillar-card ul {{
-            list-style: none;
-            margin-top: 1rem;
-        }}
-
-        .pillar-card li {{
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-            color: hsl(var(--text-200));
-        }}
-
-        .pillar-card li::before {{
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-        }}
-
-        /* Decision Framework */
-        .decision-flow {{
-            background: hsl(var(--bg-200));
-            border-radius: 12px;
-            padding: 2.5rem;
-            margin: 2rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }}
-
-        .decision-step {{
-            padding: 1.5rem;
-            margin: 1.25rem 0;
-            background: hsl(var(--bg-000));
-            border-left: 4px solid var(--primary);
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }}
-
-        .decision-step h4 {{
-            color: var(--primary);
-            margin-bottom: 0.75rem;
-        }}
-
-        .decision-step ol,
-        .decision-step ul {{
-            margin-left: 2rem;
-            margin-top: 0.75rem;
-        }}
-
-        .decision-step li {{
-            margin: 0.5rem 0;
-            color: hsl(var(--text-200));
-        }}
-
-        .highlight-box {{
-            background: hsl(var(--bg-100));
-            padding: 1rem 1.25rem;
-            border-radius: 6px;
-            margin-top: 0.75rem;
-            font-weight: 500;
-            border-left: 3px solid var(--primary);
-        }}
-
-        /* Personal Story - ULTRA COMPACT */
-        .story-section {{
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            padding: 2rem 1.5rem;
-            align-items: center;
-            background: hsl(var(--bg-000));
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-        }}
-
-        .story-section h2 {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }}
-
-        .story-section p {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-size: 1.125rem;
-            line-height: 1.8;
-            color: hsl(var(--text-200));
-            margin-bottom: 1.5rem;
-        }}
-
-        .story-visual {{
-            text-align: center;
-        }}
-
-        .story-visual img {{
-            width: 100%;
-            max-width: 400px;
-            border-radius: 12px;
-            object-fit: cover;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        }}
-
-        .caption {{
-            text-align: center;
-            font-size: 0.875rem;
-            color: hsl(var(--text-300));
-            margin-top: 0.75rem;
-        }}
-
-        .btn-link {{
-            display: inline-block;
-            margin-top: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }}
-
-        .btn-link:hover {{
+        .footer a:hover {{
             text-decoration: underline;
         }}
 
-        blockquote.highlight {{
-            border-left: 4px solid var(--primary);
-            padding-left: 1.5rem;
-            font-style: italic;
-            color: hsl(var(--text-300));
-            margin: 1.5rem 0;
-            font-size: 1.125rem;
-        }}
-
-        /* Video Container */
-        .video-container {{
-            position: relative;
-            width: 100%;
-            margin: 2rem 0;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }}
-
-        .video-container iframe {{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }}
-
-        /* Scoring Stats Cards */
-        .stats {{
+        /* Roles Section */
+        .roles-list {{
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 8px;
+            margin: 12px 0;
         }}
 
-        .stat-card {{
-            background: linear-gradient(135deg, hsl(var(--bg-000)) 0%, hsl(var(--bg-100)) 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+        .role-item {{
+            background: #EFF6FF;
+            padding: 10px 14px;
+            border-radius: 5px;
+            border-left: 2px solid #3B82F6;
         }}
 
-        .stat-card:hover {{
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            transform: translateY(-4px);
-        }}
-
-        .stat-number {{
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            line-height: 1;
-        }}
-
-        .stat-label {{
-            font-size: 1rem;
-            font-weight: 600;
-            color: hsl(var(--text-200));
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }}
-
-        /* Footer - Consolidated CTAs */
-        footer {{
-            background: hsl(var(--bg-200));
-            border-top: 0.5px solid hsl(var(--border-400));
-            padding: 3rem 0 2rem;
-            margin-top: 4rem;
-        }}
-
-        .footer-content {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2.5rem;
-            margin-bottom: 2rem;
-        }}
-
-        .footer-section h4 {{
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }}
-
-        .footer-section ul {{
-            list-style: none;
-        }}
-
-        .footer-section li {{
-            margin-bottom: 0.5rem;
-        }}
-
-        .footer-section a {{
-            color: hsl(var(--text-200));
-            font-size: 0.9375rem;
-        }}
-
-        .footer-bottom {{
-            text-align: center;
-            padding-top: 2rem;
-            border-top: none;
-            color: hsl(var(--text-300));
-            font-size: 0.875rem;
-        }}
-
-        /* Responsive - ULTRA COMPACT */
-        @media (max-width: 768px) {{
+        @media print {{
+            body {{
+                background: white;
+                padding: 0;
+            }}
             .container {{
-                padding: 0 1rem;
-            }}
-
-            section {{
-                padding: 1.5rem 0;
-            }}
-
-            .grid {{
-                gap: 1.25rem;
-            }}
-
-            .hero {{
-                min-height: 60vh;
-                padding: 1rem 0;
-            }}
-
-            .hero h1 {{
-                font-size: clamp(1.75rem, 7vw, 2.25rem);
-                margin-bottom: 0.5rem;
-            }}
-
-            .hero p {{
-                font-size: 1rem;
-                margin-bottom: 1rem;
-            }}
-
-            .cta-buttons {{
-                flex-direction: column;
-                gap: 0.5rem;
-                margin-top: 1rem;
-            }}
-
-            .btn {{
-                width: 100%;
-                max-width: 320px;
-            }}
-
-            .story-section {{
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-                padding: 1.5rem 1rem;
-            }}
-
-            .story-visual {{
-                order: -1;
-            }}
-
-            .video-container {{
-                margin: 1.5rem 0;
-            }}
-
-            table {{
-                font-size: 0.8125rem;
-                display: block;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }}
-
-            th, td {{
-                padding: 0.5rem 0.75rem;
-                white-space: nowrap;
-            }}
-
-            .stats {{
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }}
-
-            .stat-card {{
-                padding: 1.5rem 1rem;
-            }}
-
-            .stat-number {{
-                font-size: 2rem;
-            }}
-
-            .stat-label {{
-                font-size: 0.875rem;
+                box-shadow: none;
             }}
         }}
     </style>
@@ -1903,735 +1465,245 @@ def generate_aggregated_html(analyses, output_path):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deep AI PM Analysis: {candidate}</title>
     <style>
-        /*
-         * ULTRA COMPACT VARIATION #23
-         * Aggressive space reduction optimizations for time-constrained users
-         * - Hero: 50vh (was 80vh) - saves 30% vertical space
-         * - Section padding: 2rem (was 3rem) - 33% reduction
-         * - Card padding: 1.5rem (was 2-2.5rem)
-         * - Tighter line-heights and margins throughout
-         * - Mobile: 60vh hero (was 100vh)
-         */
-
-        /* Modern Minimal Typography - Quattrocento (UNCHANGED) */
-        @import url('https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap');
-
-        /* Anthropic Color Palette - Warm Tan/Orange Brand Colors */
-        :root:not(.dark) {{
-            /* Anthropic design system tokens */
-            --accent-brand: 15 63.1% 59.6%;  /* Warm tan/orange */
-            --accent-main-000: 15 55.6% 52.4%;
-            --accent-main-100: 15 55.6% 52.4%;
-            --accent-main-200: 15 63.1% 59.6%;
-            --bg-000: 0 0% 100%;  /* Pure white */
-            --bg-100: 48 33.3% 97.1%;  /* Warm off-white */
-            --bg-200: 53 28.6% 94.5%;  /* Warm light gray */
-            --bg-300: 48 25% 92.2%;
-            --bg-400: 50 20.7% 88.6%;
-            --bg-500: 50 20.7% 88.6%;
-            --border-300: 30 3.3% 11.8%;
-            --border-400: 30 3.3% 11.8%;
-            --text-000: 60 2.6% 7.6%;  /* Near black */
-            --text-100: 60 2.6% 7.6%;
-            --text-200: 60 2.5% 23.3%;  /* Dark gray */
-            --text-300: 60 2.5% 23.3%;
-            --oncolor-100: 0 0% 100%;
-            --primary: #c96442;  /* Warm tan/orange */
-            --primary-foreground: #ffffff;
-        }}
-
-        * {{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }}
-
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{
-            font-family: 'Quattrocento', Georgia, serif;
-            background: hsl(var(--bg-100));
-            color: hsl(var(--text-100));
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            max-width: 100vw;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.5;
+            color: #1a1a1a;
+            background: #FAFAF9;
+            padding: 20px 10px;
         }}
-
-        /* Typography */
-        h1, h2, h3, h4, h5, h6 {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-            color: hsl(var(--text-000));
-        }}
-
-        h1 {{ font-size: clamp(2rem, 5vw, 3.5rem); }}
-        h2 {{ font-size: clamp(1.75rem, 4vw, 2.5rem); }}
-        h3 {{ font-size: clamp(1.5rem, 3vw, 2rem); }}
-        h4 {{ font-size: clamp(1.25rem, 2.5vw, 1.5rem); }}
-
-        p {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-size: 1rem;
-            line-height: 1.65rem;
-            margin-bottom: 1rem;
-            color: hsl(var(--text-200));
-        }}
-
-        a {{
-            color: var(--primary);
-            text-decoration: none;
-            transition: opacity 0.2s ease;
-        }}
-
-        a:hover {{
-            opacity: 0.8;
-        }}
-
-        /* Container - wider gutters */
         .container {{
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
-            width: 100%;
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }}
-
-        /* Tables */
+        h1 {{
+            font-size: 2rem;
+            margin-bottom: 12px;
+            color: #CC7744;
+            border-bottom: 2px solid #CC7744;
+            padding-bottom: 8px;
+        }}
+        h2 {{
+            font-size: 1.5rem;
+            margin: 24px 0 12px;
+            color: #333;
+            border-bottom: 1px solid #E7E5E4;
+            padding-bottom: 8px;
+        }}
+        h3 {{
+            font-size: 1.25rem;
+            margin: 20px 0 10px;
+            color: #444;
+        }}
+        h4 {{
+            font-size: 1rem;
+            margin: 16px 0 8px;
+            color: #555;
+        }}
+        .metadata {{
+            background: #f0f8ff;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            border-left: 3px solid #0066cc;
+        }}
+        .metadata p {{ margin: 4px 0; }}
+        .metadata strong {{ color: #0066cc; }}
+        .overview {{
+            background: #fff9e6;
+            padding: 16px;
+            border-radius: 6px;
+            margin: 16px 0;
+            border-left: 3px solid #ffcc00;
+        }}
+        .overview ul {{ margin: 8px 0 8px 20px; }}
         table {{
             width: 100%;
             border-collapse: collapse;
-            margin: 2rem 0;
-            font-size: 0.9375rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-            overflow: hidden;
+            margin: 16px 0;
+            font-size: 0.9rem;
         }}
-
-        thead {{
-            background: var(--primary);
-            color: white;
-        }}
-
-        th {{
-            padding: 1rem 1.25rem;
+        th, td {{
+            padding: 8px;
             text-align: left;
+            border-bottom: 1px solid #E7E5E4;
+        }}
+        th {{
+            background: #f6f8fa;
             font-weight: 600;
+            color: #0066cc;
+        }}
+        tr:hover {{ background: #f6f8fa; }}
+        ul {{ margin: 8px 0 8px 20px; }}
+        li {{ margin: 4px 0; }}
+        .provider-section {{
+            background: #f9f9f9;
+            padding: 16px;
+            border-radius: 6px;
+            margin: 16px 0;
+            border-left: 3px solid #28a745;
+        }}
+        .pillar-detail {{
+            background: white;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 4px;
+            border-left: 2px solid #0066cc;
+        }}
+        .pillar-detail h5 {{
+            color: #0066cc;
+            margin: 0 0 8px 0;
+            font-size: 1rem;
+        }}
+        .pillar-detail p {{
+            margin: 4px 0;
+        }}
+        .pillar-detail ul {{
+            margin: 4px 0 4px 16px;
+        }}
+        .footer {{
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #E7E5E4;
+            color: #666;
+            font-size: 0.85rem;
+        }}
+        .badge {{
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0 3px;
+        }}
+        .badge-consensus {{ background: #FFF7ED; color: #CC7744; }}
+
+        /* Header */
+        .header {{
+            background: linear-gradient(135deg, #CC7744 0%, #B86434 100%);
+            color: white;
+            padding: 24px;
+            margin: -24px -24px 16px -24px;
+            border-radius: 8px 8px 0 0;
+        }}
+
+        .header h1 {{
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: white;
+            border: none;
+            padding-bottom: 0;
+        }}
+
+        .header .meta {{
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }}
+
+        /* Score Badge */
+        .score-badge {{
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+        }}
+
+        /* Decision Badge */
+        .decision-badge {{
+            display: inline-block;
+            margin-left: 10px;
+            margin-top: 6px;
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }}
+
+        .decision-badge.no-screen {{
+            background: #EF4444;
             color: white;
         }}
 
-        td {{
-            padding: 0.875rem 1.25rem;
-            border-bottom: 1px solid hsl(var(--border-300));
-            color: hsl(var(--text-200));
+        .decision-badge.maybe {{
+            background: #F59E0B;
+            color: white;
         }}
 
-        tbody tr:hover {{
-            background: hsl(var(--bg-200));
+        .decision-badge.screen {{
+            background: #CC7744;
+            color: white;
         }}
 
-        /* Header with scroll shadow */
-        header {{
-            background: hsl(var(--bg-000) / 0.95);
-            border-bottom: 0.5px solid hsl(var(--border-400) / 0.25);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(10px);
-            transition: box-shadow 0.3s ease;
+        .decision-badge.strong-screen {{
+            background: #10B981;
+            color: white;
         }}
 
-        header.scrolled {{
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        /* Executive Summary */
+        .summary-box {{
+            background: #FFF7ED;
+            border-left: 3px solid #CC7744;
+            padding: 14px;
+            margin: 14px 0;
+            border-radius: 5px;
         }}
 
-        nav {{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 4rem;
+        .summary-box p {{
+            margin: 0 0 8px 0;
+            line-height: 1.6;
         }}
 
-        .logo {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-weight: 700;
-            font-size: 1.125rem;
-            color: var(--primary);
-        }}
-
-        .nav-links {{
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }}
-
-        .nav-links a {{
-            color: hsl(var(--text-100));
-            font-size: 0.9375rem;
-            font-weight: 500;
-            transition: color 0.2s ease;
-            padding-bottom: 0.25rem;
-            border-bottom: 2px solid transparent;
-        }}
-
-        .nav-links a:hover,
-        .nav-links a.active {{
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-            opacity: 1;
-        }}
-
-        @media (max-width: 768px) {{
-            nav {{
-                height: auto;
-                padding: 0.75rem 0;
-            }}
-
-            .logo {{
-                font-size: 1rem;
-            }}
-
-            .nav-links {{
-                gap: 0.5rem;
-                flex-wrap: wrap;
-                justify-content: flex-end;
-            }}
-
-            .nav-links a {{
-                font-size: 0.75rem;
-                padding: 0.25rem 0.5rem;
-            }}
-        }}
-
-        /* Buttons - Updated for deep blue primary */
-        .btn {{
-            position: relative;
-            display: inline-flex;
-            gap: 0.5rem;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            min-width: 5rem;
-            height: 2.5rem;
-            padding: 0.625rem 1.5rem;
-            white-space: nowrap;
-            font-family: 'Quattrocento', Georgia, serif;
-            font-weight: 700;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            text-decoration: none;
-            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-        }}
-
-        .btn:active {{
-            transform: scale(0.985);
-        }}
-
-        .btn-primary {{
-            color: #ffffff;
-            background-color: var(--primary);
-            border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }}
-
-        .btn-primary:hover {{
-            background-color: #b5573a;
-            opacity: 1;
-        }}
-
-        .btn-secondary {{
-            color: var(--primary);
-            background-color: transparent;
-            border: 1px solid var(--primary);
-        }}
-
-        .btn-secondary:hover {{
-            background-color: rgba(201, 100, 66, 0.1);
-            opacity: 1;
-        }}
-
-        .cta-buttons {{
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-        }}
-
-        /* Hero Section - ULTRA COMPACT: 50vh Height */
-        .hero {{
-            position: relative;
-            min-height: 50vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #fff;
-            padding: 1rem 0;
-        }}
-
-        .hero-bg {{
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom right, rgba(30,10,5,0.85), rgba(60,30,20,0.9)),
-                        radial-gradient(ellipse at top, rgba(201,100,66,0.3), transparent 50%);
-            z-index: -1;
-        }}
-
-        .hero-content {{
-            position: relative;
-            z-index: 1;
-        }}
-
-        .hero h1 {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-weight: 700;
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-            line-height: 1.1;
-        }}
-
-        .hero p {{
-            font-size: 1.1rem;
-            max-width: 650px;
-            margin: 0 auto 1rem;
-            color: rgba(255,255,255,0.85);
-            line-height: 1.4;
-        }}
-
-        /* Scroll down indicator */
-        .scroll-down {{
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255,255,255,0.7);
-            font-size: 2rem;
-            animation: bounce 2s infinite;
-            cursor: pointer;
-        }}
-
-        @keyframes bounce {{
-            0%, 100% {{ transform: translate(-50%, 0); }}
-            50% {{ transform: translate(-50%, 10px); }}
-        }}
-
-        /* Sections - ULTRA COMPACT */
-        section {{
-            padding: 2rem 0;
-        }}
-
-        .section-header {{
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }}
-
-        .section-header h2 {{
-            margin-bottom: 0.5rem;
-        }}
-
-        .section-header p {{
-            font-size: 1.125rem;
-            color: hsl(var(--text-300));
-        }}
-
-        /* Cards - ULTRA COMPACT */
-        .card {{
-            background: hsl(var(--bg-000));
-            border: none;
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }}
-
-        .card:hover {{
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }}
-
-        .card h3 {{
-            margin-bottom: 0.75rem;
-            font-size: 1.35rem;
-            color: var(--primary);
-        }}
-
-        /* Reduce font-size for philosophy section to prevent wrapping */
-        #philosophy .card h3 {{
-            font-size: 1.15rem;
-        }}
-
-        .card p {{
-            color: hsl(var(--text-300));
-            margin-bottom: 0.5rem;
-        }}
-
-        /* Grid Layouts - Wider gutters */
-        .grid {{
-            display: grid;
-            gap: 2.5rem;
-        }}
-
-        .grid-2 {{
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        }}
-
-        .grid-3 {{
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        }}
-
-        /* Pillar Cards - ULTRA COMPACT */
-        .pillar-card {{
-            background: linear-gradient(135deg, hsl(var(--bg-000)) 0%, hsl(var(--bg-100)) 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }}
-
-        .pillar-card:hover {{
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            transform: translateY(-4px);
-        }}
-
-        .pillar-number {{
-            display: inline-block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-right: 0.5rem;
-        }}
-
-        .pillar-card h3 {{
-            display: inline;
-            color: var(--primary);
+        .summary-box p:last-child {{
             margin-bottom: 0;
-            font-size: 1.5rem;
         }}
 
-        .pillar-card p {{
-            display: block;
-            margin-top: 0.75rem;
-        }}
-
-        .pillar-card ul {{
-            list-style: none;
-            margin-top: 1rem;
-        }}
-
-        .pillar-card li {{
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-            color: hsl(var(--text-200));
-        }}
-
-        .pillar-card li::before {{
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-        }}
-
-        /* Decision Framework */
-        .decision-flow {{
-            background: hsl(var(--bg-200));
-            border-radius: 12px;
-            padding: 2.5rem;
-            margin: 2rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }}
-
-        .decision-step {{
-            padding: 1.5rem;
-            margin: 1.25rem 0;
-            background: hsl(var(--bg-000));
-            border-left: 4px solid var(--primary);
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }}
-
-        .decision-step h4 {{
-            color: var(--primary);
-            margin-bottom: 0.75rem;
-        }}
-
-        .decision-step ol,
-        .decision-step ul {{
-            margin-left: 2rem;
-            margin-top: 0.75rem;
-        }}
-
-        .decision-step li {{
-            margin: 0.5rem 0;
-            color: hsl(var(--text-200));
-        }}
-
-        .highlight-box {{
-            background: hsl(var(--bg-100));
-            padding: 1rem 1.25rem;
-            border-radius: 6px;
-            margin-top: 0.75rem;
-            font-weight: 500;
-            border-left: 3px solid var(--primary);
-        }}
-
-        /* Personal Story - ULTRA COMPACT */
-        .story-section {{
+        /* Roles Section */
+        .roles-list {{
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            padding: 2rem 1.5rem;
-            align-items: center;
-            background: hsl(var(--bg-000));
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 8px;
+            margin: 12px 0;
         }}
 
-        .story-section h2 {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 1rem;
-            color: var(--primary);
+        .role-item {{
+            background: #EFF6FF;
+            padding: 10px 14px;
+            border-radius: 5px;
+            border-left: 2px solid #3B82F6;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }}
 
-        .story-section p {{
-            font-family: 'Quattrocento', Georgia, serif;
-            font-size: 1.125rem;
-            line-height: 1.8;
-            color: hsl(var(--text-200));
-            margin-bottom: 1.5rem;
-        }}
-
-        .story-visual {{
-            text-align: center;
-        }}
-
-        .story-visual img {{
-            width: 100%;
-            max-width: 400px;
-            border-radius: 12px;
-            object-fit: cover;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        }}
-
-        .caption {{
-            text-align: center;
-            font-size: 0.875rem;
-            color: hsl(var(--text-300));
-            margin-top: 0.75rem;
-        }}
-
-        .btn-link {{
-            display: inline-block;
-            margin-top: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }}
-
-        .btn-link:hover {{
-            text-decoration: underline;
-        }}
-
-        blockquote.highlight {{
-            border-left: 4px solid var(--primary);
-            padding-left: 1.5rem;
-            font-style: italic;
-            color: hsl(var(--text-300));
-            margin: 1.5rem 0;
-            font-size: 1.125rem;
-        }}
-
-        /* Video Container */
-        .video-container {{
-            position: relative;
-            width: 100%;
-            margin: 2rem 0;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }}
-
-        .video-container iframe {{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }}
-
-        /* Scoring Stats Cards */
-        .stats {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }}
-
-        .stat-card {{
-            background: linear-gradient(135deg, hsl(var(--bg-000)) 0%, hsl(var(--bg-100)) 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }}
-
-        .stat-card:hover {{
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            transform: translateY(-4px);
-        }}
-
-        .stat-number {{
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            line-height: 1;
-        }}
-
-        .stat-label {{
-            font-size: 1rem;
-            font-weight: 600;
-            color: hsl(var(--text-200));
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }}
-
-        /* Footer - Consolidated CTAs */
-        footer {{
-            background: hsl(var(--bg-200));
-            border-top: 0.5px solid hsl(var(--border-400));
-            padding: 3rem 0 2rem;
-            margin-top: 4rem;
-        }}
-
-        .footer-content {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2.5rem;
-            margin-bottom: 2rem;
-        }}
-
-        .footer-section h4 {{
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }}
-
-        .footer-section ul {{
+        /* Interview Focus Areas */
+        .sub-list {{
+            margin: 8px 0;
+            padding-left: 0;
             list-style: none;
         }}
 
-        .footer-section li {{
-            margin-bottom: 0.5rem;
+        .sub-list li {{
+            padding: 6px 10px;
+            margin: 4px 0;
+            background: #F3F4F6;
+            border-left: 2px solid #9CA3AF;
+            border-radius: 3px;
+            font-size: 0.9rem;
         }}
 
-        .footer-section a {{
-            color: hsl(var(--text-200));
-            font-size: 0.9375rem;
-        }}
-
-        .footer-bottom {{
-            text-align: center;
-            padding-top: 2rem;
-            border-top: none;
-            color: hsl(var(--text-300));
-            font-size: 0.875rem;
-        }}
-
-        /* Responsive - ULTRA COMPACT */
-        @media (max-width: 768px) {{
-            .container {{
-                padding: 0 1rem;
-            }}
-
-            section {{
-                padding: 1.5rem 0;
-            }}
-
-            .grid {{
-                gap: 1.25rem;
-            }}
-
-            .hero {{
-                min-height: 60vh;
-                padding: 1rem 0;
-            }}
-
-            .hero h1 {{
-                font-size: clamp(1.75rem, 7vw, 2.25rem);
-                margin-bottom: 0.5rem;
-            }}
-
-            .hero p {{
-                font-size: 1rem;
-                margin-bottom: 1rem;
-            }}
-
-            .cta-buttons {{
-                flex-direction: column;
-                gap: 0.5rem;
-                margin-top: 1rem;
-            }}
-
-            .btn {{
-                width: 100%;
-                max-width: 320px;
-            }}
-
-            .story-section {{
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-                padding: 1.5rem 1rem;
-            }}
-
-            .story-visual {{
-                order: -1;
-            }}
-
-            .video-container {{
-                margin: 1.5rem 0;
-            }}
-
-            table {{
-                font-size: 0.8125rem;
-                display: block;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }}
-
-            th, td {{
-                padding: 0.5rem 0.75rem;
-                white-space: nowrap;
-            }}
-
-            .stats {{
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }}
-
-            .stat-card {{
-                padding: 1.5rem 1rem;
-            }}
-
-            .stat-number {{
-                font-size: 2rem;
-            }}
-
-            .stat-label {{
-                font-size: 0.875rem;
-            }}
+        /* Grouped paragraph styling */
+        .grouped-paragraph {{
+            line-height: 1.6;
+            margin: 12px 0;
         }}
     </style>
 </head>
