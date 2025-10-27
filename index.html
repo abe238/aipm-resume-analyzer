@@ -6,56 +6,100 @@
     <meta name="description" content="A rigorous, open-source evaluation framework for 2025 AI Product Manager candidates. Built for the era of rapid AI evolution.">
     <title>Applied AI PM Evaluation Framework | 2025 Standards</title>
     <style>
-        :root {
-            --background: #faf9f5;
-            --foreground: #3d3929;
-            --card: #faf9f5;
-            --card-foreground: #141413;
-            --popover: #ffffff;
-            --popover-foreground: #28261b;
-            --primary: #c96442;
-            --primary-foreground: #ffffff;
-            --secondary: #e9e6dc;
-            --secondary-foreground: #535146;
-            --muted: #ede9de;
-            --muted-foreground: #83827d;
-            --accent: #e9e6dc;
-            --accent-foreground: #28261b;
-            --destructive: #141413;
-            --destructive-foreground: #ffffff;
-            --border: #dad9d4;
-            --input: #b4b2a7;
-            --ring: #c96442;
-            --sidebar: #f5f4ee;
-            --sidebar-foreground: #3d3d3a;
-            --sidebar-primary: #c96442;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
-            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            --radius: 0.5rem;
-            --spacing: 0.25rem;
+        /* Claude Docs Typography - Styrene, Tiempos, Copernicus */
+        @font-face {
+            font-family: "Styrene Display";
+            src: url("https://www-cdn.anthropic.com/e8f9c8ca51b03efb6315db351446fc972ab15abe/StyreneA-Medium-Web.woff2") format("woff2");
+            font-weight: 500;
+            font-style: normal;
         }
 
-        @media (prefers-color-scheme: dark) {
+        @font-face {
+            font-family: "Styrene Display";
+            src: url("https://www-cdn.anthropic.com/e8f9c8ca51b03efb6315db351446fc972ab15abe/StyreneA-Medium-Web.woff2") format("woff2");
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Styrene";
+            src: url("https://www-cdn.anthropic.com/6f87b6d99aefde021ac24f21295bf9e70f71472f/StyreneBLC-Regular.woff2") format("woff2");
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Styrene";
+            src: url("https://www-cdn.anthropic.com/3611e9e4aaaf466dbd47e2686f561e7de694cb6c/StyreneBLC-Medium.woff2") format("woff2");
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Tiempos";
+            src: url("https://www-cdn.anthropic.com/c3e09cefbfeb4e5eaca56b7bc8b9a1aa1aeda025/TiemposText-Regular.woff2") format("woff2");
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Tiempos";
+            src: url("https://www-cdn.anthropic.com/b198ca4e31a323b2abb84b3eeeb1eed1f471afa0/TiemposText-Medium.woff2") format("woff2");
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Copernicus";
+            src: url("https://www-cdn.anthropic.com/db30aec85c7615f4a4d3e23c0c941674ea67f8f5/Copernicus-Book.woff2") format("woff2");
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        /* Claude Design System - Color Tokens (Light Mode) */
+        :root:not(.dark) {
+            --accent-brand: 15 63.1% 59.6%;
+            --accent-main-000: 15 55.6% 52.4%;
+            --accent-main-100: 15 55.6% 52.4%;
+            --accent-main-200: 15 63.1% 59.6%;
+            --bg-000: 0 0% 100%;
+            --bg-100: 48 33.3% 97.1%;
+            --bg-200: 53 28.6% 94.5%;
+            --bg-300: 48 25% 92.2%;
+            --bg-400: 50 20.7% 88.6%;
+            --bg-500: 50 20.7% 88.6%;
+            --border-300: 30 3.3% 11.8%;
+            --border-400: 30 3.3% 11.8%;
+            --text-000: 60 2.6% 7.6%;
+            --text-100: 60 2.6% 7.6%;
+            --text-200: 60 2.5% 23.3%;
+            --text-300: 60 2.5% 23.3%;
+            --oncolor-100: 0 0% 100%;
+            --primary: #c96442;
+            --primary-foreground: #ffffff;
+        }
+
+        /* Claude Design System - Dark Mode */
+        :root.dark, @media (prefers-color-scheme: dark) {
             :root {
-                --background: #262624;
-                --foreground: #c3c0b6;
-                --card: #262624;
-                --card-foreground: #faf9f5;
-                --popover: #30302e;
-                --popover-foreground: #e5e5e2;
+                --accent-brand: 15 63.1% 59.6%;
+                --accent-main-100: 15 63.1% 59.6%;
+                --accent-main-200: 15 63.1% 59.6%;
+                --bg-000: 60 2.1% 18.4%;
+                --bg-100: 60 2.7% 14.5%;
+                --bg-200: 30 3.3% 11.8%;
+                --bg-300: 60 2.6% 7.6%;
+                --bg-400: 60 3.4% 5.7%;
+                --bg-500: 60 3.4% 5.7%;
+                --border-300: 51 16.5% 84.5%;
+                --border-400: 51 16.5% 84.5%;
+                --text-000: 48 33.3% 97.1%;
+                --text-100: 48 33.3% 97.1%;
+                --text-200: 50 9% 73.7%;
+                --text-300: 50 9% 73.7%;
+                --oncolor-100: 0 0% 100%;
                 --primary: #d97757;
-                --secondary: #faf9f5;
-                --secondary-foreground: #30302e;
-                --muted: #1b1b19;
-                --muted-foreground: #b7b5a9;
-                --accent: #1a1915;
-                --accent-foreground: #f5f4ee;
-                --destructive: #ef4444;
-                --border: #3e3e38;
-                --input: #52514a;
-                --sidebar: #1f1e1d;
-                --sidebar-foreground: #c3c0b6;
+                --primary-foreground: #ffffff;
             }
         }
 
@@ -66,20 +110,20 @@
         }
 
         body {
-            font-family: var(--font-sans);
-            background: var(--background);
-            color: var(--foreground);
+            font-family: "Styrene", -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: hsl(var(--bg-100));
+            color: hsl(var(--text-100));
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Typography */
         h1, h2, h3, h4, h5, h6 {
+            font-family: "Styrene Display", sans-serif;
             font-weight: 600;
             line-height: 1.2;
             margin-bottom: 1rem;
-            color: var(--card-foreground);
+            color: hsl(var(--text-000));
         }
 
         h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
@@ -87,7 +131,13 @@
         h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
         h4 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
 
-        p { margin-bottom: 1rem; }
+        p {
+            font-family: "Tiempos", Georgia, serif;
+            font-size: 1rem;
+            line-height: 1.65rem;
+            margin-bottom: 1rem;
+            color: hsl(var(--text-200));
+        }
 
         a {
             color: var(--primary);
@@ -108,19 +158,12 @@
 
         /* Header */
         header {
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
+            background: hsl(var(--bg-000) / 0.95);
+            border-bottom: 0.5px solid hsl(var(--border-400) / 0.25);
             position: sticky;
             top: 0;
             z-index: 50;
             backdrop-filter: blur(10px);
-            background: rgba(250, 249, 245, 0.95);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            header {
-                background: rgba(38, 38, 36, 0.95);
-            }
         }
 
         nav {
@@ -131,7 +174,8 @@
         }
 
         .logo {
-            font-weight: 700;
+            font-family: "Styrene Display", sans-serif;
+            font-weight: 600;
             font-size: 1.125rem;
             color: var(--primary);
         }
@@ -143,7 +187,7 @@
         }
 
         .nav-links a {
-            color: var(--foreground);
+            color: hsl(var(--text-100));
             font-size: 0.9375rem;
             font-weight: 500;
             transition: color 0.2s ease;
@@ -151,71 +195,91 @@
 
         .nav-links a:hover {
             color: var(--primary);
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Buttons - Claude Style */
+        .btn {
+            position: relative;
+            display: inline-flex;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            min-width: 5rem;
+            height: 2.25rem;
+            padding: 0.5rem 1rem;
+            white-space: nowrap;
+            font-family: "Styrene", sans-serif;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            font-size: 0.9375rem;
+            text-decoration: none;
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn:active {
+            transform: scale(0.985);
+        }
+
+        .btn-primary {
+            color: hsl(var(--oncolor-100));
+            background-color: var(--primary);
+            background-image: linear-gradient(to right, var(--primary) 0%, #d97757 100%);
+            background-size: 200% 100%;
+            background-position: 0% 0%;
+            border: 0.5px solid hsl(var(--border-400) / 0.25);
+            box-shadow: inset 0 0.5px 0px rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.05);
+            text-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+        }
+
+        .btn-primary:hover {
+            background-position: 100% 0%;
+            opacity: 1;
+        }
+
+        .btn-secondary {
+            color: hsl(var(--text-100) / 0.9);
+            background-image: radial-gradient(ellipse at center, hsl(var(--bg-500) / 0.1) 50%, hsl(var(--bg-500) / 0.3) 100%);
+            border: 0.5px solid hsl(var(--border-400));
+        }
+
+        .btn-secondary:hover {
+            color: hsl(var(--text-000));
+            background-color: hsl(var(--bg-500) / 0.6);
+            opacity: 1;
         }
 
         /* Hero Section */
         .hero {
-            padding: 5rem 0 4rem;
+            padding: 4rem 0;
             text-align: center;
+            background: linear-gradient(180deg, hsl(var(--bg-100)) 0%, hsl(var(--bg-200)) 100%);
         }
 
         .hero h1 {
+            font-family: "Copernicus", Georgia, serif;
+            font-weight: 300;
+            font-size: clamp(2.5rem, 6vw, 4rem);
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--primary) 0%, #a0533a 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: hsl(var(--text-000));
         }
 
         .hero p {
-            font-size: 1.25rem;
-            color: var(--muted-foreground);
+            font-size: clamp(1.125rem, 2vw, 1.25rem);
             max-width: 700px;
             margin: 0 auto 2rem;
+            color: hsl(var(--text-200));
         }
 
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            font-weight: 600;
-            font-size: 0.9375rem;
-            transition: all 0.2s ease;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--primary-foreground);
-        }
-
-        .btn-primary:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: var(--secondary-foreground);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--accent);
-        }
-
-        /* Section */
+        /* Sections */
         section {
             padding: 4rem 0;
         }
@@ -226,91 +290,66 @@
         }
 
         .section-header h2 {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
         }
 
         .section-header p {
             font-size: 1.125rem;
-            color: var(--muted-foreground);
-            max-width: 700px;
-            margin: 0 auto;
+            color: hsl(var(--text-300));
         }
 
         /* Cards */
         .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: calc(var(--radius) * 1.5);
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
+            background: hsl(var(--bg-000));
+            border: 0.5px solid hsl(var(--border-400));
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
         }
 
         .card:hover {
             border-color: var(--primary);
-            box-shadow: 0 8px 16px rgba(201, 100, 66, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .card h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .card-icon {
-            width: 2.5rem;
-            height: 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--accent);
-            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
             font-size: 1.25rem;
         }
 
-        /* Grid */
-        .grid {
-            display: grid;
-            gap: 1.5rem;
+        .card p {
+            color: hsl(var(--text-300));
+            margin-bottom: 0.5rem;
         }
 
-        @media (min-width: 768px) {
-            .grid-2 { grid-template-columns: repeat(2, 1fr); }
-            .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        /* Grid Layouts */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         }
 
         /* Pillar Cards */
         .pillar-card {
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: calc(var(--radius) * 1.5);
+            background: linear-gradient(135deg, hsl(var(--bg-000)) 0%, hsl(var(--bg-100)) 100%);
+            border: 0.5px solid hsl(var(--border-400));
+            border-radius: 12px;
             padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pillar-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--primary);
-        }
-
-        .pillar-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--accent);
-            line-height: 1;
-            margin-bottom: 1rem;
         }
 
         .pillar-card h3 {
-            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
         }
 
         .pillar-card ul {
@@ -322,44 +361,20 @@
             padding: 0.5rem 0;
             padding-left: 1.5rem;
             position: relative;
+            color: hsl(var(--text-200));
         }
 
         .pillar-card li::before {
-            content: '→';
+            content: "→";
             position: absolute;
             left: 0;
             color: var(--primary);
-            font-weight: 700;
-        }
-
-        /* Personal Story */
-        .personal-story {
-            background: linear-gradient(135deg, rgba(201, 100, 66, 0.05) 0%, rgba(201, 100, 66, 0.02) 100%);
-            border: 2px solid var(--border);
-            border-radius: calc(var(--radius) * 2);
-            padding: 3rem 2rem;
-            margin: 3rem 0;
-        }
-
-        .personal-story h2 {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .story-placeholder {
-            background: var(--card);
-            border: 2px dashed var(--border);
-            border-radius: var(--radius);
-            padding: 2rem;
-            color: var(--muted-foreground);
-            font-style: italic;
-            text-align: center;
         }
 
         /* Decision Framework */
         .decision-flow {
-            background: var(--muted);
-            border-radius: calc(var(--radius) * 1.5);
+            background: hsl(var(--bg-200));
+            border-radius: 12px;
             padding: 2rem;
             margin: 2rem 0;
         }
@@ -367,9 +382,9 @@
         .decision-step {
             padding: 1rem;
             margin: 1rem 0;
-            background: var(--card);
+            background: hsl(var(--bg-000));
             border-left: 4px solid var(--primary);
-            border-radius: var(--radius);
+            border-radius: 8px;
         }
 
         .decision-step h4 {
@@ -385,62 +400,62 @@
 
         .decision-step li {
             margin: 0.5rem 0;
+            color: hsl(var(--text-200));
         }
 
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
+        .highlight-box {
+            background: hsl(var(--bg-100));
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-top: 0.75rem;
+            font-weight: 500;
         }
 
-        .stat-card {
-            text-align: center;
+        /* Personal Story */
+        .personal-story {
+            background: linear-gradient(135deg, hsl(var(--bg-000)) 0%, hsl(var(--bg-100)) 100%);
+            border-left: 4px solid var(--primary);
             padding: 2rem;
-            background: var(--card);
-            border-radius: calc(var(--radius) * 1.5);
-            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 2rem 0;
         }
 
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--primary);
-            line-height: 1;
+        .personal-story h2 {
+            margin-bottom: 1.5rem;
         }
 
-        .stat-label {
-            margin-top: 0.5rem;
-            color: var(--muted-foreground);
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .personal-story p {
+            margin-bottom: 1rem;
+        }
+
+        .personal-story a {
+            font-weight: 500;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
         }
 
         /* Footer */
         footer {
-            background: var(--muted);
-            border-top: 1px solid var(--border);
+            background: hsl(var(--bg-200));
+            border-top: 0.5px solid hsl(var(--border-400));
             padding: 3rem 0 2rem;
-            margin-top: 5rem;
+            margin-top: 4rem;
         }
 
         .footer-content {
             display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
         }
 
-        @media (min-width: 768px) {
-            .footer-content {
-                grid-template-columns: 2fr 1fr 1fr;
-            }
-        }
-
         .footer-section h4 {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             margin-bottom: 1rem;
-            font-size: 1rem;
+            color: hsl(var(--text-100));
         }
 
         .footer-section ul {
@@ -451,81 +466,32 @@
             margin-bottom: 0.5rem;
         }
 
-        .footer-bottom {
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--muted-foreground);
-            font-size: 0.875rem;
+        .footer-section a {
+            color: hsl(var(--text-200));
+            font-size: 0.9375rem;
         }
 
-        /* Code blocks */
-        code {
-            background: var(--muted);
-            padding: 0.2rem 0.4rem;
-            border-radius: 0.25rem;
-            font-family: var(--font-mono);
-            font-size: 0.875em;
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 0.5px solid hsl(var(--border-400) / 0.3);
+            color: hsl(var(--text-300));
+            font-size: 0.875rem;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero {
-                padding: 3rem 0 2rem;
-            }
-
             section {
                 padding: 3rem 0;
             }
 
-            .card {
-                padding: 1.5rem;
+            .grid {
+                gap: 1.5rem;
             }
-        }
 
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Highlights */
-        .highlight-box {
-            background: var(--accent);
-            border-left: 4px solid var(--primary);
-            padding: 1.5rem;
-            border-radius: var(--radius);
-            margin: 2rem 0;
-        }
-
-        .highlight-box strong {
-            color: var(--primary);
-        }
-
-        /* Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2rem 0;
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: var(--muted);
-            font-weight: 600;
-            color: var(--card-foreground);
-        }
-
-        tr:hover {
-            background: var(--accent);
+            .hero {
+                padding: 3rem 0;
+            }
         }
     </style>
 </head>
