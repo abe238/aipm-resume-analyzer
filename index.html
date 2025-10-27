@@ -6,54 +6,31 @@
     <meta name="description" content="A rigorous, open-source evaluation framework for 2025 AI Product Manager candidates. Built for the era of rapid AI evolution.">
     <title>Applied AI PM Evaluation Framework | 2025 Standards</title>
     <style>
-        /* Modern Minimal Typography - Quattrocento */
+        /* Modern Minimal Typography - Quattrocento (UNCHANGED) */
         @import url('https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap');
 
-        /* Claude Design System - Color Tokens (Light Mode) */
+        /* Anthropic Color Palette - Warm Tan/Orange Brand Colors */
         :root:not(.dark) {
-            --accent-brand: 15 63.1% 59.6%;
+            /* Anthropic design system tokens */
+            --accent-brand: 15 63.1% 59.6%;  /* Warm tan/orange */
             --accent-main-000: 15 55.6% 52.4%;
             --accent-main-100: 15 55.6% 52.4%;
             --accent-main-200: 15 63.1% 59.6%;
-            --bg-000: 0 0% 100%;
-            --bg-100: 48 33.3% 97.1%;
-            --bg-200: 53 28.6% 94.5%;
+            --bg-000: 0 0% 100%;  /* Pure white */
+            --bg-100: 48 33.3% 97.1%;  /* Warm off-white */
+            --bg-200: 53 28.6% 94.5%;  /* Warm light gray */
             --bg-300: 48 25% 92.2%;
             --bg-400: 50 20.7% 88.6%;
             --bg-500: 50 20.7% 88.6%;
             --border-300: 30 3.3% 11.8%;
             --border-400: 30 3.3% 11.8%;
-            --text-000: 60 2.6% 7.6%;
+            --text-000: 60 2.6% 7.6%;  /* Near black */
             --text-100: 60 2.6% 7.6%;
-            --text-200: 60 2.5% 23.3%;
+            --text-200: 60 2.5% 23.3%;  /* Dark gray */
             --text-300: 60 2.5% 23.3%;
             --oncolor-100: 0 0% 100%;
-            --primary: #c96442;
+            --primary: #c96442;  /* Warm tan/orange */
             --primary-foreground: #ffffff;
-        }
-
-        /* Claude Design System - Dark Mode */
-        :root.dark, @media (prefers-color-scheme: dark) {
-            :root {
-                --accent-brand: 15 63.1% 59.6%;
-                --accent-main-100: 15 63.1% 59.6%;
-                --accent-main-200: 15 63.1% 59.6%;
-                --bg-000: 60 2.1% 18.4%;
-                --bg-100: 60 2.7% 14.5%;
-                --bg-200: 30 3.3% 11.8%;
-                --bg-300: 60 2.6% 7.6%;
-                --bg-400: 60 3.4% 5.7%;
-                --bg-500: 60 3.4% 5.7%;
-                --border-300: 51 16.5% 84.5%;
-                --border-400: 51 16.5% 84.5%;
-                --text-000: 48 33.3% 97.1%;
-                --text-100: 48 33.3% 97.1%;
-                --text-200: 50 9% 73.7%;
-                --text-300: 50 9% 73.7%;
-                --oncolor-100: 0 0% 100%;
-                --primary: #d97757;
-                --primary-foreground: #ffffff;
-            }
         }
 
         * {
@@ -104,11 +81,11 @@
             opacity: 0.8;
         }
 
-        /* Container */
+        /* Container - wider gutters */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 2rem;
             width: 100%;
         }
 
@@ -118,31 +95,34 @@
             border-collapse: collapse;
             margin: 2rem 0;
             font-size: 0.9375rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         thead {
-            background: hsl(var(--bg-200));
+            background: var(--primary);
+            color: white;
         }
 
         th {
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.25rem;
             text-align: left;
             font-weight: 600;
-            color: hsl(var(--text-000));
-            border-bottom: 1px solid hsl(var(--border-400));
+            color: white;
         }
 
         td {
-            padding: 0.75rem 1rem;
+            padding: 0.875rem 1.25rem;
             border-bottom: 1px solid hsl(var(--border-300));
             color: hsl(var(--text-200));
         }
 
         tbody tr:hover {
-            background: hsl(var(--bg-100));
+            background: hsl(var(--bg-200));
         }
 
-        /* Header */
+        /* Header with scroll shadow */
         header {
             background: hsl(var(--bg-000) / 0.95);
             border-bottom: 0.5px solid hsl(var(--border-400) / 0.25);
@@ -150,6 +130,11 @@
             top: 0;
             z-index: 50;
             backdrop-filter: blur(10px);
+            transition: box-shadow 0.3s ease;
+        }
+
+        header.scrolled {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         nav {
@@ -177,10 +162,14 @@
             font-size: 0.9375rem;
             font-weight: 500;
             transition: color 0.2s ease;
+            padding-bottom: 0.25rem;
+            border-bottom: 2px solid transparent;
         }
 
-        .nav-links a:hover {
+        .nav-links a:hover,
+        .nav-links a.active {
             color: var(--primary);
+            border-bottom-color: var(--primary);
             opacity: 1;
         }
 
@@ -198,11 +187,6 @@
                 gap: 0.5rem;
                 flex-wrap: wrap;
                 justify-content: flex-end;
-                font-size: 0.75rem;
-            }
-
-            .nav-links li {
-                white-space: nowrap;
             }
 
             .nav-links a {
@@ -211,7 +195,7 @@
             }
         }
 
-        /* Buttons - Claude Style */
+        /* Buttons - Updated for deep blue primary */
         .btn {
             position: relative;
             display: inline-flex;
@@ -220,13 +204,13 @@
             justify-content: center;
             flex-shrink: 0;
             min-width: 5rem;
-            height: 2.25rem;
-            padding: 0.5rem 1rem;
+            height: 2.5rem;
+            padding: 0.625rem 1.5rem;
             white-space: nowrap;
             font-family: 'Quattrocento', Georgia, serif;
             font-weight: 700;
             border-radius: 0.5rem;
-            font-size: 0.9375rem;
+            font-size: 1rem;
             text-decoration: none;
             transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -236,30 +220,25 @@
         }
 
         .btn-primary {
-            color: hsl(var(--oncolor-100));
+            color: #ffffff;
             background-color: var(--primary);
-            background-image: linear-gradient(to right, var(--primary) 0%, #d97757 100%);
-            background-size: 200% 100%;
-            background-position: 0% 0%;
-            border: 0.5px solid hsl(var(--border-400) / 0.25);
-            box-shadow: inset 0 0.5px 0px rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.05);
-            text-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .btn-primary:hover {
-            background-position: 100% 0%;
+            background-color: #b5573a;
             opacity: 1;
         }
 
         .btn-secondary {
-            color: hsl(var(--text-100) / 0.9);
-            background-image: radial-gradient(ellipse at center, hsl(var(--bg-500) / 0.1) 50%, hsl(var(--bg-500) / 0.3) 100%);
-            border: 0.5px solid hsl(var(--border-400));
+            color: var(--primary);
+            background-color: transparent;
+            border: 1px solid var(--primary);
         }
 
         .btn-secondary:hover {
-            color: hsl(var(--text-000));
-            background-color: hsl(var(--bg-500) / 0.6);
+            background-color: rgba(201, 100, 66, 0.1);
             opacity: 1;
         }
 
@@ -272,38 +251,72 @@
             margin-top: 1.5rem;
         }
 
-        /* Hero Section */
+        /* Hero Section - Commanding Dark Overlay with 80vh Height */
         .hero {
-            padding: 2rem 0 2.5rem;
+            position: relative;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            background: linear-gradient(180deg, hsl(var(--bg-100)) 0%, hsl(var(--bg-200)) 100%);
+            color: #fff;
+            padding: 2rem 0;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(30,10,5,0.85), rgba(60,30,20,0.9)),
+                        radial-gradient(ellipse at top, rgba(201,100,66,0.3), transparent 50%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 {
             font-family: 'Quattrocento', Georgia, serif;
             font-weight: 700;
-            font-size: clamp(2.25rem, 5.5vw, 3.5rem);
-            margin-bottom: 0.75rem;
-            line-height: 1.15;
-            color: hsl(var(--text-000));
+            font-size: clamp(3rem, 6vw, 4rem);
+            margin-bottom: 1rem;
+            color: #ffffff;
         }
 
         .hero p {
-            font-size: clamp(1rem, 1.75vw, 1.125rem);
-            max-width: 700px;
-            margin: 0 auto 1.25rem;
-            color: hsl(var(--text-200));
-            line-height: 1.5;
+            font-size: 1.25rem;
+            max-width: 650px;
+            margin: 0 auto 2rem;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
         }
 
-        /* Sections */
+        /* Scroll down indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.7);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, 10px); }
+        }
+
+        /* Sections - Increased spacing */
         section {
-            padding: 1.5rem 0;
+            padding: 3rem 0;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
         }
 
         .section-header h2 {
@@ -315,23 +328,25 @@
             color: hsl(var(--text-300));
         }
 
-        /* Cards */
+        /* Cards - Subtle drop shadows, minimal borders */
         .card {
             background: hsl(var(--bg-000));
-            border: 0.5px solid hsl(var(--border-400));
+            border: none;
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 2rem;
             transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
 
         .card h3 {
             margin-bottom: 0.75rem;
-            font-size: 1.25rem;
+            font-size: 1.35rem;
+            color: var(--primary);
         }
 
         .card p {
@@ -339,33 +354,40 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Grid Layouts */
+        /* Grid Layouts - Wider gutters */
         .grid {
             display: grid;
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
         .grid-2 {
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         }
 
         .grid-3 {
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         }
 
-        /* Pillar Cards */
+        /* Pillar Cards - Enhanced contrast */
         .pillar-card {
             background: linear-gradient(135deg, hsl(var(--bg-000)) 0%, hsl(var(--bg-100)) 100%);
-            border: 0.5px solid hsl(var(--border-400));
+            border: none;
             border-radius: 12px;
-            padding: 2rem;
+            padding: 2.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .pillar-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
         }
 
         .pillar-number {
             display: inline-block;
             font-size: 0.875rem;
             font-weight: 600;
-            color: hsl(var(--text-300));
+            color: var(--primary);
             margin-right: 0.5rem;
         }
 
@@ -373,6 +395,7 @@
             display: inline;
             color: var(--primary);
             margin-bottom: 0;
+            font-size: 1.5rem;
         }
 
         .pillar-card p {
@@ -403,21 +426,23 @@
         .decision-flow {
             background: hsl(var(--bg-200));
             border-radius: 12px;
-            padding: 2rem;
+            padding: 2.5rem;
             margin: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .decision-step {
-            padding: 1rem;
-            margin: 1rem 0;
+            padding: 1.5rem;
+            margin: 1.25rem 0;
             background: hsl(var(--bg-000));
             border-left: 4px solid var(--primary);
             border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .decision-step h4 {
             color: var(--primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .decision-step ol,
@@ -433,48 +458,91 @@
 
         .highlight-box {
             background: hsl(var(--bg-100));
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.25rem;
             border-radius: 6px;
             margin-top: 0.75rem;
             font-weight: 500;
+            border-left: 3px solid var(--primary);
         }
 
-        /* Personal Story */
-        .personal-story {
-            background: linear-gradient(135deg, hsl(var(--bg-000)) 0%, hsl(var(--bg-100)) 100%);
-            border-left: 4px solid var(--primary);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
+        /* Personal Story - Two Column Layout */
+        .story-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 4rem 2rem;
+            align-items: center;
+            background: hsl(var(--bg-000));
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
         }
 
-        .personal-story h2 {
+        .story-section h2 {
+            font-family: 'Quattrocento', Georgia, serif;
+            font-size: clamp(2rem, 4vw, 3rem);
             margin-bottom: 1rem;
-            font-size: clamp(1.5rem, 3vw, 1.75rem);
+            color: var(--primary);
         }
 
-        .personal-story p {
-            margin-bottom: 0.75rem;
-            line-height: 1.6;
+        .story-section p {
+            font-family: 'Quattrocento', Georgia, serif;
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: hsl(var(--text-200));
+            margin-bottom: 1.5rem;
         }
 
-        .personal-story a {
-            font-weight: 500;
+        .story-visual {
+            text-align: center;
+        }
+
+        .story-visual img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .caption {
+            text-align: center;
+            font-size: 0.875rem;
+            color: hsl(var(--text-300));
+            margin-top: 0.75rem;
+        }
+
+        .btn-link {
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-link:hover {
             text-decoration: underline;
-            text-decoration-thickness: 1px;
-            text-underline-offset: 2px;
+        }
+
+        blockquote.highlight {
+            border-left: 4px solid var(--primary);
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: hsl(var(--text-300));
+            margin: 1.5rem 0;
+            font-size: 1.125rem;
         }
 
         /* Video Container */
         .video-container {
             position: relative;
-            width: 66%;
-            margin: 2rem auto;
-            padding-bottom: 37.125%; /* 16:9 aspect ratio at 66% width = 66% * 9/16 */
+            width: 100%;
+            margin: 2rem 0;
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .video-container iframe {
@@ -486,7 +554,46 @@
             border: 0;
         }
 
-        /* Footer */
+        /* Scoring Stats Cards */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, hsl(var(--bg-000)) 0%, hsl(var(--bg-100)) 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: hsl(var(--text-200));
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Footer - Consolidated CTAs */
         footer {
             background: hsl(var(--bg-200));
             border-top: 0.5px solid hsl(var(--border-400));
@@ -497,7 +604,7 @@
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+            gap: 2.5rem;
             margin-bottom: 2rem;
         }
 
@@ -506,7 +613,7 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 1rem;
-            color: hsl(var(--text-100));
+            color: var(--primary);
         }
 
         .footer-section ul {
@@ -525,15 +632,19 @@
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
-            border-top: 0.5px solid hsl(var(--border-400) / 0.3);
+            border-top: none;
             color: hsl(var(--text-300));
             font-size: 0.875rem;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
+            .container {
+                padding: 0 1.25rem;
+            }
+
             section {
-                padding: 1rem 0;
+                padding: 2rem 0;
             }
 
             .grid {
@@ -541,39 +652,43 @@
             }
 
             .hero {
-                padding: 1.5rem 0 2rem;
+                min-height: 100vh;
+                padding: 2rem 0;
             }
 
             .hero h1 {
-                font-size: clamp(1.75rem, 8vw, 2.25rem);
-                margin-bottom: 0.5rem;
-                line-height: 1.2;
+                font-size: clamp(2rem, 8vw, 2.5rem);
+                margin-bottom: 1rem;
             }
 
             .hero p {
-                font-size: clamp(0.9375rem, 4vw, 1rem);
-                margin: 0 auto 1rem;
+                font-size: 1.125rem;
+                margin-bottom: 1.5rem;
             }
 
             .cta-buttons {
                 flex-direction: column;
                 gap: 0.75rem;
-                margin-top: 1rem;
+                margin-top: 1.5rem;
             }
 
             .btn {
                 width: 100%;
-                max-width: 280px;
+                max-width: 320px;
+            }
+
+            .story-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem 1.5rem;
+            }
+
+            .story-visual {
+                order: -1;
             }
 
             .video-container {
-                width: 100%;
-                padding-bottom: 56.25%; /* Full width 16:9 on mobile */
                 margin: 1.5rem 0;
-            }
-
-            .container {
-                padding: 0 1rem;
             }
 
             table {
@@ -587,12 +702,29 @@
                 padding: 0.5rem 0.75rem;
                 white-space: nowrap;
             }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .stat-label {
+                font-size: 0.875rem;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header>
+    <header id="header">
         <div class="container">
             <nav>
                 <div class="logo">Applied AI PM Framework</div>
@@ -607,38 +739,48 @@
         </div>
     </header>
 
-    <!-- Hero -->
+    <!-- Hero with Dark Overlay and 80vh Height -->
     <section class="hero">
-        <div class="container">
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
             <h1>The 2025 AI PM Evaluation Framework</h1>
             <p>A rigorous, open-source framework for evaluating Applied AI Product Manager candidates in the era of rapid AI evolution. Built for teams who need builders, not coordinators.</p>
             <div class="cta-buttons">
-                <a href="https://github.com/abe238/aipm-resume-analyzer" class="btn btn-primary">View on GitHub →</a>
-                <a href="#framework" class="btn btn-secondary">Read the Framework</a>
+                <a href="#framework" class="btn btn-primary">Read the Framework</a>
+                <a href="https://github.com/abe238/aipm-resume-analyzer" class="btn btn-secondary">View on GitHub →</a>
             </div>
         </div>
+        <a href="#story" class="scroll-down">↓</a>
     </section>
 
-    <!-- Personal Story -->
+    <!-- Personal Story - Two Column Layout -->
     <section id="story">
         <div class="container">
-            <div class="personal-story">
-                <h2>Why I Built This</h2>
-                <p><a href="https://www.youtube.com/watch?v=rcz39Y0qFxw" target="_blank" rel="noopener noreferrer">This conversation</a> between <a href="https://x.com/aakashg0" target="_blank" rel="noopener noreferrer">Aakash Gupta</a> and <a href="https://x.com/jacalulu" target="_blank" rel="noopener noreferrer">Jaclyn Konzelmann</a> (Google's Director of AI Product, on his <a href="https://www.news.aakashg.com/s/product-growth-podcast" target="_blank" rel="noopener noreferrer">podcast</a>) truly inspired me. Jaclyn's AI PM evaluation framework was so clear and rigorous that I immediately thought: "I need to measure myself against this."</p>
+            <div class="story-section">
+                <div class="story-text">
+                    <h2>Why I Built This</h2>
+                    <p><a href="https://www.youtube.com/watch?v=rcz39Y0qFxw" target="_blank" rel="noopener noreferrer">This conversation</a> between <a href="https://x.com/aakashg0" target="_blank" rel="noopener noreferrer">Aakash Gupta</a> and <a href="https://x.com/jacalulu" target="_blank" rel="noopener noreferrer">Jaclyn Konzelmann</a> (Google's Director of AI Product, on his <a href="https://www.news.aakashg.com/s/product-growth-podcast" target="_blank" rel="noopener noreferrer">podcast</a>) truly inspired me. Jaclyn's AI PM evaluation framework was so clear and rigorous that I immediately thought: "I need to measure myself against this."</p>
 
-                <p>I started outlining her criteria as a self-assessment. But then I realized: this shouldn't be a private checklist. In disaster relief, you don't map safe routes and hide them. You share them.</p>
+                    <blockquote class="highlight">
+                        "In disaster relief, you don't map safe routes and hide them. You share them."
+                    </blockquote>
 
-                <p>So this became a framework with a specific purpose: give everyone, especially people from non-traditional backgrounds, an actionable guide on what to build, where to focus, and how to position themselves for AI PM roles. Not just another resume reviewer or hiring scorecard. A genuine roadmap.</p>
+                    <p>I started outlining her criteria as a self-assessment. But then I realized: this shouldn't be a private checklist. So this became a framework with a specific purpose: give everyone, especially people from non-traditional backgrounds, an actionable guide on what to build, where to focus, and how to position themselves for AI PM roles.</p>
 
-                <p>If you have edits or ideas on how to improve please submit them on <a href="https://github.com/abe238/aipm-resume-analyzer" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
-
-                <div class="video-container">
-                    <iframe
-                        src="https://www.youtube.com/embed/rcz39Y0qFxw"
-                        title="AI PM Framework - Inspiration"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen>
-                    </iframe>
+                    <p>If you have edits or ideas on how to improve please submit them on <a href="https://github.com/abe238/aipm-resume-analyzer" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+                    
+                    <a href="#philosophy" class="btn-link">Continue to Philosophy →</a>
+                </div>
+                <div class="story-visual">
+                    <div class="video-container">
+                        <iframe
+                            src="https://www.youtube.com/embed/rcz39Y0qFxw"
+                            title="AI PM Framework - Inspiration"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <p class="caption">The conversation that inspired this framework</p>
                 </div>
             </div>
         </div>
@@ -968,10 +1110,10 @@
     </section>
 
     <!-- Call to Action -->
-    <section style="background: var(--muted); padding: 4rem 0;">
+    <section style="background: hsl(var(--bg-200)); padding: 4rem 0;">
         <div class="container" style="text-align: center;">
             <h2 style="margin-bottom: 1rem;">Ready to Raise Your Hiring Bar?</h2>
-            <p style="font-size: 1.125rem; color: var(--muted-foreground); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <p style="font-size: 1.125rem; color: hsl(var(--text-200)); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
                 Start evaluating AI PM candidates with the 2025 standards. Open source, free to use, and continuously evolving.
             </p>
             <div class="cta-buttons">
@@ -987,7 +1129,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h4>Applied AI PM Framework</h4>
-                    <p style="color: var(--muted-foreground);">A rigorous, open-source evaluation system for AI Product Manager candidates in 2025.</p>
+                    <p style="color: hsl(var(--text-200));">A rigorous, open-source evaluation system for AI Product Manager candidates in 2025.</p>
                     <p style="margin-top: 1rem;"><a href="https://github.com/abe238/aipm-resume-analyzer">View on GitHub →</a></p>
                 </div>
                 <div class="footer-section">
@@ -1015,5 +1157,53 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Add scrolled class to header on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Active nav link highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
