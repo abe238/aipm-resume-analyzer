@@ -1153,12 +1153,27 @@
             </div>
             <div class="footer-bottom">
                 <p>Built with ❤️ for PMs looking to transition and for teams hiring AI Product Managers by <a href="https://x.com/abe238" target="_blank" rel="noopener noreferrer">@abe238</a></p>
-                <p style="margin-top: 0.5rem;">Framework Version 1.0 • Last Updated October 2025</p>
+                <p id="framework-version" style="margin-top: 0.5rem;">Framework Version 1.0 • Last Updated October 2025</p>
             </div>
         </div>
     </footer>
 
     <script>
+        // Dynamic version and date update
+        // UPDATE THIS VERSION NUMBER MANUALLY:
+        // 1.0 -> 1.1 (minor updates), 1.0 -> 2.0 (major redesign)
+        const FRAMEWORK_VERSION = '1.0';
+
+        // Auto-update date to current month/year
+        window.addEventListener('DOMContentLoaded', function() {
+            const versionElement = document.getElementById('framework-version');
+            const currentDate = new Date().toLocaleDateString('en-US', {
+                month: 'long',
+                year: 'numeric'
+            });
+            versionElement.innerHTML = `Framework Version ${FRAMEWORK_VERSION} • Last Updated ${currentDate}`;
+        });
+
         // Add scrolled class to header on scroll
         window.addEventListener('scroll', function() {
             const header = document.getElementById('header');
