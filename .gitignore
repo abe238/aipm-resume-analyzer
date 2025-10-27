@@ -46,6 +46,7 @@ output/
 *.json
 !README.md
 !QUICK_START.md
+!CONTRIBUTING.md
 !LICENSE
 !index.html
 
