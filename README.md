@@ -1,12 +1,33 @@
-# AI PM Resume Analyzer
+# Applied AI PM Evaluation Framework
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.7%2B-blue.svg)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-green.svg)](#installation)
 
-**Analyze AI PM resumes against the 6-pillar framework** - Get instant, consistent evaluations using OpenAI GPT-5, Anthropic Claude Sonnet 4.5, or Google Gemini 2.5 Pro.
+**Analyze Applied AI PM resumes against the 6-pillar framework** - Get instant, consistent evaluations using OpenAI GPT-5, Anthropic Claude Sonnet 4.5, or Google Gemini 2.5 Pro.
 
-Perfect for hiring managers screening AI PM candidates, recruiters standardizing evaluations, or candidates self-assessing their readiness.
+Built for hiring teams evaluating AI PM candidates, recruiters standardizing their process, and **especially for people from non-traditional backgrounds** looking to transition into AI Product Management roles.
+
+---
+
+## 🎯 Why This Exists
+
+> "In disaster relief, you don't map safe routes and hide them. You share them."
+
+[This conversation](https://www.youtube.com/watch?v=rcz39Y0qFxw) between [Aakash Gupta](https://x.com/aakashg0) and [Jaclyn Konzelmann](https://x.com/jacalulu) (Google's Director of AI Product) truly inspired this project. Jaclyn's AI PM evaluation framework was so clear and rigorous that it immediately became obvious: **this shouldn't be a private checklist**.
+
+This tool exists to give **everyone**—especially people from non-traditional backgrounds—an actionable guide on:
+- What to build to demonstrate AI PM capabilities
+- Where to focus your learning and projects
+- How to position yourself for AI PM roles
+- How hiring teams actually evaluate candidates
+
+**For Job Seekers**: Use this to self-assess, identify gaps, and build projects that matter.
+**For Hiring Teams**: Use this to standardize evaluations and find builders, not just coordinators.
+
+Built by [@abe238](https://x.com/abe238) | Full framework at [aipmframework.com](https://aipmframework.com)
+
+---
 
 ## ✨ Features
 
@@ -19,6 +40,8 @@ Perfect for hiring managers screening AI PM candidates, recruiters standardizing
 - ⚡ **Fast Analysis** - Get results in 30 seconds vs 10+ minutes manual review
 - 💰 **Cost-Effective** - $0.10-0.60 per resume depending on model choice
 - 🎨 **Professional Design** - HTML reports styled with Stripe/Tailwind-inspired CSS
+
+---
 
 ## 📦 Quick Start
 
@@ -545,7 +568,7 @@ A: Absolutely! Great for self-assessment before applying to AI PM roles.
 
 ## 🤝 Contributing
 
-Contributions welcome! This tool helps standardize AI PM hiring.
+Contributions welcome! This tool helps standardize AI PM hiring and provides a roadmap for people transitioning into AI PM roles.
 
 ### To Contribute
 
@@ -557,11 +580,11 @@ Contributions welcome! This tool helps standardize AI PM hiring.
 
 ### Ideas for Contributions
 
-- [ ] Support for Word documents (.docx)
 - [ ] Additional output formats (PDF export)
 - [ ] Batch processing UI
 - [ ] Integration with popular ATS systems
 - [ ] Customizable scoring frameworks
+- [ ] Multi-language support
 
 ---
 
@@ -573,26 +596,29 @@ MIT License - see LICENSE file for details.
 
 ## 🙏 Acknowledgments
 
+**Inspiration:**
+- [Jaclyn Konzelmann](https://x.com/jacalulu) - Google's Director of AI Product, whose evaluation framework inspired this project
+- [Aakash Gupta](https://x.com/aakashg0) - Product Growth expert whose [podcast conversation](https://www.youtube.com/watch?v=rcz39Y0qFxw) sparked the idea
+
 **Built with:**
 - [OpenAI GPT-5](https://openai.com/) - Most advanced reasoning model
 - [Anthropic Claude Sonnet 4.5](https://anthropic.com/) - Best-in-class AI assistant
 - [Google Gemini 2.5 Pro](https://ai.google.dev/) - Fast and affordable AI
 - [PyPDF2](https://github.com/py-pdf/pypdf2) - PDF text extraction
 - [Pandoc](https://pandoc.org/) - Universal document converter (.doc/.docx support)
-- Applied AI PM Framework - Open-source evaluation system
 
 **Design inspired by:**
 - [Stripe Docs](https://stripe.com/docs) - Clean documentation design
 - [Tailwind CSS](https://tailwindcss.com/) - Modern utility-first CSS
-- [Material-UI](https://mui.com/) - Component design patterns
+- [Anthropic Docs](https://docs.anthropic.com/) - Warm, professional color palette
 
 ---
 
 ## 📚 Related Resources
 
-- **Framework Website**: https://aipmframework.com (coming soon)
+- **Framework Website**: [aipmframework.com](https://aipmframework.com) - Full evaluation framework and philosophy
 - **Source Code**: [GitHub Repository](https://github.com/abe238/aipm-resume-analyzer)
-- **Full Evaluation Framework**: Detailed in this repository's documentation
+- **Twitter**: [@abe238](https://x.com/abe238)
 
 ---
 
@@ -600,14 +626,14 @@ MIT License - see LICENSE file for details.
 
 **This tool is a screening aid, not a replacement for human judgment.**
 
-- ✅ Use it to: Standardize initial screening, identify promising candidates, save time
+- ✅ Use it to: Standardize initial screening, identify promising candidates, save time, self-assess your readiness
 - ❌ Don't use it to: Make final hiring decisions, replace interviews, avoid talking to candidates
 
 The best hiring process combines AI-assisted screening with thoughtful human evaluation.
 
 ---
 
-**Made for hiring managers, recruiters, and candidates who want standardized, data-driven AI PM evaluations.**
+**Built for hiring managers, recruiters, and candidates—especially those from non-traditional backgrounds—who want standardized, data-driven AI PM evaluations.**
 
 ⭐ Star this repo if you find it useful!
 
@@ -616,4 +642,5 @@ The best hiring process combines AI-assisted screening with thoughtful human eva
 ## Need Help?
 
 - **Issues**: https://github.com/abe238/aipm-resume-analyzer/issues
-- **Email**: abe@aipmframework.com
+- **Twitter**: [@abe238](https://x.com/abe238)
+- **Website**: [aipmframework.com](https://aipmframework.com)
