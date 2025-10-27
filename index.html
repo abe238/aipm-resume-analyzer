@@ -379,25 +379,6 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         }
 
-        /* Pillars Grid - 4 cards horizontal, 2x2 on mobile/tablet */
-        .pillars-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2.5rem;
-        }
-
-        @media (min-width: 1024px) {
-            .pillars-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .pillars-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         /* Pillar Cards - ULTRA COMPACT */
         .pillar-card {
             background: linear-gradient(135deg, hsl(var(--bg-000)) 0%, hsl(var(--bg-100)) 100%);
@@ -587,7 +568,7 @@
         /* Scoring Stats Cards */
         .stats {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-top: 2rem;
         }
@@ -868,7 +849,7 @@
                 <p>Comprehensive evaluation across the full spectrum of AI PM competencies</p>
             </div>
 
-            <div class="pillars-grid">
+            <div class="grid">
                 <div class="pillar-card">
                     <div class="pillar-number">01</div>
                     <h3>Technical Skills & Hands-On Building</h3>
