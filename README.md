@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/Python-3.7%2B-blue.svg)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-green.svg)](#installation)
 
-**Analyze Applied AI PM resumes against the 6-pillar framework** - Get instant, consistent evaluations using OpenAI GPT-5, Anthropic Claude Sonnet 4.5, or Google Gemini 2.5 Pro.
+**Analyze Applied AI PM resumes against the 2026 6-pillar framework** - Get instant, consistent evaluations using OpenAI GPT-5, Anthropic Claude Sonnet 4.5, or Google Gemini 2.5 Pro.
 
 Built for hiring teams evaluating AI PM candidates, recruiters standardizing their process, and **especially for people from non-traditional backgrounds** looking to transition into AI Product Management roles.
 

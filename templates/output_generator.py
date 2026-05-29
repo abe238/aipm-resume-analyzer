@@ -52,7 +52,7 @@ def generate_markdown(analysis, output_path):
 
 **Decision Rationale**: {decision_rationale}
 
-### 2025 Framework Evaluation
+### 2026 Framework Evaluation
 
 | Criteria | Status |
 |----------|--------|
@@ -247,9 +247,9 @@ If moving forward, probe these areas in depth:
     md_content += f"""
 ## About This Analysis
 
-This resume was analyzed using the **Applied AI PM Evaluation Framework** - an open-source, rigorous evaluation system for 2025 AI Product Manager candidates.
+This resume was analyzed using the **Applied AI PM Evaluation Framework** - an open-source, rigorous evaluation system for 2026 AI Product Manager candidates.
 
-**Framework**: 6 Pillars with 2025 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping
+**Framework**: 6 Pillars with 2026 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping
 
 **Key Criteria**: Minimum thresholds (personal AI projects, building in public, resume creativity), The Three Critical Questions (paradigm shift, future-proofing, magic wand test), Must-have signals, Differentiation signals, Red/yellow flags
 
@@ -633,8 +633,8 @@ def generate_html(analysis, output_path):
                 {f'<p style="margin-top: 12px;"><strong>Decision Rationale:</strong> {decision_rationale}</p>' if decision_rationale else ''}
             </div>
 
-            <!-- 2025 Framework Evaluation -->
-            <h2>2025 Framework Evaluation</h2>
+            <!-- 2026 Framework Evaluation -->
+            <h2>2026 Framework Evaluation</h2>
             <table>
                 <thead>
                     <tr>
@@ -875,8 +875,8 @@ def generate_html(analysis, output_path):
         <!-- Footer -->
         <div class="footer">
             <p>This resume was analyzed using the <strong>Applied AI PM Evaluation Framework</strong></p>
-            <p>A rigorous, open-source evaluation system for 2025 AI Product Manager candidates</p>
-            <p><strong>Framework:</strong> 6 Pillars with 2025 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping</p>
+            <p>A rigorous, open-source evaluation system for 2026 AI Product Manager candidates</p>
+            <p><strong>Framework:</strong> 6 Pillars with 2026 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping</p>
             <p><strong>Model Used:</strong> {model_name}</p>
             <p><a href="https://github.com/abe238/aipm-resume-analyzer" target="_blank">Learn more about the framework</a></p>
             <p style="margin-top: 16px; font-size: 0.85rem;">Analysis generated on {date_formatted}</p>
@@ -1198,7 +1198,7 @@ This report aggregates insights from multiple AI models to provide:
 
 **Aggregated Deep Analysis** using the Applied AI PM Evaluation Framework
 
-**Framework**: 6 Pillars with 2025 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping
+**Framework**: 6 Pillars with 2026 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping
 
 **Key Criteria**: Minimum thresholds, The Three Critical Questions, Must-have signals, Differentiation signals, Red/yellow flags
 
@@ -1258,7 +1258,7 @@ def generate_aggregated_html(analyses, output_path):
 
     executive_summary_html = '\n'.join(executive_summaries) if executive_summaries else '<p>No recommendations available.</p>'
 
-    # Aggregate 2025 framework evaluation data
+    # Aggregate 2026 framework evaluation data
     all_min_thresholds = []
     all_red_flags = []
     all_must_have_missing = []
@@ -1732,8 +1732,8 @@ def generate_aggregated_html(analyses, output_path):
             <p style="margin-top: 12px;"><strong>Decision Rationale:</strong> Consensus across {len(analyses)} provider(s): {consensus_decision} with average score of {avg_total}/60.</p>
         </div>
 
-        <!-- 2025 Framework Evaluation -->
-        <h2>2025 Framework Evaluation</h2>
+        <!-- 2026 Framework Evaluation -->
+        <h2>2026 Framework Evaluation</h2>
         <table>
             <thead>
                 <tr>
@@ -1877,8 +1877,8 @@ def generate_aggregated_html(analyses, output_path):
         <div class="footer">
             <h3>About This Analysis</h3>
             <p><strong>Aggregated Deep Analysis</strong> using the Applied AI PM Evaluation Framework</p>
-            <p>A rigorous, open-source evaluation system for 2025 AI Product Manager candidates</p>
-            <p><strong>Framework:</strong> 6 Pillars with 2025 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping</p>
+            <p>A rigorous, open-source evaluation system for 2026 AI Product Manager candidates</p>
+            <p><strong>Framework:</strong> 6 Pillars with 2026 standards - Technical Skills & Hands-On Building, Product Thinking & 0-to-1 Leadership, Deep AI Intuition (non-negotiable), Communication & Storytelling, Strategic Thinking & Second-Order Vision, Full-Spectrum Execution & Rapid Shipping</p>
             <p><strong>Providers Used:</strong> {', '.join([a.get('_metadata', {}).get('model_display_name', p.upper()) for p, a in analyses.items()])}</p>
             <p><a href="https://github.com/abe238/aipm-resume-analyzer" target="_blank">Learn more about the framework</a></p>
             <p style="margin-top: 16px;">Analysis generated on {date_formatted}</p>
